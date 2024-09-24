@@ -9,7 +9,7 @@
     <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
     <script src="/js/script.js"></script> <!-- Correct path to your JS file -->
 
-    <link rel="stylesheet" href="/css/styles.css"> <!-- Optional CSS file -->
+    <link rel="stylesheet" href="/css/style.css"> <!-- Optional CSS file -->
 </head>
 
 <body>
@@ -28,8 +28,7 @@
     </a-scene> -->
 
     <!-- Formulaire pour l'upload de fichier -->
-    <form id="upload-form" action="/upload" method="POST" enctype="multipart/form-data"
-        onsubmit="event.preventDefault(); uploadFile();">
+    <form id="upload-form" action="/upload" method="POST" enctype="multipart/form-data">
         <label for="file-upload">Choisir un fichier :</label>
         <input type="file" id="file-upload" name="file" accept="image/*, .pdf">
         <br><br>
@@ -39,16 +38,12 @@
     <button id="view-files-btn">Voir les fichiers uploadés</button>
 
     <!-- Popup pour afficher la liste des fichiers -->
-    <div id="popup-overlay" onclick="closeFilePopup()"></div>
-    <div id="file-popup">
+    <div id="popup-overlay" class="overlay"></div>
+    <div id="file-popup" class="popup">
         <h2>Fichiers uploadés</h2>
         <ul id="file-list"></ul>
-        <button onclick="closeFilePopup()">Fermer</button>
+        <button id="close-popup-btn">Fermer</button>
     </div>
-    <script>
-        document.getElementById('file-popup').style.display = 'none'; // Cache la popup au départ
-        document.getElementById('popup-overlay').style.display = 'none'; // Cache l'overlay au départ
-    </script>
 
 </body>
 

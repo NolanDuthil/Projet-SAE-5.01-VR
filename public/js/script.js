@@ -26,67 +26,57 @@ AFRAME.registerComponent('fromspherical', {
   }
 })
 
-let uploadedFiles = [];
+document.addEventListener('DOMContentLoaded', function () {
+  const viewFilesBtn = document.getElementById('view-files-btn');
+  const closePopupBtn = document.getElementById('close-popup-btn');
+  const popupOverlay = document.getElementById('popup-overlay');
 
-// Fonction pour gérer l'upload de fichier
-function uploadFile() {
-  const fileInput = document.getElementById('file-upload');
-  const file = fileInput.files[0];
-
-  if (file) {
-    const formData = new FormData();
-    formData.append('file', file);
-
-    fetch('/upload', {
-      method: 'POST',
-      body: formData
-    })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Erreur lors de l\'upload.');
-        }
-        return response.text();
-      })
-      .then(data => {
-        alert('Fichier "' + file.name + '" téléchargé avec succès !');
-        fileInput.value = ''; // Réinitialiser l'input file
-        showFilePopup(); // Afficher la popup après l'upload
-      })
-      .catch(error => {
-        console.error('Erreur:', error);
-        alert('Erreur lors de l\'upload du fichier.');
-      });
-  } else {
-    alert('Veuillez sélectionner un fichier.');
+  if (viewFilesBtn) {
+    viewFilesBtn.addEventListener('click', showFilePopup);
   }
-}
 
-// Fonction pour afficher la popup des fichiers uploadés
+  if (popupOverlay) {
+    popupOverlay.addEventListener('click', closeFilePopup);
+  }
+
+  if (closePopupBtn) {
+    closePopupBtn.addEventListener('click', closeFilePopup);
+  }
+});
+
 function showFilePopup() {
   const fileList = document.getElementById('file-list');
-  fileList.innerHTML = ''; // Effacer la liste existante
+  fileList.innerHTML = ''; 
 
-  // Faire une requête pour récupérer les fichiers uploadés
+
   fetch('/uploaded_files')
     .then(response => response.json())
     .then(files => {
-      files.forEach(fileName => {
-        const li = document.createElement('li');
-        li.textContent = fileName; // Afficher le nom du fichier
+      if (files.length === 0) {
+        const noFilesMessage = document.createElement('p');
+        noFilesMessage.textContent = 'Aucun fichier uploadé.';
+        fileList.appendChild(noFilesMessage);
+      } else {
+        files.forEach(fileName => {
+          const li = document.createElement('li');
+          const filePath = `/uploaded_images/${fileName}`; 
 
-        // Créer un élément d'image si le fichier est une image
-        const filePath = `/uploaded_images/${fileName}`; // Chemin d'accès pour afficher l'image
-        if (fileName.endsWith('.jpg') || fileName.endsWith('.jpeg') || fileName.endsWith('.png') || fileName.endsWith('.gif')) {
-          const img = document.createElement('img');
-          img.src = filePath; // Chemin de l'image
-          img.alt = fileName; // Texte alternatif
-          li.appendChild(img); // Ajouter l'image à la liste
-        }
+          if (fileName.match(/\.(jpg|jpeg|png|gif|webp)$/i)) {
+            const img = document.createElement('img');
+            img.src = filePath;
+            img.alt = fileName;
+            img.style.width = "100px";
+            li.appendChild(img);
+          }
 
-        fileList.appendChild(li);
-      });
+          const fileText = document.createElement('p');
+          fileText.textContent = fileName;
+          li.appendChild(fileText);
 
-      // Afficher la popup et l'overlay
+          fileList.appendChild(li);
+        });
+      }
+
       document.getElementById('file-popup').style.display = 'block';
       document.getElementById('popup-overlay').style.display = 'block';
     })
@@ -95,11 +85,15 @@ function showFilePopup() {
     });
 }
 
-// Fonction pour fermer la popup
 function closeFilePopup() {
   document.getElementById('file-popup').style.display = 'none';
   document.getElementById('popup-overlay').style.display = 'none';
 }
 
-// Ajout d'événement pour le bouton de visualisation des fichiers
 document.getElementById('view-files-btn').addEventListener('click', showFilePopup);
+
+document.getElementById('close-popup-btn').addEventListener('click', closeFilePopup);
+
+document.getElementById('popup-overlay').addEventListener('click', closeFilePopup);
+
+

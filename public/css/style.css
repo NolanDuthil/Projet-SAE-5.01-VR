@@ -1,0 +1,56 @@
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Centrage du formulaire */
+form {
+    margin-top: 20px;
+    text-align: center;
+}
+
+/* Styles pour l'overlay (arrière-plan sombre de la popup) */
+#popup-overlay {
+    display: none; /* Masqué par défaut */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+}
+
+/* Styles pour la popup */
+#file-popup {
+    display: none; /* Masqué par défaut */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    z-index: 1001;
+    width: 300px;
+    border-radius: 8px;
+}
+
+#file-popup h2 {
+    margin-top: 0;
+}
+
+#file-list img {
+    display: block;
+    margin-top: 10px;
+    max-width: 100px;
+    height: auto;
+}
+
+#file-popup button {
+    margin-top: 10px;
+}
