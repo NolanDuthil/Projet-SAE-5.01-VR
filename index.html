@@ -56,7 +56,34 @@
           </a-camera>
   
       </a-scene>
-      <div class="right-panel"></div>
+
+      <div class="right-panel">
+        <div class="tag-header">
+          <h2 class="title">Tags</h2>
+          <button class="add-button">
+            <img src="assets/add-icon.svg" alt="Add">
+          </button>
+        </div>
+        <div class="tag-settings">
+          <select name="tags-select" id="tags-select" class="tags-select">
+            <option value="porte">Porte</option>
+            <option value="marqueur">Marqueur</option>
+            <option value="info">Info</option>
+          </select>
+          <div class="actions">
+            <img class="scene-icons" src="assets/duplicate-icon.svg" alt="Duplicate">
+            <img class="scene-icons" src="assets/delete-icon.svg" alt="Delete">
+          </div>
+        </div>
+        <div class="tag-name">
+          <h3 class="subtitle">Nom</h3>
+          <input type="text" class="tag-name-input" value="Porte">
+        </div>
+        <div class="tag-legend">
+          <h3 class="subtitle">Légende</h3>
+          <textarea class="tag-legend-area">Ceci est une porte</textarea>
+        </div>
+      </div>
 
     </div>
     <div class="bottom-panel"></div>
