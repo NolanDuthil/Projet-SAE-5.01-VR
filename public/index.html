@@ -13,8 +13,7 @@
 </head>
 
 <body>
-
-      <a-scene embedded>
+    <a-scene embedded>
         <a-sky id="image-360" radius="200" src=""></a-sky>
         <a-camera wasd-controls="enabled: true">
             <a-cursor color="white" geometry="primitive: sphere; radius: 0.008" material="color: white; shader: flat"></a-cursor>
@@ -35,7 +34,7 @@
     <div id="popup-overlay" class="overlay"></div>
     <div id="file-popup" class="popup">
         <h2>Fichiers uploadés</h2>
-        <ul id="file-list"></ul>
+        <ul id="file-list" class="file-list"></ul>
         <button id="close-popup-btn">Fermer</button>
     </div>
 
