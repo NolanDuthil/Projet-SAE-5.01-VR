@@ -4,45 +4,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scene 3D</title>
+    <title>Scene 3D et Upload</title>
 
     <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
-    <script src="script.js"></script>
+    <script src="/js/script.js"></script> <!-- Correct path to your JS file -->
+
+    <link rel="stylesheet" href="/css/styles.css"> <!-- Optional CSS file -->
 </head>
 
 <body>
+    <!-- Contenu de la scène 3D et du formulaire -->
     <!-- <a-scene>
-
         <a-sky id="image-360" radius="200" src="assets/GS__3523.JPG"></a-sky>
-
         <a-sphere color="#33F" radius="2" fromspherical='fi: 0; theta: 90; r: 40'></a-sphere>
-
         <a-camera wasd-controls="enabled: true">
-            <a-cursor id="cursor" color="white" geometry="primitive: sphere; radius: 0.008"
-                material="color: white; shader: flat">
+            <a-cursor
+              id="cursor"
+              color="white"
+              geometry="primitive: sphere; radius: 0.008"
+              material="color: white; shader: flat">
             </a-cursor>
         </a-camera>
-
     </a-scene> -->
-    <form action="/upload" method="POST" enctype="multipart/form-data">
+
+    <!-- Formulaire pour l'upload de fichier -->
+    <form id="upload-form" action="/upload" method="POST" enctype="multipart/form-data"
+        onsubmit="event.preventDefault(); uploadFile();">
         <label for="file-upload">Choisir un fichier :</label>
         <input type="file" id="file-upload" name="file" accept="image/*, .pdf">
         <br><br>
         <button type="submit">Télécharger</button>
     </form>
 
-    <!-- Bouton pour afficher la popup -->
-    <button onclick="showFilePopup()">Voir les fichiers uploadés</button>
+    <button id="view-files-btn">Voir les fichiers uploadés</button>
 
     <!-- Popup pour afficher la liste des fichiers -->
     <div id="popup-overlay" onclick="closeFilePopup()"></div>
     <div id="file-popup">
         <h2>Fichiers uploadés</h2>
-        <ul id="file-list">
-            <!-- Liste des fichiers uploadés -->
-        </ul>
+        <ul id="file-list"></ul>
         <button onclick="closeFilePopup()">Fermer</button>
     </div>
+    <script>
+        document.getElementById('file-popup').style.display = 'none'; // Cache la popup au départ
+        document.getElementById('popup-overlay').style.display = 'none'; // Cache l'overlay au départ
+    </script>
+
 </body>
 
 </html>
