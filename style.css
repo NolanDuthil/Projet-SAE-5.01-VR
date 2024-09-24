@@ -1,11 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
 
 :root{
+    /* colors */
     --clr-white: #FFFFFF;
     --clr-off-white: #F8F9FA;
     --clr-black: #1B1B1B;
 
+    /* fonts */
     --ff-Raleway: Raleway;
+
+    /* borders */
+    --classic-border:  1.5px solid var(--clr-black);
 }
 
 body, html{
@@ -32,16 +37,19 @@ main{
 .left-panel{
     width: 20%;
     background-color: var(--clr-off-white);
+    border-right: var(--classic-border);
     padding: 1rem 3rem;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 1.5rem;
 }
 
 .right-panel{
     width: 20%;
     background-color: var(--clr-off-white);
+    border-left: var(--classic-border);
     padding: 1rem 3rem;
     box-sizing: border-box;
 }
@@ -50,6 +58,7 @@ main{
     width: 100%;
     height: 25%;
     background-color: var(--clr-off-white);
+    border-top: var(--classic-border);
     padding: 1rem 3rem;
     box-sizing: border-box;
 }
@@ -68,19 +77,83 @@ main{
     display: flex;
     align-items: center;
     justify-content: space-between;
+    width: 100%;
 }
 
 .scene-name{
     border: none;
-    border-bottom: 1.5px solid var(--clr-black);
+    border-bottom: var(--classic-border);
     background-color: transparent;
     outline: none;
     font-size: large;
-    font-weight: 500;
+    font-weight: 400;
     width: 60%;
     text-align: left;
 }
 
 .scene-icons{
     width: 1.4rem;
+    cursor: pointer;
+}
+
+.scene-icons:hover{
+    scale: 1.15;
+}
+
+.image, .camera{
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: center;
+    width: 100%;
+}   
+
+.subtitle{
+    font-size: larger;
+    font-weight: 500;
+}
+
+.text{
+    font-size: medium;
+    font-weight: 400;
+}
+
+.image-button{
+    border: var(--classic-border);
+    background-color: var(--clr-white);
+    color: var(--clr-black);
+    border-radius: 10px;
+    padding: .5rem 0; 
+    font-family: var(--ff-Raleway);
+}
+
+.image-button:hover{
+    border: 1.5px solid var(--clr-white);
+    background-color: var(--clr-black);
+    color: var(--clr-white);
+    cursor: pointer;
+}
+
+.axe{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.input-camera{
+    -moz-appearance: textfield;
+    -webkit-appearance: none;
+    appearance: none;
+    border: 1.5px solid black;
+    border-radius: 10px;
+    padding: 2px 10px;
+    font-size: medium;
+    font-weight: medium;
+    font-family: var(--ff-Raleway);
+    text-align: left;
+    width: 70px;
+    height: 35px;
+    box-sizing: border-box;
+    outline: none;
 }
