@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 function showFilePopup() {
   const fileList = document.getElementById('file-list');
-  fileList.innerHTML = ''; 
+  fileList.innerHTML = '';
 
 
   fetch('/uploaded_files')
@@ -59,7 +59,7 @@ function showFilePopup() {
       } else {
         files.forEach(fileName => {
           const li = document.createElement('li');
-          const filePath = `/uploaded_images/${fileName}`; 
+          const filePath = `/uploaded_images/${fileName}`;
 
           if (fileName.match(/\.(jpg|jpeg|png|gif|webp)$/i)) {
             const img = document.createElement('img');
@@ -96,4 +96,9 @@ document.getElementById('close-popup-btn').addEventListener('click', closeFilePo
 
 document.getElementById('popup-overlay').addEventListener('click', closeFilePopup);
 
+function updateSceneImage(imagePath) {
+  const sky = document.getElementById('image-360');
+  sky.setAttribute('src', imagePath);
+  alert(`L'image de la scène a été mise à jour avec : ${imagePath}`);
+}
 

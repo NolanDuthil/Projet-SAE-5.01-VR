@@ -13,19 +13,13 @@
 </head>
 
 <body>
-    <!-- Contenu de la scène 3D et du formulaire -->
-    <!-- <a-scene>
-        <a-sky id="image-360" radius="200" src="assets/GS__3523.JPG"></a-sky>
-        <a-sphere color="#33F" radius="2" fromspherical='fi: 0; theta: 90; r: 40'></a-sphere>
+
+      <a-scene embedded>
+        <a-sky id="image-360" radius="200" src=""></a-sky>
         <a-camera wasd-controls="enabled: true">
-            <a-cursor
-              id="cursor"
-              color="white"
-              geometry="primitive: sphere; radius: 0.008"
-              material="color: white; shader: flat">
-            </a-cursor>
+            <a-cursor color="white" geometry="primitive: sphere; radius: 0.008" material="color: white; shader: flat"></a-cursor>
         </a-camera>
-    </a-scene> -->
+    </a-scene>
 
     <!-- Formulaire pour l'upload de fichier -->
     <form id="upload-form" action="/upload" method="POST" enctype="multipart/form-data">
