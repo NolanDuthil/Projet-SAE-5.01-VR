@@ -69,52 +69,89 @@ async function addNewScene() {
 
 // Fonction pour mettre à jour les détails de la scène
 function updateSceneDetails(scene) {
-    document.getElementById('scene-name').value = scene.name;
-    scene.image ? document.getElementById('image-360').setAttribute('src', "uploaded_images/" + scene.image) : document.getElementById('image-360').setAttribute('src', "assets/grey-background.avif")
+    const sceneNameInput = document.getElementById('scene-name');
+    const tagSelect = document.getElementById('tags-select');
+    
+    // Remplir les champs avec les données de la scène
+    sceneNameInput.value = scene.name;
+    scene.image ? document.getElementById('image-360').setAttribute('src', "uploaded_images/" + scene.image) : document.getElementById('image-360').setAttribute('src', "assets/grey-background.avif");
 
-    const cameraData = {
-        vertical: 0,
-        horizontal: 0
-    };
+    const cameraData = scene.camera || { vertical: 0, horizontal: 0 };
     document.getElementById('camera-vertical').value = cameraData.vertical;
     document.getElementById('camera-horizontal').value = cameraData.horizontal;
 
-    const tagSelect = document.getElementById('tags-select');
     tagSelect.innerHTML = '';
+    const tags = scene.tags || [];
+    tags.forEach((tag, index) => {
+        const option = document.createElement('option');
+        option.value = index;
+        option.textContent = tag.name;
+        tagSelect.appendChild(option);
+    });
 
-    const tags = scene.tags || {};
-    for (let tagKey in tags) {
-        if (tags.hasOwnProperty(tagKey)) {
-            const tag = tags[tagKey];
-            const option = document.createElement('option');
-            option.value = tagKey;
-            option.textContent = tagKey;
-            tagSelect.appendChild(option);
-        }
+    if (tags.length > 0) {
+        loadTagDetails(tags, 0);
     }
 
-    if (Object.keys(tags).length > 0) {
-        loadTagDetails(tags, Object.keys(tags)[0]);
-    }
+    // Ajouter un événement de changement pour le champ de nom de scène
+    sceneNameInput.addEventListener('input', function() {
+        scene.name = this.value;
+    });
 
-    tagSelect.addEventListener('change', function () {
-        loadTagDetails(tags, this.value);
+    // Écouter le changement du tag sélectionné
+    tagSelect.addEventListener('change', function() {
+        loadTagDetails(tags, this.value); // Passer l'index sélectionné
     });
 }
 
+
 // Fonction pour remplir les détails du tag sélectionné
-function loadTagDetails(tags, selectedTag) {
-    const tag = tags[selectedTag];
-    document.getElementById('tag-name').value = selectedTag;
-    document.getElementById('tag-legend').value = tag.legend;
-    document.getElementById('r').value = tag.position.r;
-    document.getElementById('theta').value = tag.position.theta;
-    document.getElementById('fi').value = tag.position.fi;
+function loadTagDetails(tags, selectedTagIndex) {
+    const tag = tags[selectedTagIndex];
+    const tagNameInput = document.getElementById('tag-name');
+    const tagLegendInput = document.getElementById('tag-legend');
+    const rInput = document.getElementById('r');
+    const thetaInput = document.getElementById('theta');
+    const fiInput = document.getElementById('fi');
+
+    // Remplir les champs de formulaire avec les données du tag sélectionné
+    tagNameInput.value = tag.name;
+    tagLegendInput.value = tag.legend;
+    rInput.value = tag.position.r;
+    thetaInput.value = tag.position.theta;
+    fiInput.value = tag.position.fi;
+
+    // Ajouter des écouteurs d'événements pour enregistrer les modifications
+    tagNameInput.addEventListener('input', function() {
+        // Mettre à jour le nom du tag dans les données
+        tag.name = this.value;
+
+        // Mettre à jour l'option correspondante dans la liste déroulante
+        const tagSelect = document.getElementById('tags-select');
+        tagSelect.options[selectedTagIndex].textContent = this.value;
+        tagSelect.options[selectedTagIndex].value = this.value;
+    });
+
+    tagLegendInput.addEventListener('input', function() {
+        tag.legend = this.value;
+    });
+
+    rInput.addEventListener('input', function() {
+        tag.position.r = this.value;
+    });
+
+    thetaInput.addEventListener('input', function() {
+        tag.position.theta = this.value;
+    });
+
+    fiInput.addEventListener('input', function() {
+        tag.position.fi = this.value;
+    });
 }
 
 // Fonction pour charger les données de la page lorsque le document est prêt
 async function loadPageData() {
-    await fetchData(); // Appeler fetchData pour remplir jsonData
+    await fetchData();
     const scenes = jsonData.scenes;
 
     populateSceneList(scenes);
@@ -125,31 +162,25 @@ async function loadPageData() {
 
 // Fonction pour sauvegarder les données de la page dans jsonData et le fichier JSON
 async function saveData() {
-    // Collecter les données de la page
     const sceneName = document.getElementById('scene-name').value;
     const cameraVertical = document.getElementById('camera-vertical').value;
     const cameraHorizontal = document.getElementById('camera-horizontal').value;
-    
-    // Récupérer les tags
+
     const tagSelect = document.getElementById('tags-select');
-    const tags = {};
-    
-    Array.from(tagSelect.options).forEach(option => {
-        const tagKey = option.value;
-        const tagLegend = document.getElementById('tag-legend').value;
-        const tagPosition = {
-            r: document.getElementById('r').value,
-            theta: document.getElementById('theta').value,
-            fi: document.getElementById('fi').value,
-        };
-        
-        tags[tagKey] = {
-            legend: tagLegend,
-            position: tagPosition
-        };
+    const tags = [];
+
+    Array.from(tagSelect.options).forEach((option, index) => {
+        tags.push({
+            name: document.getElementById('tag-name').value,
+            legend: document.getElementById('tag-legend').value,
+            position: {
+                r: document.getElementById('r').value,
+                theta: document.getElementById('theta').value,
+                fi: document.getElementById('fi').value,
+            }
+        });
     });
 
-    // Mettre à jour jsonData
     jsonData.scenes.forEach(scene => {
         if (scene.name === sceneName) {
             scene.camera = {
@@ -160,7 +191,6 @@ async function saveData() {
         }
     });
 
-    // Enregistrer jsonData dans le fichier JSON
     await updateJSON(jsonData);
 }
 
