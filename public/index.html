@@ -20,14 +20,6 @@
         </a-camera>
     </a-scene>
 
-    <!-- Formulaire pour l'upload de fichier -->
-    <form id="upload-form" action="/upload" method="POST" enctype="multipart/form-data">
-        <label for="file-upload">Choisir un fichier :</label>
-        <input type="file" id="file-upload" name="file" accept="image/*, .pdf">
-        <br><br>
-        <button type="submit">Télécharger</button>
-    </form>
-
     <button id="view-files-btn">Voir les fichiers uploadés</button>
 
     <!-- Popup pour afficher la liste des fichiers -->
@@ -35,14 +27,12 @@
     <div id="file-popup" class="popup">
         <h2>Fichiers uploadés</h2>
         <ul id="file-list" class="file-list"></ul>
-<<<<<<< Updated upstream
-=======
         <form id="upload-form" action="/upload" method="POST" enctype="multipart/form-data">
           <label for="file-upload">Choisir un fichier :</label>
           <input type="file" id="file-upload" name="file" accept="image/*, .pdf">
           <br><br>
-      </form>
->>>>>>> Stashed changes
+          <button type="submit">Télécharger</button>
+        </form>
         <button id="close-popup-btn">Fermer</button>
     </div>
 

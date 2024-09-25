@@ -1,32 +1,34 @@
+// Coordonnées Sphériques
 AFRAME.registerComponent('fromspherical', {
   // we will use two angles and a radius provided by the user 
   schema: {
-    fi: {},
-    theta: {},
-    r: {},
-  },
-  init: function () {
-    // lets change it to radians
-    let fi = this.data.fi * Math.PI / 180
-    let theta = this.data.theta * Math.PI / 180
+     fi: {},
+     theta: {},
+     r: {},
+   },
+   init: function() {
+     // lets change it to radians
+     let fi = this.data.fi * Math.PI / 180
+     let theta = this.data.theta * Math.PI / 180
 
-    // The 'horizontal axis is x. The 'vertical' is y. 
-    // The calculations below are straight from the wiki site.
-    let z = (-1) * Math.sin(theta) * Math.cos(fi) * this.data.r
-    let x = Math.sin(theta) * Math.sin(fi) * this.data.r
-    let y = Math.cos(theta) * this.data.r
-    // position the element using the provided data
-    this.el.setAttribute('position', {
-      x: x,
-      y: y,
-      z: z
-    })
-    // rotate the element towards the camera
-    this.el.setAttribute('look-at', '[camera]')
-  }
-})
+     // The 'horizontal axis is x. The 'vertical' is y. 
+     // The calculations below are straight from the wiki site.
+     let z = (-1) * Math.sin(theta) * Math.cos(fi) * this.data.r
+     let x = Math.sin(theta) * Math.sin(fi) * this.data.r
+     let y = Math.cos(theta) * this.data.r
+     // position the element using the provided data
+     this.el.setAttribute('position', {
+       x: x,
+       y: y,
+       z: z
+     })
+     // rotate the element towards the camera
+     this.el.setAttribute('look-at', '[camera]')
+   }
+ })
 
-document.addEventListener('DOMContentLoaded', function () {
+//  File Upload
+ document.addEventListener('DOMContentLoaded', function () {
   const viewFilesBtn = document.getElementById('view-files-btn');
   const closePopupBtn = document.getElementById('close-popup-btn');
   const popupOverlay = document.getElementById('popup-overlay');
@@ -47,7 +49,6 @@ document.addEventListener('DOMContentLoaded', function () {
 function showFilePopup() {
   const fileList = document.getElementById('file-list');
   fileList.innerHTML = '';
-
 
   fetch('/uploaded_files')
     .then(response => response.json())
@@ -95,10 +96,3 @@ document.getElementById('view-files-btn').addEventListener('click', showFilePopu
 document.getElementById('close-popup-btn').addEventListener('click', closeFilePopup);
 
 document.getElementById('popup-overlay').addEventListener('click', closeFilePopup);
-
-function updateSceneImage(imagePath) {
-  const sky = document.getElementById('image-360');
-  sky.setAttribute('src', imagePath);
-  alert(`L'image de la scène a été mise à jour avec : ${imagePath}`);
-}
-
