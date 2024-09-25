@@ -135,7 +135,8 @@ function updateSceneDetails(scene) {
     });
 }
 
-// Fonction pour remplir les détails du tag sélectionné
+
+
 function loadTagDetails(tags, selectedTagIndex) {
     const tag = tags[selectedTagIndex];
     const tagNameInput = document.getElementById('tag-name-input');

@@ -1,35 +1,35 @@
 {
   "scenes": [
     {
-      "name": "Scene 21",
+      "name": "Scene 1",
       "image": "GS__3523.JPG",
       "camera": {
-        "vertical": "02",
-        "horizontal": "0"
+        "vertical": "0",
+        "horizontal": "02"
       },
       "tags": [
         {
-          "name": "portedaz",
-          "legend": "une portedaz",
+          "name": "marqueur",
+          "legend": "un marqueur",
           "position": {
-            "r": "40",
-            "theta": "90",
+            "r": "20",
+            "theta": "80",
             "fi": "0"
           }
         },
         {
-          "name": "portedaz",
-          "legend": "une portedaz",
+          "name": "porte",
+          "legend": "une porte",
           "position": {
-            "r": "40",
-            "theta": "90",
-            "fi": "0"
+            "r": "90",
+            "theta": "60",
+            "fi": "-20"
           }
         }
       ]
     },
     {
-      "name": "Scene 21",
+      "name": "Scene 2",
       "image": "GS__3524.JPG",
       "camera": {
         "vertical": "02",
@@ -37,8 +37,8 @@
       },
       "tags": [
         {
-          "name": "portedaz",
-          "legend": "une portedaz",
+          "name": "porte",
+          "legend": "une porte",
           "position": {
             "r": "50",
             "theta": "45",
@@ -50,6 +50,10 @@
     {
       "name": "Scene 1727269811668",
       "image": "",
+      "camera": {
+        "vertical": "0",
+        "horizontal": "0"
+      },
       "tags": []
     }
   ]
