@@ -61,6 +61,10 @@ AFRAME.registerComponent('fromspherical', {
           files.forEach(fileName => {
             const li = document.createElement('li');
             const filePath = `/uploaded_images/${fileName}`;
+
+            const fileText = document.createElement('p');
+            fileText.textContent = fileName;
+            li.appendChild(fileText);
   
             if (fileName.match(/\.(jpg|jpeg|png|gif|webp)$/i)) {
               const img = document.createElement('img');
@@ -69,10 +73,6 @@ AFRAME.registerComponent('fromspherical', {
               img.style.width = "100px";
               li.appendChild(img);
             }
-  
-            const fileText = document.createElement('p');
-            fileText.textContent = fileName;
-            li.appendChild(fileText);
   
             fileList.appendChild(li);
           });
