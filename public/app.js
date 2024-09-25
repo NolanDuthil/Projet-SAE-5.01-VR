@@ -9,7 +9,7 @@ const port = 3000;
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'public/uploaded_images/'); 
+        cb(null, './uploaded_images/'); 
     },
     filename: function (req, file, cb) {
         cb(null, file.originalname); 
@@ -18,10 +18,10 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, './')));
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public/index.html'));
+    res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 app.post('/upload', upload.single('file'), (req, res) => {
@@ -32,7 +32,7 @@ app.post('/upload', upload.single('file'), (req, res) => {
 });
 
 app.get('/uploaded_files', (req, res) => {
-    const dirPath = path.join(__dirname, 'public/uploaded_images');
+    const dirPath = path.join(__dirname, './uploaded_images');
     fs.readdir(dirPath, (err, files) => {
         if (err) {
             return res.status(500).json({ message: 'Erreur lors de la récupération des fichiers.' });
