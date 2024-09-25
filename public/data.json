@@ -1,16 +1,16 @@
 {
   "scenes": [
     {
-      "name": "Ma Scène",
+      "name": "Scene 21",
       "image": "GS__3523.JPG",
       "camera": {
-        "vertical": "0",
+        "vertical": "02",
         "horizontal": "0"
       },
       "tags": [
         {
-          "name": "markeee",
-          "legend": "Un marqueur",
+          "name": "portedaz",
+          "legend": "une portedaz",
           "position": {
             "r": "40",
             "theta": "90",
@@ -18,8 +18,8 @@
           }
         },
         {
-          "name": "markeee",
-          "legend": "Un marqueur",
+          "name": "portedaz",
+          "legend": "une portedaz",
           "position": {
             "r": "40",
             "theta": "90",
@@ -29,21 +29,20 @@
       ]
     },
     {
-      "name": "Scene 2",
+      "name": "Scene 21",
       "image": "GS__3524.JPG",
       "camera": {
-        "vertical": 10,
-        "horizontal": 30
+        "vertical": "02",
+        "horizontal": "0"
       },
       "tags": [
         {
-          "name": "table",
-          "legend": "Une table",
-          "type": "furniture",
+          "name": "portedaz",
+          "legend": "une portedaz",
           "position": {
-            "fi": 10,
-            "theta": 45,
-            "r": 50
+            "r": "50",
+            "theta": "45",
+            "fi": "10"
           }
         }
       ]
