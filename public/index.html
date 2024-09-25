@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,120 +10,127 @@
     <script type="module" src="js/script.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<main>
-    <div class="top">
-        <div class="left-panel">
-            <h2 class="title">Scène</h2>
-            <div class="scene-settings">
-                <input class="scene-name" id="scene-name" type="text">
-                <div class="actions">
-                    <img id="duplicate-scene" class="scene-icons" src="assets/duplicate-icon.svg" alt="Duplicate">
-                    <img id="delete-scene" class="scene-icons" src="assets/delete-icon.svg" alt="Delete">
+    <main>
+        <div class="top">
+            <div class="left-panel">
+                <h2 class="title">Scène</h2>
+                <div class="scene-settings">
+                    <input class="scene-name" id="scene-name" type="text">
+                    <div class="actions">
+                        <img id="duplicate-scene" class="scene-icons" src="assets/duplicate-icon.svg" alt="Duplicate">
+                        <img id="delete-scene" class="scene-icons" src="assets/delete-icon.svg" alt="Delete">
+                    </div>
+                </div>
+                <div class="image">
+                    <h3 class="subtitle">Image 360°</h3>
+                    <button id="view-files-btn" class="image-button">Choisir une image</button>
+                </div>
+                <div class="camera">
+                    <h3 class="subtitle">Angle de la caméra</h3>
+                    <div class="axe">
+                        <p class="text">Axe vertical</p>
+                        <input id="camera-vertical" class="input-camera" type="number">
+                    </div>
+                    <div class="axe">
+                        <p class="text">Axe horizontal</p>
+                        <input id="camera-horizontal" class="input-camera" type="number">
+                    </div>
                 </div>
             </div>
-            <div class="image">
-                <h3 class="subtitle">Image 360°</h3>
-                <button id="view-files-btn" class="image-button">Choisir une image</button>
-            </div>
-            <div class="camera">
-                <h3 class="subtitle">Angle de la caméra</h3>
-                <div class="axe">
-                    <p class="text">Axe vertical</p>
-                    <input id="camera-vertical" class="input-camera" type="number">
+
+            <a-scene class="scene" embedded>
+                <!-- Image 3D -->
+                <a-sky id="image-360" radius="200"></a-sky>
+
+                <!-- Sphère avec coordonnées sphériques -->
+                <!-- <a-sphere color="#33F" radius="2" fromspherical='fi: 0; theta: 90; r: 40'></a-sphere> -->
+
+                <a-camera wasd-controls="enabled: true">
+                    <a-cursor id="cursor" color="white" geometry="primitive: sphere; radius: 0.008"
+                        material="color: white; shader: flat">
+                    </a-cursor>
+                </a-camera>
+            </a-scene>
+
+            <div class="right-panel">
+                <div class="tag-header">
+                    <h2 class="title">Tags</h2>
+                    <button id="add-tag-btn" class="add-button">
+                        <img src="assets/add-icon.svg" alt="Add">
+                    </button>
                 </div>
-                <div class="axe">
-                    <p class="text">Axe horizontal</p>
-                    <input id="camera-horizontal" class="input-camera" type="number">
+                <div class="tag-settings">
+                    <select id="tags-select" class="tags-select">
+                    </select>
+                    <div class="actions">
+                        <img id="duplicate-tag" class="scene-icons" src="assets/duplicate-icon.svg" alt="Duplicate">
+                        <img id="delete-tag" class="scene-icons" src="assets/delete-icon.svg" alt="Delete">
+                    </div>
+                </div>
+                <div class="tag-name">
+                    <h3 class="subtitle">Nom</h3>
+                    <input class="tag-name-input" id="tag-name" type="text">
+                </div>
+                <div class="tag-legend">
+                    <h3 class="subtitle"></h3>
+                    <textarea id="tag-legend" class="tag-legend-area"></textarea>
+                </div>
+                <div class="tag-position">
+                    <h3 class="subtitle">Position</h3>
+                    <div class="coordonnees">
+                        <div class="position-container">
+                            <input id="r" class="input-position" type="number">
+                            <p class="text">Distance</p>
+                        </div>
+                        <div class="position-container">
+                            <input id="theta" class="input-position" type="number">
+                            <p class="text">Latitude</p>
+                        </div>
+                        <div class="position-container">
+                            <input id="fi" class="input-position" type="number">
+                            <p class="text">Longitude</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <a-scene class="scene" embedded>
-            <!-- Image 3D -->
-            <a-sky id="image-360" radius="200"></a-sky>
-    
-            <!-- Sphère avec coordonnées sphériques -->
-            <!-- <a-sphere color="#33F" radius="2" fromspherical='fi: 0; theta: 90; r: 40'></a-sphere> -->
-    
-            <a-camera wasd-controls="enabled: true">
-                <a-cursor id="cursor" color="white"
-                          geometry="primitive: sphere; radius: 0.008"
-                          material="color: white; shader: flat">
-                </a-cursor>
-            </a-camera>
-        </a-scene>
-
-        <div class="right-panel">
-            <div class="tag-header">
-                <h2 class="title">Tags</h2>
-                <button id="add-tag-btn" class="add-button">
+        <div class="bottom-panel">
+            <div class="left-side">
+                <div class="scenes" id="scenes">
+                </div>
+                <div id="add-scene" class="add-scene">
                     <img src="assets/add-icon.svg" alt="Add">
-                </button>
-            </div>
-            <div class="tag-settings">
-                <select id="tags-select" class="tags-select">
-                </select>
-                <div class="actions">
-                    <img id="duplicate-tag" class="scene-icons" src="assets/duplicate-icon.svg" alt="Duplicate">
-                    <img id="delete-tag" class="scene-icons" src="assets/delete-icon.svg" alt="Delete">
                 </div>
             </div>
-            <div class="tag-name">
-                <h3 class="subtitle">Nom</h3>
-                <input class="tag-name-input" id="tag-name" type="text">
+            <div class="right-side">
+                <button id="save-button" class="save-button">Sauvegarder</button>
             </div>
-            <div class="tag-legend">
-                <h3 class="subtitle"></h3>
-                <textarea id="tag-legend" class="tag-legend-area"></textarea>
-            </div>
-            <div class="tag-position">
-                <h3 class="subtitle">Position</h3>
-                <div class="coordonnees">
-                    <div class="position-container">
-                        <input id="r" class="input-position" type="number">
-                        <p class="text">Distance</p>
+        </div>
+
+        <div id="popup-overlay" class="overlay"></div>
+        <div id="file-popup" class="popup">
+            <form id="upload-form" class="form-popup" action="/upload" method="POST" enctype="multipart/form-data">
+                <div class="file-choose">
+                    <div class="file-import">
+                        <img class="file-import-img" src="assets/import-icon.svg" alt="import">
+                        <input type="file" class="form-input-btn" id="file-upload" name="file" accept="image/*, .pdf">
+                        <label for="file-upload" class="custom-file-upload">
+                            Importer
+                        </label>
                     </div>
-                    <div class="position-container">
-                        <input id="theta" class="input-position" type="number">
-                        <p class="text">Latitude</p>
-                    </div>
-                    <div class="position-container">
-                        <input id="fi" class="input-position" type="number">
-                        <p class="text">Longitude</p>
-                    </div>
+                    <button class="form-validate-btn" type="submit"><img class="form-validate-img"
+                            src="assets/validate-icon.svg" alt="validate"></button>
                 </div>
-            </div>
+                <img id="close-popup-btn" class="popup-close-img" src="assets/close-icon.svg" alt="close">
+            </form>
+            <ul id="file-list" class="file-list"></ul>
         </div>
-    </div>
-
-    <div class="bottom-panel">
-      <div class="left-side">
-        <div class="scenes" id="scenes">
-        </div>
-        <div id="add-scene" class="add-scene">
-          <img src="assets/add-icon.svg" alt="Add">
-        </div> 
-      </div>
-      <div class="right-side">
-        <button id="save-button" class="save-button">Sauvegarder</button>
-      </div>
-    </div>
-
-    <div id="popup-overlay" class="overlay"></div>
-    <div id="file-popup" class="popup">
-        <h2>Fichiers uploadés</h2>
-        <ul id="file-list" class="file-list"></ul>
-        <form id="upload-form" action="/upload" method="POST" enctype="multipart/form-data">
-            <label for="file-upload">Choisir un fichier :</label>
-            <input type="file" id="file-upload" name="file" accept="image/*, .pdf">
-            <br><br>
-            <button type="submit">Télécharger</button>
-        </form>
-        <button id="close-popup-btn">Fermer</button>
-    </div>
-</main>
+    </main>
 
 </body>
+
 </html>

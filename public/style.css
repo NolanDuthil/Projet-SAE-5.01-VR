@@ -340,28 +340,113 @@ main{
     position: fixed;
     top: 50%;
     left: 50%;
-    z-index: 10000;
     transform: translate(-50%, -50%);
     background-color: var(--clr-off-white);
-    padding: 20px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
-    width: 60%;
-    height: 50%;
-    overflow-y: scroll;
-    border-radius: var(--classic-radius);
+    z-index: 2;
+    width: 60rem;
+    max-height: 80vh; /* Limite la hauteur maximale à 80% de la fenêtre */
+    overflow-y: auto; /* Permet le défilement si le contenu dépasse la hauteur */
+    border-radius: 8px;
+    z-index: 10000;
 }
 
 .popup h2 {
     margin-top: 0;
 }
 
-.file-list img {
-    display: block;
-    margin-top: 10px;
-    max-width: 100px;
-    height: auto;
+.file-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 1.5rem;
+    max-height: 50vh; /* Limite la hauteur de la liste */
+    overflow-y: auto; /* Ajoute une barre de défilement si nécessaire */
+    overflow-x: hidden; /* Cache le défilement horizontal */
 }
 
-.popup button {
-    margin-top: 10px;
+.file-list img {
+    display: block;
+    width: 100% !important;
+    height: 5rem !important;
+    object-fit: cover; 
+    box-sizing: border-box;
+}
+
+.file-list p {
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 1rem;
+    white-space: nowrap;
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    max-width: 100%; 
+    box-sizing: border-box;
+}
+
+.file-list li {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--clr-white);
+    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.25);
+    border-radius: 1rem;
+    width: 13rem;
+    cursor: pointer;
+    overflow: hidden; /* Empêche le dépassement du contenu, y compris des images */
+}
+
+.file-choose{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.form-popup {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-bottom: solid 3px black;
+    padding: 1rem 1.5rem 1rem 1.5rem;
+}
+
+.popup-close-img {
+    cursor: pointer;
+}
+
+.file-choose {
+    display: flex;
+    align-items: center;
+}
+
+.form-validate-btn{
+    display: flex;
+    border: solid 1px black;
+    border-radius: 50%;
+    padding: .5rem;
+    cursor: pointer;
+
+}
+
+.form-validate-img{
+    width: 1rem;
+}
+
+
+.form-input-btn {
+    display: none; 
+}
+
+
+.custom-file-upload {
+    display: inline-block;
+    cursor: pointer;
+    background-color: none;
+
+}
+
+.file-import{
+    padding-right: 2rem;
+}
+
+.popup-close-img{
+    width: 1rem;
 }

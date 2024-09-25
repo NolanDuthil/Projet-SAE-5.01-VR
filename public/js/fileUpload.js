@@ -1,6 +1,11 @@
-//  File Upload
 export default function fileUpload(){
     document.addEventListener('DOMContentLoaded', function () {
+        const fileUploadForm = document.getElementById('upload-form');
+      
+        if (fileUploadForm) {
+          fileUploadForm.addEventListener('submit', handleFileUpload);
+        }
+      
         const viewFilesBtn = document.getElementById('view-files-btn');
         const closePopupBtn = document.getElementById('close-popup-btn');
         const popupOverlay = document.getElementById('popup-overlay');
@@ -18,6 +23,29 @@ export default function fileUpload(){
         }
       });
       
+      // Fonction pour uploader automatiquement le fichier sans redirection
+      function handleFileUpload(event) {
+        event.preventDefault(); // Empêche la soumission du formulaire classique
+      
+        const formData = new FormData(document.getElementById('upload-form'));
+      
+        fetch('/upload', {
+          method: 'POST',
+          body: formData
+        })
+          .then(response => {
+            if (response.ok) {
+              console.log('Fichier téléchargé avec succès');
+              window.location.reload(); // Rafraîchit la page après l'upload
+            } else {
+              console.error('Erreur lors de l\'upload du fichier');
+            }
+          })
+          .catch(error => {
+            console.error('Erreur:', error);
+          });
+      }
+      
       function showFilePopup() {
         const fileList = document.getElementById('file-list');
         fileList.innerHTML = '';
@@ -34,6 +62,10 @@ export default function fileUpload(){
                 const li = document.createElement('li');
                 const filePath = `/uploaded_images/${fileName}`;
       
+                const fileText = document.createElement('p');
+                fileText.textContent = fileName;
+                li.appendChild(fileText);
+      
                 if (fileName.match(/\.(jpg|jpeg|png|gif|webp)$/i)) {
                   const img = document.createElement('img');
                   img.src = filePath;
@@ -41,10 +73,6 @@ export default function fileUpload(){
                   img.style.width = "100px";
                   li.appendChild(img);
                 }
-      
-                const fileText = document.createElement('p');
-                fileText.textContent = fileName;
-                li.appendChild(fileText);
       
                 fileList.appendChild(li);
               });
@@ -68,4 +96,5 @@ export default function fileUpload(){
       document.getElementById('close-popup-btn').addEventListener('click', closeFilePopup);
       
       document.getElementById('popup-overlay').addEventListener('click', closeFilePopup);
-}
+    
+    }
