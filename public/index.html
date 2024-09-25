@@ -1,28 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scene 3D et Upload</title>
+    <title>Scene 3D</title>
 
     <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
-    <script src="/js/script.js"></script> <!-- Correct path to your JS file -->
-
-    <link rel="stylesheet" href="/css/style.css"> <!-- Optional CSS file -->
+    <script src="script.js"></script>
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-    <a-scene embedded>
-        <a-sky id="image-360" radius="200" src=""></a-sky>
+
+  <main>
+    <div class="top">
+      <div class="left-panel">
+        <h2 class="title">Scène</h2>
+        <div class="scene-settings">
+          <input type="text" class="scene-name" value="Scène 1">
+          <div class="actions">
+            <img class="scene-icons" src="assets/duplicate-icon.svg" alt="Duplicate">
+            <img class="scene-icons" src="assets/delete-icon.svg" alt="Delete">
+          </div>
+        </div>
+        <div class="image">
+          <h3 class="subtitle">Image 360°</h3>
+          <button id="view-files-btn" class="image-button">Choisir une image</button>
+        </div>
+        <div class="camera">
+          <h3 class="subtitle">Angle de la caméra</h3>
+          <div class="axe">
+            <p class="text">Axe vertical</p>
+            <input class="input-camera" type="number" value="0">
+          </div>
+          <div class="axe">
+            <p class="text">Axe horizontal</p>
+            <input class="input-camera" type="number" value="0">
+          </div>
+        </div>
+      </div>
+
+      <a-scene class="scene" embedded>
+        <!-- Image 3D -->
+        <a-sky id="image-360" radius="200" src="uploaded_images/GS__3523.JPG"></a-sky>
+  
+        <!-- Sphère avec coordonnées sphériques -->
+        <!-- <a-sphere color="#33F" radius="2" fromspherical='fi: 0; theta: 90; r: 40'></a-sphere> -->
+  
         <a-camera wasd-controls="enabled: true">
-            <a-cursor color="white" geometry="primitive: sphere; radius: 0.008" material="color: white; shader: flat"></a-cursor>
-        </a-camera>
-    </a-scene>
+            <a-cursor
+              id="cursor"
+              color="white"
+              geometry="primitive: sphere; radius: 0.008"
+              material="color: white; shader: flat">
+            </a-cursor>
+          </a-camera>
+  
+      </a-scene>
 
-    <button id="view-files-btn">Voir les fichiers uploadés</button>
+      <div class="right-panel">
+        <div class="tag-header">
+          <h2 class="title">Tags</h2>
+          <button class="add-button">
+            <img src="assets/add-icon.svg" alt="Add">
+          </button>
+        </div>
+        <div class="tag-settings">
+          <select name="tags-select" id="tags-select" class="tags-select">
+            <option value="porte">Porte</option>
+            <option value="marqueur">Marqueur</option>
+            <option value="info">Info</option>
+          </select>
+          <div class="actions">
+            <img class="scene-icons" src="assets/duplicate-icon.svg" alt="Duplicate">
+            <img class="scene-icons" src="assets/delete-icon.svg" alt="Delete">
+          </div>
+        </div>
+        <div class="tag-name">
+          <h3 class="subtitle">Nom</h3>
+          <input type="text" class="tag-name-input" value="Porte">
+        </div>
+        <div class="tag-legend">
+          <h3 class="subtitle">Légende</h3>
+          <textarea class="tag-legend-area">Ceci est une porte</textarea>
+        </div>
+      </div>
 
-    <!-- Popup pour afficher la liste des fichiers -->
+    </div>
+
+    <div class="bottom-panel"></div>
+
     <div id="popup-overlay" class="overlay"></div>
     <div id="file-popup" class="popup">
         <h2>Fichiers uploadés</h2>
@@ -32,10 +98,10 @@
           <input type="file" id="file-upload" name="file" accept="image/*, .pdf">
           <br><br>
           <button type="submit">Télécharger</button>
-        </form>
+      </form>
         <button id="close-popup-btn">Fermer</button>
     </div>
-
+    
+  </main>
 </body>
-
 </html>
