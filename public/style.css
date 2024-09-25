@@ -108,7 +108,7 @@ main{
 }
 
 .scene-icons:hover{
-    scale: 1.15;
+    transform: scale(1.15);
 }
 
 .image, .camera, .tag-name, .tag-legend, .tag-position{
@@ -204,7 +204,7 @@ main{
 }
 
 .add-button:hover{
-    scale: 1.15;
+    transform: scale(1.15);
 }
 
 .tag-name-input{
@@ -253,15 +253,20 @@ main{
     padding: 15px 45px;
     box-sizing: border-box;
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
     gap: 20px;
-    overflow-x: auto; /* Enable horizontal scrolling for more scenes */
+    overflow-x: auto;
 }
 
-#scenes {
+.left-side{
     display: flex;
-    gap: 20px;
+    gap: 2rem;
+}
+
+.scenes {
+    display: flex;
+    gap: 1.5rem;
 }
 
 .scene-item {
@@ -314,8 +319,6 @@ main{
 }
 
 .add-scene:hover {
-    background-color: var(--clr-black);
-    color: var(--clr-white);
     transform: scale(1.05);
 }
 

@@ -2,10 +2,11 @@ const express = require('express');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const bodyParser = require('body-parser');
+const cors = require('cors');
 
 const app = express();
 const port = 3000;
-
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -41,6 +42,32 @@ app.get('/uploaded_files', (req, res) => {
     });
 });
 
+app.use(cors()); // Permettre les requêtes cross-origin
+app.use(bodyParser.json()); // Middleware pour parser les requêtes JSON
+
+const jsonFilePath = './data.json'; // Chemin vers le fichier JSON
+
+// Route pour récupérer les données
+app.get('/data', (req, res) => {
+    fs.readFile(jsonFilePath, 'utf8', (err, data) => {
+        if (err) {
+            return res.status(500).send('Erreur lors de la lecture du fichier');
+        }
+        res.json(JSON.parse(data));
+    });
+});
+
+// Route pour mettre à jour les données
+app.put('/data', (req, res) => {
+    fs.writeFile(jsonFilePath, JSON.stringify(req.body, null, 2), (err) => {
+        if (err) {
+            return res.status(500).send('Erreur lors de l\'écriture du fichier');
+        }
+        res.send('Fichier mis à jour avec succès');
+    });
+});
+
+// Démarrer le serveur
 app.listen(port, () => {
-    console.log(`Serveur démarré sur http://localhost:${port}`);
+    console.log(`Serveur à l'écoute sur http://localhost:${port}`);
 });

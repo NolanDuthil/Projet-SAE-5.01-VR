@@ -6,7 +6,7 @@
     <title>Scene 3D</title>
 
     <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
-    <script type="module" src="script.js"></script>
+    <script type="module" src="js/script.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -98,7 +98,15 @@
     </div>
 
     <div class="bottom-panel">
-      <div id="scenes">
+      <div class="left-side">
+        <div class="scenes" id="scenes">
+        </div>
+        <div id="add-scene" class="add-scene">
+          <img src="assets/add-icon.svg" alt="Add">
+        </div> 
+      </div>
+      <div class="right-side">
+        <button id="save-button" class="save-button">Sauvegarder</button>
       </div>
     </div>
 

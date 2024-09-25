@@ -1,51 +1,54 @@
 {
-    "scenes": [
-        {
-            "name": "Scene 1",
-            "image": "GS__3523.JPG",
-            "camera": {
-                "vertical": 0,
-                "horizontal": 0
-            },
-            "tags": {
-                "mark": {
-                    "legend": "Un marqueur",
-                    "type": "mark",
-                    "position": {
-                        "fi": 0,
-                        "theta": 90,
-                        "r": 40
-                    }
-                },
-                "porte": {
-                    "legend": "Une porte",
-                    "type": "door",
-                    "position": {
-                        "fi": -40,
-                        "theta": 20,
-                        "r": 60
-                    }
-                }
-            }
+  "scenes": [
+    {
+      "name": "Scene 1",
+      "image": "GS__3523.JPG",
+      "camera": {
+        "vertical": "0",
+        "horizontal": "0"
+      },
+      "tags": {
+        "mark": {
+          "legend": "Un marqueur",
+          "position": {
+            "r": "40",
+            "theta": "90",
+            "fi": "0"
+          }
         },
-        {
-            "name": "Scene 2",
-            "image": "GS__3524.JPG",
-            "camera": {
-                "vertical": 10,
-                "horizontal": 30
-            },
-            "tags": {
-                "table": {
-                    "legend": "Une table",
-                    "type": "furniture",
-                    "position": {
-                        "fi": 10,
-                        "theta": 45,
-                        "r": 50
-                    }
-                }
-            }
+        "porte": {
+          "legend": "Un marqueur",
+          "position": {
+            "r": "40",
+            "theta": "90",
+            "fi": "0"
+          }
         }
-    ]
+      }
+    },
+    {
+      "name": "Scene 2",
+      "image": "GS__3524.JPG",
+      "camera": {
+        "vertical": 10,
+        "horizontal": 30
+      },
+      "tags": {
+        "table": {
+          "legend": "Une table",
+          "type": "furniture",
+          "position": {
+            "fi": 10,
+            "theta": 45,
+            "r": 50
+          }
+        }
+      }
+    },
+    {
+      "name": "Scene 1727269811668",
+      "image": "",
+      "tags": {}
+    }
+  ]
 }
