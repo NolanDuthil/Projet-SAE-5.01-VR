@@ -252,9 +252,10 @@ main{
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: var(--clr-off-white);
-    padding: 20px;
     z-index: 2;
     width: 60rem;
+    max-height: 80vh; /* Limite la hauteur maximale à 80% de la fenêtre */
+    overflow-y: auto; /* Permet le défilement si le contenu dépasse la hauteur */
     border-radius: 8px;
 }
 
@@ -262,25 +263,33 @@ main{
     margin-top: 0;
 }
 
-.file-list{
+.file-list {
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
-
+    padding: 1.5rem;
+    max-height: 50vh; /* Limite la hauteur de la liste */
+    overflow-y: auto; /* Ajoute une barre de défilement si nécessaire */
+    overflow-x: hidden; /* Cache le défilement horizontal */
 }
 
 .file-list img {
     display: block;
-    margin-top: 10px;
-    width: max-content;
-    height: auto;
+    width: 100% !important;
+    height: 5rem !important;
+    object-fit: cover; 
+    box-sizing: border-box;
 }
 
 .file-list p {
-    font-weight: 700;
+    font-weight: 600;
     font-size: 1rem;
     padding: 1rem;
-
+    white-space: nowrap;
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    max-width: 100%; 
+    box-sizing: border-box;
 }
 
 .file-list li {
@@ -291,7 +300,7 @@ main{
     border-radius: 1rem;
     width: 13rem;
     cursor: pointer;
-
+    overflow: hidden; /* Empêche le dépassement du contenu, y compris des images */
 }
 
 .file-choose{
@@ -300,15 +309,12 @@ main{
     align-items: center;
 }
 
-.popup button {
-    margin-top: 10px;
-}
-
 .form-popup {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     border-bottom: solid 3px black;
+    padding: 1rem 1.5rem 1rem 1.5rem;
 }
 
 .popup-close-img {
@@ -318,4 +324,38 @@ main{
 .file-choose {
     display: flex;
     align-items: center;
+}
+
+.form-validate-btn{
+    display: flex;
+    border: solid 1px black;
+    border-radius: 50%;
+    padding: .5rem;
+    cursor: pointer;
+
+}
+
+.form-validate-img{
+    width: 1rem;
+}
+
+
+.form-input-btn {
+    display: none; 
+}
+
+
+.custom-file-upload {
+    display: inline-block;
+    cursor: pointer;
+    background-color: none;
+
+}
+
+.file-import{
+    padding-right: 2rem;
+}
+
+.popup-close-img{
+    width: 1rem;
 }

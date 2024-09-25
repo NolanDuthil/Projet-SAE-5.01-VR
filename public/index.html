@@ -94,10 +94,13 @@
                 <div class="file-choose">
                     <div class="file-import">
                         <img class="file-import-img" src="assets/import-icon.svg" alt="import">
-                        <input type="file" id="file-upload" name="file" accept="image/*, .pdf">
+                        <input type="file" class="form-input-btn" id="file-upload" name="file" accept="image/*, .pdf">
+                <label for="file-upload" class="custom-file-upload">
+                    Importer
+                </label>
                     </div>
-                    <br><br>
-                    <button type="submit">Valider</button>
+                    <button class="form-validate-btn" type="submit"><img class="form-validate-img"
+                            src="assets/validate-icon.svg" alt="validate"></button>
                 </div>
                 <img id="close-popup-btn" class="popup-close-img" src="assets/close-icon.svg" alt="close">
             </form>
