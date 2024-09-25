@@ -257,6 +257,7 @@ main{
     max-height: 80vh; /* Limite la hauteur maximale à 80% de la fenêtre */
     overflow-y: auto; /* Permet le défilement si le contenu dépasse la hauteur */
     border-radius: 8px;
+    z-index: 10000;
 }
 
 .popup h2 {
