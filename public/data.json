@@ -1,57 +1,57 @@
 {
-    "scenes": [
-      {
-        "name": "Ma Scène",
-        "image": "GS__3523.JPG",
-        "camera": {
-          "vertical": "0",
-          "horizontal": "0"
-        },
-        "tags": [
-          {
-            "name": "markeee",
-            "legend": "Un marqueur",
-            "position": {
-              "r": "40",
-              "theta": "90",
-              "fi": "0"
-            }
-          },
-          {
-            "name": "markeee",
-            "legend": "Un marqueur",
-            "position": {
-              "r": "40",
-              "theta": "90",
-              "fi": "0"
-            }
-          }
-        ]
+  "scenes": [
+    {
+      "name": "Ma Scène",
+      "image": "GS__3523.JPG",
+      "camera": {
+        "vertical": "0",
+        "horizontal": "0"
       },
-      {
-        "name": "Scene 2",
-        "image": "GS__3524.JPG",
-        "camera": {
-          "vertical": 10,
-          "horizontal": 30
-        },
-        "tags": [
-          {
-            "name": "table",
-            "legend": "Une table",
-            "type": "furniture",
-            "position": {
-              "fi": 10,
-              "theta": 45,
-              "r": 50
-            }
+      "tags": [
+        {
+          "name": "markeee",
+          "legend": "Un marqueur",
+          "position": {
+            "r": "40",
+            "theta": "90",
+            "fi": "0"
           }
-        ]
+        },
+        {
+          "name": "markeee",
+          "legend": "Un marqueur",
+          "position": {
+            "r": "40",
+            "theta": "90",
+            "fi": "0"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Scene 2",
+      "image": "GS__3524.JPG",
+      "camera": {
+        "vertical": 10,
+        "horizontal": 30
       },
-      {
-        "name": "Scene 1727269811668",
-        "image": "",
-        "tags": []
-      }
-    ]
-  }
+      "tags": [
+        {
+          "name": "table",
+          "legend": "Une table",
+          "type": "furniture",
+          "position": {
+            "fi": 10,
+            "theta": 45,
+            "r": 50
+          }
+        }
+      ]
+    },
+    {
+      "name": "Scene 1727269811668",
+      "image": "",
+      "tags": []
+    }
+  ]
+}
