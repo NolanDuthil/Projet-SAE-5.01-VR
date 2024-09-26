@@ -110,6 +110,7 @@ export default function fileUpload() {
   document.getElementById('popup-overlay').addEventListener('click', closeFilePopup);
 
   let jsonData = {};  // Déclaration globale de jsonData
+  let selectedFileName = "";  // Variable pour stocker le fichier sélectionné
 
   // Charger les données de data.json quand la page est chargée
   function loadData() {
@@ -123,12 +124,25 @@ export default function fileUpload() {
       });
   }
 
-  // Appeler loadData quand la page est chargée
   window.onload = function () {
-    loadData();
+    loadData(); // Charger les données quand la page est chargée
+    
+    // Ajouter un événement de clic au bouton de sauvegarde
+    const saveButton = document.getElementById('save-button');
+    if (saveButton) {
+      saveButton.addEventListener('click', saveSceneChanges);
+    } else {
+      console.error('Bouton de sauvegarde non trouvé dans le DOM.');
+    }
   };
 
+  // Sélectionner un fichier, mais ne pas l'appliquer encore
   function updateSceneImage(fileName) {
+    selectedFileName = fileName;  // Stocker le fichier sélectionné, mais ne pas l'appliquer encore
+  }
+
+  // Fonction déclenchée lors du clic sur "sauvegarde"
+  function saveSceneChanges() {
     const sceneName = document.getElementById('scene-name').value;  // Nom de la scène sélectionnée
 
     // Vérifier que jsonData est chargé et que la scène existe
@@ -140,28 +154,22 @@ export default function fileUpload() {
     // Trouver la scène actuelle dans jsonData et mettre à jour l'image
     const scene = jsonData.scenes.find(scene => scene.name === sceneName);
 
-    if (scene) {
-      scene.image = fileName;  // Mettre à jour l'image de la scène dans jsonData
+    if (scene && selectedFileName) {
+      scene.image = selectedFileName;  // Mettre à jour l'image de la scène dans jsonData
 
       // Sélectionner l'élément image (ou élément image du DOM, selon ton usage)
       const imageElement = new Image();
-      imageElement.src = `/path/to/your/images/${fileName}`;  // Utiliser le chemin correct vers l'image
+      imageElement.src = `./uploaded_images/${selectedFileName}`;  // Utiliser le chemin correct vers l'image
 
       // Charger la texture une fois l'image chargée
       imageElement.onload = function () {
-        // Supposons que `gl` soit le contexte WebGL que tu utilises
         loadTextureForScene(gl, imageElement);  // Appel à la fonction pour charger la texture dans WebGL
       };
 
       // Envoyer la mise à jour au serveur pour sauvegarder dans data.json
       saveData();
-
-      // Rafraîchir la page après la mise à jour
-      setTimeout(function () {
-        location.reload();
-      }, 500);  // délai de 500ms pour s'assurer que le fichier est bien sauvegardé
     } else {
-      console.error(`La scène "${sceneName}" n'a pas été trouvée.`);
+      console.error(`La scène "${sceneName}" n'a pas été trouvée ou aucune image n'a été sélectionnée.`);
     }
   }
 
@@ -178,6 +186,8 @@ export default function fileUpload() {
 
       if (!response.ok) {
         throw new Error('Erreur lors de la sauvegarde des données : ' + response.statusText);
+      } else {
+        console.log('Données sauvegardées avec succès.');
       }
 
     } catch (error) {
@@ -185,6 +195,7 @@ export default function fileUpload() {
     }
   }
 
+  // Fonction pour charger la texture dans WebGL
   function loadTextureForScene(gl, image) {
     // Supprimer la texture existante si elle est immuable
     if (gl.isTexture(currentTexture)) {
@@ -199,6 +210,8 @@ export default function fileUpload() {
     // Configurer les paramètres de la texture
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
 
     // Désactiver les mipmaps pour les images non-puissance de 2
     if (!isPowerOf2(image.width) || !isPowerOf2(image.height)) {
@@ -209,10 +222,15 @@ export default function fileUpload() {
     }
 
     // Charger l'image dans la texture
-    gl.glTexStorage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
 
     // Détacher la texture après configuration
     gl.bindTexture(gl.TEXTURE_2D, null);
+  }
+
+  // Fonction pour vérifier si une dimension est une puissance de 2
+  function isPowerOf2(value) {
+    return (value & (value - 1)) === 0;
   }
 
 }
