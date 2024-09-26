@@ -46,25 +46,6 @@ export default function fileUpload() {
       });
   }
 
-  let jsonData = {};  // Déclaration globale de jsonData
-
-  // Charger les données de data.json quand la page est chargée
-  function loadData() {
-    fetch('/data.json')  // Assurez-vous que cette route renvoie bien le fichier data.json
-      .then(response => response.json())
-      .then(data => {
-        jsonData = data;  // Stocker les données dans la variable globale
-      })
-      .catch(error => {
-        console.error('Erreur lors du chargement des données:', error);
-      });
-  }
-
-  // Appeler loadData quand la page est chargée
-  window.onload = function () {
-    loadData();
-  };
-
   function showFilePopup() {
     const fileList = document.getElementById('file-list');
     fileList.innerHTML = '';
@@ -117,6 +98,36 @@ export default function fileUpload() {
       });
   }
 
+  function closeFilePopup() {
+    document.getElementById('file-popup').style.display = 'none';
+    document.getElementById('popup-overlay').style.display = 'none';
+  }
+
+  document.getElementById('view-files-btn').addEventListener('click', showFilePopup);
+
+  document.getElementById('close-popup-btn').addEventListener('click', closeFilePopup);
+
+  document.getElementById('popup-overlay').addEventListener('click', closeFilePopup);
+
+  let jsonData = {};  // Déclaration globale de jsonData
+
+  // Charger les données de data.json quand la page est chargée
+  function loadData() {
+    fetch('/data.json')  // Assurez-vous que cette route renvoie bien le fichier data.json
+      .then(response => response.json())
+      .then(data => {
+        jsonData = data;  // Stocker les données dans la variable globale
+      })
+      .catch(error => {
+        console.error('Erreur lors du chargement des données:', error);
+      });
+  }
+
+  // Appeler loadData quand la page est chargée
+  window.onload = function () {
+    loadData();
+  };
+
   function updateSceneImage(fileName) {
     const sceneName = document.getElementById('scene-name').value;  // Nom de la scène sélectionnée
 
@@ -131,6 +142,16 @@ export default function fileUpload() {
 
     if (scene) {
       scene.image = fileName;  // Mettre à jour l'image de la scène dans jsonData
+
+      // Sélectionner l'élément image (ou élément image du DOM, selon ton usage)
+      const imageElement = new Image();
+      imageElement.src = `/path/to/your/images/${fileName}`;  // Utiliser le chemin correct vers l'image
+
+      // Charger la texture une fois l'image chargée
+      imageElement.onload = function () {
+        // Supposons que `gl` soit le contexte WebGL que tu utilises
+        loadTextureForScene(gl, imageElement);  // Appel à la fonction pour charger la texture dans WebGL
+      };
 
       // Envoyer la mise à jour au serveur pour sauvegarder dans data.json
       saveData();
@@ -164,15 +185,34 @@ export default function fileUpload() {
     }
   }
 
-  function closeFilePopup() {
-    document.getElementById('file-popup').style.display = 'none';
-    document.getElementById('popup-overlay').style.display = 'none';
+  function loadTextureForScene(gl, image) {
+    // Supprimer la texture existante si elle est immuable
+    if (gl.isTexture(currentTexture)) {
+      gl.deleteTexture(currentTexture);
+      currentTexture = null;  // Réinitialiser après suppression
+    }
+
+    // Créer une nouvelle texture
+    currentTexture = gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_2D, currentTexture);
+
+    // Configurer les paramètres de la texture
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+
+    // Désactiver les mipmaps pour les images non-puissance de 2
+    if (!isPowerOf2(image.width) || !isPowerOf2(image.height)) {
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    } else {
+      // Générer des mipmaps si l'image est en puissance de 2
+      gl.generateMipmap(gl.TEXTURE_2D);
+    }
+
+    // Charger l'image dans la texture
+    gl.glTexStorage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
+
+    // Détacher la texture après configuration
+    gl.bindTexture(gl.TEXTURE_2D, null);
   }
-
-  document.getElementById('view-files-btn').addEventListener('click', showFilePopup);
-
-  document.getElementById('close-popup-btn').addEventListener('click', closeFilePopup);
-
-  document.getElementById('popup-overlay').addEventListener('click', closeFilePopup);
 
 }
