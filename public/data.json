@@ -9,25 +9,25 @@
       },
       "tags": [
         {
-          "name": "porte",
-          "legend": "une porte",
-          "type": "info",
+          "name": "Porte Studio",
+          "legend": "Rentrer dans le studio",
+          "type": "porte",
           "action": "1",
           "position": {
-            "r": "20",
+            "r": "25",
             "theta": "90",
-            "fi": "0"
+            "fi": "-110"
           }
         },
         {
-          "name": "Une autre porte",
-          "type": "porte",
-          "legend": "nouveau tag",
+          "name": "Une information",
+          "type": "info",
+          "legend": "Nouvelle information",
           "action": "1",
           "position": {
-            "r": "15",
+            "r": "30",
             "theta": "90",
-            "fi": "-50"
+            "fi": "-40"
           }
         }
       ]
@@ -41,14 +41,14 @@
       },
       "tags": [
         {
-          "name": "porte 2",
-          "legend": "une porte",
+          "name": "Porte Studio (Intérieur)",
+          "legend": "Sortir du studio",
           "type": "porte",
           "action": "0",
           "position": {
             "r": "30",
             "theta": "90",
-            "fi": "-40"
+            "fi": "135"
           }
         }
       ]

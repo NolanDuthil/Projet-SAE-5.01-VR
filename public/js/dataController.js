@@ -4,6 +4,7 @@ const jsonUrl = 'http://localhost:3000/data'; // URL de l'API du serveur
 // Déclarez jsonData ici pour qu'il soit accessible à toutes les fonctions
 let jsonData = { scenes: [] };
 let selectedScene = {};
+let selectedTag = 0;
 
 // Fonction asynchrone pour récupérer les données JSON
 async function fetchData() {
@@ -133,6 +134,8 @@ let tagTypeListener;
 
 // Fonction pour remplir les détails du tag sélectionné
 function loadTagDetails(tags, selectedTagIndex) {
+    selectedTag = selectedTagIndex;
+
     document.getElementById('tag-settings').style = "";
     document.getElementById('tag-name').style = "";
     document.getElementById('tag-legend').style = "";
@@ -165,26 +168,27 @@ function loadTagDetails(tags, selectedTagIndex) {
     thetaInput.value = tag.position.theta;
     fiInput.value = tag.position.fi;
 
+    sceneSelector.innerHTML = ''; // Vider le sélecteur
+    jsonData.scenes.forEach((scene, index) => {
+        if(scene != selectedScene){
+            const option = document.createElement('option');
+            option.value = index;  // L'index de la scène
+            option.textContent = scene.name;  // Le nom de la scène
+            sceneSelector.appendChild(option);
+        }
+    });
+    
     // Si le type du tag est "porte", afficher le sélecteur de scène
     if (tag.type === 'porte') {
         sceneSelectorContainer.style.display = '';
-        // Remplir le sélecteur avec les scènes disponibles
-        sceneSelector.innerHTML = ''; // Vider le sélecteur
-        jsonData.scenes.forEach((scene, index) => {
-            if(scene != selectedScene){
-                const option = document.createElement('option');
-                option.value = index;  // L'index de la scène
-                option.textContent = scene.name;  // Le nom de la scène
-                sceneSelector.appendChild(option);
-            }
-        });
-
+        
         // Sélectionner la scène correspondante si elle est déjà définie
         sceneSelector.value = tag.action;
 
         // Ajouter un event listener pour mettre à jour l'action (numéro de scène)
         sceneSelectListener = function() {
             tag.action = this.value;
+            // updateCanvaTags(selectedScene);
         };
         sceneSelector.addEventListener('change', sceneSelectListener);
     } else {
@@ -209,7 +213,7 @@ function loadTagDetails(tags, selectedTagIndex) {
     tagNameListener = function() {
         tag.name = this.value;
         tagSelect.options[selectedTagIndex].textContent = this.value;
-        updateCanvaTags(selectedScene);
+        // updateCanvaTags(selectedScene);
     };
     tagNameInput.addEventListener('input', tagNameListener);
 
@@ -219,21 +223,23 @@ function loadTagDetails(tags, selectedTagIndex) {
     tagLegendInput.addEventListener('input', tagLegendListener);
 
     rInputListener = function() {
+        // updateCanvaTags(selectedScene);
         tag.position.r = this.value === '' ? 0 : this.value;
     };
     rInput.addEventListener('input', rInputListener);
 
     thetaInputListener = function() {
+        // updateCanvaTags(selectedScene);
         tag.position.theta = this.value === '' ? 0 : this.value;
     };
     thetaInput.addEventListener('input', thetaInputListener);
 
     fiInputListener = function() {
+        // updateCanvaTags(selectedScene);
         tag.position.fi = this.value === '' ? 0 : this.value;
     };
     fiInput.addEventListener('input', fiInputListener);
 }
-
 
 
 function hideTags(){
@@ -251,11 +257,11 @@ function updateCanvaTags(scene){
     })
     scene.tags.forEach((tag) => {
         let tagSphere = document.createElement('a-sphere');
-        tagSphere.setAttribute('color', '#33F');
+        tagSphere.setAttribute('color', tag.type == 'porte' ? 'red' : 'blue');
         tagSphere.setAttribute('id', tag.name);
-        tagSphere.setAttribute('radius', '2');
+        tagSphere.setAttribute('radius', 1);
         tagSphere.setAttribute('fromspherical', 'fi:' + tag.position.fi + '; theta:' + tag.position.theta + '; r:' + tag.position.r + ';');
-        canva.appendChild(tagSphere)
+        canva.appendChild(tagSphere);
     });
 }
 
@@ -276,6 +282,7 @@ async function addNewScene() {
 
     // Mettre à jour l'affichage avec les scènes mises à jour
     populateSceneList(jsonData.scenes);
+    loadTagDetails(selectedScene.tags, selectedTag);
 }
 
 // Fonction pour ajouter une nouvelle scène

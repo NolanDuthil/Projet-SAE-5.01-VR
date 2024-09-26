@@ -25,14 +25,14 @@ function loadScene(scene) {
         const tagEl = document.createElement('a-sphere');
         tagEl.setAttribute('class', 'tag');
         tagEl.setAttribute('radius', 1);
-        tagEl.setAttribute('color', tag.type == 'porte' ? 'blue' : 'red');
+        tagEl.setAttribute('color', tag.type == 'porte' ? 'red' : 'blue');
         tagEl.setAttribute('fromspherical', 'r: ' + tag.position.r + '; theta: ' + tag.position.theta +'; fi: ' + tag.position.fi);
         
         if (tag.type == 'porte') {
             tagEl.addEventListener('click', () => {
                 const nextScene = jsonData.scenes[tag.action];
                 if (nextScene) {
-                    loadScene(nextScene);  // Charger la scène liée
+                    loadScene(nextScene);
                 }
             });
         }
@@ -43,4 +43,4 @@ function loadScene(scene) {
 }
 
 // Initialiser la scène
-loadJSON();
+loadJSON(); 
