@@ -67,6 +67,11 @@ app.put('/data', (req, res) => {
     });
 });
 
+// Route expérience (pour faire la visite)
+app.get('/experience', (req, res) => {
+    res.sendFile(path.join(__dirname, './experience/index.html'));
+});
+
 // Démarrer le serveur
 app.listen(port, () => {
     console.log(`Serveur à l'écoute sur http://localhost:${port}`);

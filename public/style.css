@@ -61,6 +61,7 @@ main{
     flex-direction: column;
     align-items: center;
     gap: 3rem;
+    overflow-y: scroll;
 }
 
 .bottom-panel{
@@ -111,7 +112,7 @@ main{
     transform: scale(1.15);
 }
 
-.image, .camera, .tag-name, .tag-legend, .tag-position, .scene-selector-container{
+.image, .camera, .tag-name, .tag-legend, .tag-position, .scene-selector-container, .tag-type-container{
     display: flex;
     flex-direction: column;
     align-items: left;
@@ -322,7 +323,7 @@ main{
     transform: scale(1.05);
 }
 
-.scene-selector {
+.scene-selector, .tag-type-selector {
     border: var(--classic-border);
     border-radius: var(--classic-radius);
     padding: var(--classic-padding);
