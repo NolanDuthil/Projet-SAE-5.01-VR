@@ -3,6 +3,7 @@ const jsonUrl = 'http://localhost:3000/data'; // URL de l'API du serveur
 
 // Déclarez jsonData ici pour qu'il soit accessible à toutes les fonctions
 let jsonData = { scenes: [] };
+let selectedScene = {};
 
 // Fonction asynchrone pour récupérer les données JSON
 async function fetchData() {
@@ -60,6 +61,7 @@ let tagSelectListener;
 
 // Fonction pour mettre à jour les détails de la scène
 function updateSceneDetails(scene) {
+    selectedScene = scene;
     const sceneNameInput = document.getElementById('scene-name');
     const cameraVerticalInput = document.getElementById('camera-vertical');
     const cameraHorizontalInput = document.getElementById('camera-horizontal');
@@ -89,9 +91,12 @@ function updateSceneDetails(scene) {
         tagSelect.appendChild(option);
     });
 
+    updateCanvaTags(scene);
     // Affichage des données du premier tag
     if (tags.length > 0) {
         loadTagDetails(tags, 0);
+    } else{
+        hideTags();
     }
 
     // Créer et ajouter de nouveaux EventListeners
@@ -117,22 +122,32 @@ function updateSceneDetails(scene) {
     tagSelect.addEventListener('change', tagSelectListener);
 }
 
-
 // Variables pour stocker les fonctions des EventListeners des tags
 let tagNameListener;
 let tagLegendListener;
 let rInputListener;
 let thetaInputListener;
 let fiInputListener;
+let sceneSelectListener;
+let tagTypeListener;
 
 // Fonction pour remplir les détails du tag sélectionné
 function loadTagDetails(tags, selectedTagIndex) {
+    document.getElementById('tag-settings').style = "";
+    document.getElementById('tag-name').style = "";
+    document.getElementById('tag-legend').style = "";
+    document.getElementById('tag-position').style = ""; 
+
     const tag = tags[selectedTagIndex];
     const tagNameInput = document.getElementById('tag-name-input');
     const tagLegendInput = document.getElementById('tag-legend-area');
     const rInput = document.getElementById('r');
     const thetaInput = document.getElementById('theta');
     const fiInput = document.getElementById('fi');
+    const tagSelect = document.getElementById('tags-select');
+    const sceneSelectorContainer = document.getElementById('scene-selector-container');
+    const sceneSelector = document.getElementById('scene-selector');
+    const tagTypeSelector = document.getElementById('tag-type-selector');
 
     // Supprimer les anciens EventListeners s'ils existent
     if (tagNameListener) tagNameInput.removeEventListener('input', tagNameListener);
@@ -140,6 +155,8 @@ function loadTagDetails(tags, selectedTagIndex) {
     if (rInputListener) rInput.removeEventListener('input', rInputListener);
     if (thetaInputListener) thetaInput.removeEventListener('input', thetaInputListener);
     if (fiInputListener) fiInput.removeEventListener('input', fiInputListener);
+    if (sceneSelectListener) sceneSelector.removeEventListener('change', sceneSelectListener);
+    if (tagTypeListener) tagTypeSelector.removeEventListener('change', tagTypeListener); // Supprimez le listener de type
 
     // Remplir les champs de formulaire avec les données du tag sélectionné
     tagNameInput.value = tag.name;
@@ -148,13 +165,51 @@ function loadTagDetails(tags, selectedTagIndex) {
     thetaInput.value = tag.position.theta;
     fiInput.value = tag.position.fi;
 
-    // Ajouter de nouveaux EventListeners
+    // Si le type du tag est "porte", afficher le sélecteur de scène
+    if (tag.type === 'porte') {
+        sceneSelectorContainer.style.display = '';
+        // Remplir le sélecteur avec les scènes disponibles
+        sceneSelector.innerHTML = ''; // Vider le sélecteur
+        jsonData.scenes.forEach((scene, index) => {
+            if(scene != selectedScene){
+                const option = document.createElement('option');
+                option.value = index;  // L'index de la scène
+                option.textContent = scene.name;  // Le nom de la scène
+                sceneSelector.appendChild(option);
+            }
+        });
 
+        // Sélectionner la scène correspondante si elle est déjà définie
+        sceneSelector.value = tag.action;
+
+        // Ajouter un event listener pour mettre à jour l'action (numéro de scène)
+        sceneSelectListener = function() {
+            tag.action = this.value;
+        };
+        sceneSelector.addEventListener('change', sceneSelectListener);
+    } else {
+        // Cacher le sélecteur si le type n'est pas "porte"
+        sceneSelectorContainer.style.display = 'none';
+    }
+
+    // Ajouter un listener pour changer le type de tag
+    tagTypeSelector.value = tag.type; // Remplir le sélecteur avec le type actuel
+    tagTypeListener = function() {
+        tag.type = this.value; // Met à jour le type du tag
+        // Afficher ou cacher le sélecteur de scène selon le type sélectionné
+        if (tag.type === 'porte') {
+            sceneSelectorContainer.style.display = ''; // Affiche le sélecteur de scène
+        } else {
+            sceneSelectorContainer.style.display = 'none'; // Cache le sélecteur de scène
+        }
+    };
+    tagTypeSelector.addEventListener('change', tagTypeListener);
+
+    // Ajouter de nouveaux EventListeners
     tagNameListener = function() {
-        // Mettre à jour le nom du tag dans jsonData
         tag.name = this.value;
-        // Mettre à jour l'option correspondante dans la liste déroulante
-        document.getElementById('tags-select').options[selectedTagIndex].textContent = this.value;
+        tagSelect.options[selectedTagIndex].textContent = this.value;
+        updateCanvaTags(selectedScene);
     };
     tagNameInput.addEventListener('input', tagNameListener);
 
@@ -164,19 +219,44 @@ function loadTagDetails(tags, selectedTagIndex) {
     tagLegendInput.addEventListener('input', tagLegendListener);
 
     rInputListener = function() {
-        tag.position.r = this.value;
+        tag.position.r = this.value === '' ? 0 : this.value;
     };
     rInput.addEventListener('input', rInputListener);
 
     thetaInputListener = function() {
-        tag.position.theta = this.value;
+        tag.position.theta = this.value === '' ? 0 : this.value;
     };
     thetaInput.addEventListener('input', thetaInputListener);
 
     fiInputListener = function() {
-        tag.position.fi = this.value;
+        tag.position.fi = this.value === '' ? 0 : this.value;
     };
     fiInput.addEventListener('input', fiInputListener);
+}
+
+
+
+function hideTags(){
+    document.getElementById('tag-settings').style = "display:none";
+    document.getElementById('tag-name').style = "display:none";
+    document.getElementById('tag-legend').style = "display:none";
+    document.getElementById('tag-position').style = "display:none"; 
+}
+
+function updateCanvaTags(scene){
+    let canva = document.getElementById('a-scene');
+    let pastTags = document.querySelectorAll('a-sphere');
+    pastTags.forEach((pastTag) => {
+        pastTag.remove();
+    })
+    scene.tags.forEach((tag) => {
+        let tagSphere = document.createElement('a-sphere');
+        tagSphere.setAttribute('color', '#33F');
+        tagSphere.setAttribute('id', tag.name);
+        tagSphere.setAttribute('radius', '2');
+        tagSphere.setAttribute('fromspherical', 'fi:' + tag.position.fi + '; theta:' + tag.position.theta + '; r:' + tag.position.r + ';');
+        canva.appendChild(tagSphere)
+    });
 }
 
 // Fonction pour ajouter une nouvelle scène
@@ -196,6 +276,27 @@ async function addNewScene() {
 
     // Mettre à jour l'affichage avec les scènes mises à jour
     populateSceneList(jsonData.scenes);
+}
+
+// Fonction pour ajouter une nouvelle scène
+async function addNewTag() {
+    const newTag = {
+        name: "nouveau tag",
+        type: "porte",
+        legend: "nouveau tag", 
+        "position": {
+            "r": "2",
+            "theta": "0",
+            "fi": "0"
+          }
+    };
+
+    // Ajouter la nouvelle scène à jsonData
+    selectedScene.tags.push(newTag);
+    console.log(jsonData)
+
+    // Mettre à jour l'affichage avec les scènes mises à jour
+    updateSceneDetails(selectedScene);
 }
 
 // Fonction pour charger les données de la page lorsque le document est prêt
@@ -234,6 +335,7 @@ async function init(){
     await loadPageData();
     document.getElementById('add-scene').addEventListener('click', addNewScene); 
     document.getElementById('save-button').addEventListener('click', updateJSON); 
+    document.getElementById('add-tag-btn').addEventListener('click', addNewTag)
     // document.getElementById('delete-scene').addEventListener('click', deleteScene);
 }
 

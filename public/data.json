@@ -9,21 +9,25 @@
       },
       "tags": [
         {
-          "name": "marqueur",
-          "legend": "un marqueur",
+          "name": "porte",
+          "legend": "une porte",
+          "type": "info",
+          "action": "1",
           "position": {
             "r": "20",
-            "theta": "80",
+            "theta": "90",
             "fi": "0"
           }
         },
         {
-          "name": "porte",
-          "legend": "une porte",
+          "name": "Une autre porte",
+          "type": "porte",
+          "legend": "nouveau tag",
+          "action": "1",
           "position": {
-            "r": "90",
-            "theta": "60",
-            "fi": "-20"
+            "r": "15",
+            "theta": "90",
+            "fi": "-50"
           }
         }
       ]
@@ -37,12 +41,14 @@
       },
       "tags": [
         {
-          "name": "porte",
+          "name": "porte 2",
           "legend": "une porte",
+          "type": "porte",
+          "action": "0",
           "position": {
-            "r": "50",
-            "theta": "45",
-            "fi": "10"
+            "r": "30",
+            "theta": "90",
+            "fi": "-40"
           }
         }
       ]

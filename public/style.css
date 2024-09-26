@@ -111,7 +111,7 @@ main{
     transform: scale(1.15);
 }
 
-.image, .camera, .tag-name, .tag-legend, .tag-position{
+.image, .camera, .tag-name, .tag-legend, .tag-position, .scene-selector-container{
     display: flex;
     flex-direction: column;
     align-items: left;
@@ -321,6 +321,21 @@ main{
 .add-scene:hover {
     transform: scale(1.05);
 }
+
+.scene-selector {
+    border: var(--classic-border);
+    border-radius: var(--classic-radius);
+    padding: var(--classic-padding);
+    outline: none;
+    font-size: large;
+    font-weight: 400;
+    color: var(--clr-black);
+    font-family: var(--ff-Raleway);
+    cursor: pointer;
+    width: 100%;
+    box-sizing: border-box;
+}
+
 
 /* Styles pour l'overlay (arrière-plan sombre de la popup) */
 .overlay {

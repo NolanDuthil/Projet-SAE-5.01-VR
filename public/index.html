@@ -39,7 +39,7 @@
             </div>
         </div>
 
-        <a-scene class="scene" embedded>
+        <a-scene id="a-scene" class="scene" embedded>
             <!-- Image 3D -->
             <a-sky id="image-360" radius="200"></a-sky>
     
@@ -93,6 +93,17 @@
                         <p class="text">Longitude</p>
                     </div>
                 </div>
+            </div>
+            <div id="tag-type-container" class="tag-type-container">
+                <h3 class="subtitle">Type</h3>
+                <select id="tag-type-selector" class="tag-type-selector">
+                    <option value="porte">Porte</option>
+                    <option value="info">Info</option>
+                </select>
+            </div>
+            <div id="scene-selector-container" class="scene-selector-container" style="display:none;">
+                <h3 class="subtitle">Action</h3>
+                <select id="scene-selector" class="scene-selector"></select>
             </div>
         </div>
     </div>
