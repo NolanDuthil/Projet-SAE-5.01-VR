@@ -9,7 +9,7 @@
       },
       "tags": [
         {
-          "name": "Porte Studio",
+          "name": "Porte Studio (côté extérieur)",
           "legend": "Rentrer dans le studio",
           "type": "porte",
           "action": "1",
@@ -41,7 +41,7 @@
       },
       "tags": [
         {
-          "name": "Porte Studio (Intérieur)",
+          "name": "Porte Studio (côté intérieur)",
           "legend": "Sortir du studio",
           "type": "porte",
           "action": "0",
