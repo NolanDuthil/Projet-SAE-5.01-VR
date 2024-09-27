@@ -1,11 +1,11 @@
 {
   "scenes": [
     {
-      "name": "Scene 1",
+      "name": "Entrée Studio",
       "image": "GS__3523.JPG",
       "camera": {
         "vertical": "0",
-        "horizontal": "02"
+        "horizontal": "0"
       },
       "tags": [
         {
@@ -33,10 +33,10 @@
       ]
     },
     {
-      "name": "Scene 2",
+      "name": "Salle 1 Studio",
       "image": "GS__3524.JPG",
       "camera": {
-        "vertical": "02",
+        "vertical": "0",
         "horizontal": "0"
       },
       "tags": [
@@ -49,6 +49,70 @@
             "r": "30",
             "theta": "90",
             "fi": "135"
+          }
+        },
+        {
+          "name": "Porte Salle 2 Studio",
+          "legend": "Rentrer dans la 2e salle du studio",
+          "type": "porte",
+          "action": "2",
+          "position": {
+            "r": "30",
+            "theta": "90",
+            "fi": "-40"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Salle 2 Studio",
+      "image": "GS__3525.JPG",
+      "camera": {
+        "vertical": "0",
+        "horizontal": "0"
+      },
+      "tags": [
+        {
+          "name": "Porte Salle 1 Studio",
+          "legend": "Sortir de la 2e salle du studio",
+          "type": "porte",
+          "action": "1",
+          "position": {
+            "r": "30",
+            "theta": "90",
+            "fi": "-40"
+          }
+        },
+        {
+          "name": "Porte Salle 3 Studio",
+          "legend": "Rentrer dans la 3e salle du studio",
+          "type": "porte",
+          "action": "3",
+          "position": {
+            "r": "40",
+            "theta": "90",
+            "fi": "-140"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Salle 3 Studio",
+      "image": "GS__3526.JPG",
+      "camera": {
+        "vertical": "0",
+        "horizontal": "0"
+      },
+      "tags": [
+        {
+          "name": "Porte Salle 2 Studio",
+          "legend": "Sortir de la 3e salle du studio",
+          "type": "porte",
+          "action": "2",
+          "position": {
+            "r": "40",
+            "theta": "90",
+            "fi": "-65"
           }
         }
       ]
