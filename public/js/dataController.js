@@ -32,7 +32,7 @@ function populateSceneList(scenes) {
         // Créer une image pour la scène
         const sceneImage = document.createElement('img');
         // Vérifier si l'image est vide et utiliser l'image par défaut si c'est le cas
-        sceneImage.src = scene.image ? "./uploaded_images/" + scene.image : ".//assets/grey-background.avif";
+        sceneImage.src = scene.image ? "./public/uploaded_images/" + scene.image : "./public//assets/grey-background.avif";
         sceneImage.alt = scene.name;
 
         // Créer une étiquette pour le nom de la scène
@@ -90,7 +90,7 @@ function updateSceneDetails(scene) {
 
     // Nom & Image de la scène
     sceneNameInput.value = scene.name;
-    scene.image ? document.getElementById('image-360').setAttribute('src', "./uploaded_images/" + scene.image) : document.getElementById('image-360').setAttribute('src', "./assets/grey-background.avif");
+    scene.image ? document.getElementById('image-360').setAttribute('src', "./public/uploaded_images/" + scene.image) : document.getElementById('image-360').setAttribute('src', "./public/assets/grey-background.avif");
 
     // Angle Caméra de la scène
     cameraVerticalInput.value = scene.camera.vertical;
@@ -212,7 +212,7 @@ function createFileListItem(fileName, fileList) {
 
     if (/\.(jpg|jpeg|png|gif|webp)$/i.test(fileName)) {
         const img = document.createElement('img');
-        img.src = `./uploaded_images/${fileName}`;
+        img.src = `./public/uploaded_images/${fileName}`;
         img.alt = fileName;
         img.style.width = "100px";
         li.appendChild(img);
@@ -228,7 +228,7 @@ function createFileListItem(fileName, fileList) {
 
 // Fonction pour mettre à jour uniquement l'image dans l'interface
 function updateImage() {
-    document.getElementById('image-360').setAttribute('src', `./uploaded_images/${selectedScene.image}`);
+    document.getElementById('image-360').setAttribute('src', `./public/uploaded_images/${selectedScene.image}`);
 }
 
 // Affiche la popup avec la liste des fichiers uploadés
