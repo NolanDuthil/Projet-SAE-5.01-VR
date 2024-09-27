@@ -1,0 +1,57 @@
+{
+  "scenes": [
+    {
+      "name": "Scene 1",
+      "image": "GS__3523.JPG",
+      "camera": {
+        "vertical": "0",
+        "horizontal": "02"
+      },
+      "tags": [
+        {
+          "name": "Porte Studio",
+          "legend": "Rentrer dans le studio",
+          "type": "porte",
+          "action": "1",
+          "position": {
+            "r": "25",
+            "theta": "90",
+            "fi": "-110"
+          }
+        },
+        {
+          "name": "Une information",
+          "type": "info",
+          "legend": "Nouvelle information",
+          "action": "1",
+          "position": {
+            "r": "30",
+            "theta": "90",
+            "fi": "-40"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Scene 2",
+      "image": "GS__3524.JPG",
+      "camera": {
+        "vertical": "02",
+        "horizontal": "0"
+      },
+      "tags": [
+        {
+          "name": "Porte Studio (Intérieur)",
+          "legend": "Sortir du studio",
+          "type": "porte",
+          "action": "0",
+          "position": {
+            "r": "30",
+            "theta": "90",
+            "fi": "135"
+          }
+        }
+      ]
+    }
+  ]
+}
