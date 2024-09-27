@@ -37,6 +37,7 @@
       "image": "GS__3524.JPG",
       "camera": {
         "vertical": "02",
+<<<<<<< Updated upstream
         "horizontal": "0"
       },
       "tags": [
@@ -61,6 +62,23 @@
         "horizontal": "0"
       },
       "tags": []
+=======
+        "horizontal": "0"
+      },
+      "tags": [
+        {
+          "name": "Porte Studio (Intérieur)",
+          "legend": "Sortir du studio",
+          "type": "porte",
+          "action": "0",
+          "position": {
+            "r": "30",
+            "theta": "90",
+            "fi": "135"
+          }
+        }
+      ]
+>>>>>>> Stashed changes
     }
   ]
 }

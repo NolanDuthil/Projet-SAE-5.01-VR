@@ -73,6 +73,12 @@ main{
     box-sizing: border-box;
 }
 
+.right-side{
+    display: flex;
+    flex-direction: row;
+    gap: .5rem;
+}
+
 .scene{
     width: 60%;
     background-color: var(--clr-black);
@@ -131,16 +137,16 @@ main{
     font-weight: 400;
 }
 
-.image-button{
+.image-button, .save-button, .run-button{
     border: var(--classic-border);
     background-color: var(--clr-white);
     color: var(--clr-black);
     border-radius: var(--classic-radius);
-    padding: .5rem 0; 
+    padding: .5rem 1rem; 
     font-family: var(--ff-Raleway);
 }
 
-.image-button:hover{
+.image-button:hover, .save-button:hover, .run-button:hover{
     border: 1.5px solid var(--clr-white);
     background-color: var(--clr-black);
     color: var(--clr-white);

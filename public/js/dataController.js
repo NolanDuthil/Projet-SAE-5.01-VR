@@ -59,6 +59,14 @@ let sceneNameListener;
 let cameraVerticalListener;
 let cameraHorizontalListener;
 let tagSelectListener;
+<<<<<<< Updated upstream
+=======
+let fileUploadFormListener;
+let viewFilesBtnListener;
+let closePopupBtnListener;
+let popupOverlayListener;
+let saveButtonListener;
+>>>>>>> Stashed changes
 
 // Fonction pour mettre à jour les détails de la scène
 function updateSceneDetails(scene) {
@@ -67,12 +75,27 @@ function updateSceneDetails(scene) {
     const cameraVerticalInput = document.getElementById('camera-vertical');
     const cameraHorizontalInput = document.getElementById('camera-horizontal');
     const tagSelect = document.getElementById('tags-select');
+<<<<<<< Updated upstream
+=======
+    const fileUploadForm = document.getElementById('upload-form');
+    const viewFilesBtn = document.getElementById('view-files-btn');
+    const closePopupBtn = document.getElementById('close-popup-btn');
+    const popupOverlay = document.getElementById('popup-overlay');
+>>>>>>> Stashed changes
 
     // Supprimer les anciens EventListeners s'ils existent
     if (sceneNameListener) sceneNameInput.removeEventListener('input', sceneNameListener);
     if (cameraVerticalListener) cameraVerticalInput.removeEventListener('input', cameraVerticalListener);
     if (cameraHorizontalListener) cameraHorizontalInput.removeEventListener('input', cameraHorizontalListener);
     if (tagSelectListener) tagSelect.removeEventListener('change', tagSelectListener);
+<<<<<<< Updated upstream
+=======
+    if (fileUploadFormListener) fileUploadForm.removeEventListener('submit', fileUploadFormListener);
+    if (viewFilesBtnListener) viewFilesBtn.removeEventListener('click', viewFilesBtnListener);
+    if (closePopupBtnListener) closePopupBtn.removeEventListener('click', closePopupBtnListener);
+    if (popupOverlayListener) popupOverlay.removeEventListener('click', popupOverlayListener);
+    if (saveButtonListener) saveButton.removeEventListener('click', saveButtonListener);
+>>>>>>> Stashed changes
 
     // Nom & Image de la scène
     sceneNameInput.value = scene.name;
@@ -93,36 +116,181 @@ function updateSceneDetails(scene) {
     });
 
     updateCanvaTags(scene);
+<<<<<<< Updated upstream
     // Affichage des données du premier tag
     if (tags.length > 0) {
         loadTagDetails(tags, 0);
     } else{
+=======
+
+    // Affichage des données du premier tag
+    if (tags.length > 0) {
+        loadTagDetails(tags, 0);
+    } else {
+>>>>>>> Stashed changes
         hideTags();
     }
 
     // Créer et ajouter de nouveaux EventListeners
 
+<<<<<<< Updated upstream
     sceneNameListener = function() {
+=======
+    // Listener pour le nom de la scène
+    sceneNameListener = function () {
+>>>>>>> Stashed changes
         scene.name = this.value;
     };
     sceneNameInput.addEventListener('input', sceneNameListener);
 
+<<<<<<< Updated upstream
     cameraVerticalListener = function() {
+=======
+    // Listener pour l'angle vertical de la caméra
+    cameraVerticalListener = function () {
+>>>>>>> Stashed changes
         scene.camera.vertical = this.value;
     };
     cameraVerticalInput.addEventListener('input', cameraVerticalListener);
 
+<<<<<<< Updated upstream
     cameraHorizontalListener = function() {
+=======
+    // Listener pour l'angle horizontal de la caméra
+    cameraHorizontalListener = function () {
+>>>>>>> Stashed changes
         scene.camera.horizontal = this.value;
     };
     cameraHorizontalInput.addEventListener('input', cameraHorizontalListener);
 
+<<<<<<< Updated upstream
     tagSelectListener = function() {
         loadTagDetails(tags, this.value);
     };
     tagSelect.addEventListener('change', tagSelectListener);
 }
 
+=======
+    // Listener pour le changement de tag
+    tagSelectListener = function () {
+        loadTagDetails(tags, this.value);
+    };
+    tagSelect.addEventListener('change', tagSelectListener);
+
+    // Listener pour le formulaire d'upload de fichier
+    fileUploadFormListener = function (event) {
+        event.preventDefault(); // Empêche la soumission classique
+        handleFileUpload();
+    };
+    fileUploadForm.addEventListener('submit', fileUploadFormListener);
+
+    // Listener pour le bouton de visualisation des fichiers
+    viewFilesBtnListener = function () {
+        showFilePopup();
+    };
+    viewFilesBtn.addEventListener('click', viewFilesBtnListener);
+
+    // Listener pour le bouton de fermeture de la popup
+    closePopupBtnListener = function () {
+        closeFilePopup();
+    };
+    closePopupBtn.addEventListener('click', closePopupBtnListener);
+
+    // Listener pour l'overlay de la popup (fermer la popup)
+    popupOverlayListener = function () {
+        closeFilePopup();
+    };
+    popupOverlay.addEventListener('click', popupOverlayListener);
+}
+
+// Fonction pour uploader automatiquement le fichier sans redirection
+function handleFileUpload(event) {
+    event.preventDefault(); // Empêche la soumission du formulaire classique
+
+    const formData = new FormData(document.getElementById('upload-form'));
+
+    fetch('/upload', {
+      method: 'POST',
+      body: formData
+    })
+      .then(response => {
+        if (response.ok) {
+          console.log('Fichier téléchargé avec succès');
+          window.location.reload(); // Rafraîchit la page après l'upload
+        } else {
+          console.error('Erreur lors de l\'upload du fichier');
+        }
+      })
+      .catch(error => {
+        console.error('Erreur:', error);
+      });
+  }
+
+
+// Met à jour la liste des fichiers dans la popup
+function updateFileList(files, fileList) {
+    if (files.length === 0) {
+        const noFilesMessage = document.createElement('p');
+        noFilesMessage.textContent = 'Aucun fichier uploadé.';
+        fileList.appendChild(noFilesMessage);
+    } else {
+        files.forEach(fileName => createFileListItem(fileName, fileList));
+    }
+    togglePopup(true);
+}
+
+// Crée un élément de liste pour chaque fichier et ajoute un événement de sélection d'image
+function createFileListItem(fileName, fileList) {
+    const li = document.createElement('li');
+    const fileText = document.createElement('p');
+    fileText.textContent = fileName;
+    li.appendChild(fileText);
+
+    if (/\.(jpg|jpeg|png|gif|webp)$/i.test(fileName)) {
+        const img = document.createElement('img');
+        img.src = `/uploaded_images/${fileName}`;
+        img.alt = fileName;
+        img.style.width = "100px";
+        li.appendChild(img);
+
+        li.addEventListener('click', () => {
+            selectedScene.image = fileName; 
+            updateImage()
+            closeFilePopup();
+        });
+    }
+    fileList.appendChild(li);
+}
+
+// Fonction pour mettre à jour uniquement l'image dans l'interface
+function updateImage() {
+    document.getElementById('image-360').setAttribute('src', `uploaded_images/${selectedScene.image}`);
+}
+
+// Affiche la popup avec la liste des fichiers uploadés
+function showFilePopup() {
+    const fileList = document.getElementById('file-list');
+    fileList.innerHTML = '';
+
+    fetch('/uploaded_files')
+        .then(response => response.json())
+        .then(files => updateFileList(files, fileList))
+        .catch(error => console.error('Erreur lors de la récupération des fichiers:', error));
+}
+
+// Ferme la popup des fichiers
+function closeFilePopup() {
+    togglePopup(false);
+}
+
+// Gère l'affichage ou la fermeture de la popup en fonction de l'état
+function togglePopup(show) {
+    const displayStyle = show ? 'block' : 'none';
+    document.getElementById('file-popup').style.display = displayStyle;
+    document.getElementById('popup-overlay').style.display = displayStyle;
+}
+
+>>>>>>> Stashed changes
 // Variables pour stocker les fonctions des EventListeners des tags
 let tagNameListener;
 let tagLegendListener;
@@ -139,7 +307,11 @@ function loadTagDetails(tags, selectedTagIndex) {
     document.getElementById('tag-settings').style = "";
     document.getElementById('tag-name').style = "";
     document.getElementById('tag-legend').style = "";
+<<<<<<< Updated upstream
     document.getElementById('tag-position').style = ""; 
+=======
+    document.getElementById('tag-position').style = "";
+>>>>>>> Stashed changes
 
     const tag = tags[selectedTagIndex];
     const tagNameInput = document.getElementById('tag-name-input');
@@ -170,23 +342,39 @@ function loadTagDetails(tags, selectedTagIndex) {
 
     sceneSelector.innerHTML = ''; // Vider le sélecteur
     jsonData.scenes.forEach((scene, index) => {
+<<<<<<< Updated upstream
         if(scene != selectedScene){
+=======
+        if (scene != selectedScene) {
+>>>>>>> Stashed changes
             const option = document.createElement('option');
             option.value = index;  // L'index de la scène
             option.textContent = scene.name;  // Le nom de la scène
             sceneSelector.appendChild(option);
         }
     });
+<<<<<<< Updated upstream
     
     // Si le type du tag est "porte", afficher le sélecteur de scène
     if (tag.type === 'porte') {
         sceneSelectorContainer.style.display = '';
         
+=======
+
+    // Si le type du tag est "porte", afficher le sélecteur de scène
+    if (tag.type === 'porte') {
+        sceneSelectorContainer.style.display = '';
+
+>>>>>>> Stashed changes
         // Sélectionner la scène correspondante si elle est déjà définie
         sceneSelector.value = tag.action;
 
         // Ajouter un event listener pour mettre à jour l'action (numéro de scène)
+<<<<<<< Updated upstream
         sceneSelectListener = function() {
+=======
+        sceneSelectListener = function () {
+>>>>>>> Stashed changes
             tag.action = this.value;
             // updateCanvaTags(selectedScene);
         };
@@ -198,7 +386,11 @@ function loadTagDetails(tags, selectedTagIndex) {
 
     // Ajouter un listener pour changer le type de tag
     tagTypeSelector.value = tag.type; // Remplir le sélecteur avec le type actuel
+<<<<<<< Updated upstream
     tagTypeListener = function() {
+=======
+    tagTypeListener = function () {
+>>>>>>> Stashed changes
         tag.type = this.value; // Met à jour le type du tag
         // Afficher ou cacher le sélecteur de scène selon le type sélectionné
         if (tag.type === 'porte') {
@@ -210,37 +402,58 @@ function loadTagDetails(tags, selectedTagIndex) {
     tagTypeSelector.addEventListener('change', tagTypeListener);
 
     // Ajouter de nouveaux EventListeners
+<<<<<<< Updated upstream
     tagNameListener = function() {
+=======
+    tagNameListener = function () {
+>>>>>>> Stashed changes
         tag.name = this.value;
         tagSelect.options[selectedTagIndex].textContent = this.value;
         // updateCanvaTags(selectedScene);
     };
     tagNameInput.addEventListener('input', tagNameListener);
 
+<<<<<<< Updated upstream
     tagLegendListener = function() {
+=======
+    tagLegendListener = function () {
+>>>>>>> Stashed changes
         tag.legend = this.value;
     };
     tagLegendInput.addEventListener('input', tagLegendListener);
 
+<<<<<<< Updated upstream
     rInputListener = function() {
+=======
+    rInputListener = function () {
+>>>>>>> Stashed changes
         // updateCanvaTags(selectedScene);
         tag.position.r = this.value === '' ? 0 : this.value;
     };
     rInput.addEventListener('input', rInputListener);
 
+<<<<<<< Updated upstream
     thetaInputListener = function() {
+=======
+    thetaInputListener = function () {
+>>>>>>> Stashed changes
         // updateCanvaTags(selectedScene);
         tag.position.theta = this.value === '' ? 0 : this.value;
     };
     thetaInput.addEventListener('input', thetaInputListener);
 
+<<<<<<< Updated upstream
     fiInputListener = function() {
+=======
+    fiInputListener = function () {
+>>>>>>> Stashed changes
         // updateCanvaTags(selectedScene);
         tag.position.fi = this.value === '' ? 0 : this.value;
     };
     fiInput.addEventListener('input', fiInputListener);
 }
 
+<<<<<<< Updated upstream
 
 function hideTags(){
     document.getElementById('tag-settings').style = "display:none";
@@ -250,6 +463,16 @@ function hideTags(){
 }
 
 function updateCanvaTags(scene){
+=======
+function hideTags() {
+    document.getElementById('tag-settings').style = "display:none";
+    document.getElementById('tag-name').style = "display:none";
+    document.getElementById('tag-legend').style = "display:none";
+    document.getElementById('tag-position').style = "display:none";
+}
+
+function updateCanvaTags(scene) {
+>>>>>>> Stashed changes
     let canva = document.getElementById('a-scene');
     let pastTags = document.querySelectorAll('a-sphere');
     pastTags.forEach((pastTag) => {
@@ -269,7 +492,11 @@ function updateCanvaTags(scene){
 async function addNewScene() {
     const newScene = {
         name: `Scene ${Date.now()}`,
+<<<<<<< Updated upstream
         image: "", 
+=======
+        image: "",
+>>>>>>> Stashed changes
         camera: {
             vertical: "0",
             horizontal: "0"
@@ -290,12 +517,20 @@ async function addNewTag() {
     const newTag = {
         name: "nouveau tag",
         type: "porte",
+<<<<<<< Updated upstream
         legend: "nouveau tag", 
+=======
+        legend: "nouveau tag",
+>>>>>>> Stashed changes
         "position": {
             "r": "2",
             "theta": "0",
             "fi": "0"
+<<<<<<< Updated upstream
           }
+=======
+        }
+>>>>>>> Stashed changes
     };
 
     // Ajouter la nouvelle scène à jsonData
@@ -338,10 +573,15 @@ async function updateJSON() {
 }
 
 // Initialisation
-async function init(){
+async function init() {
     await loadPageData();
+<<<<<<< Updated upstream
     document.getElementById('add-scene').addEventListener('click', addNewScene); 
     document.getElementById('save-button').addEventListener('click', updateJSON); 
+=======
+    document.getElementById('add-scene').addEventListener('click', addNewScene);
+    document.getElementById('save-button').addEventListener('click', updateJSON);
+>>>>>>> Stashed changes
     document.getElementById('add-tag-btn').addEventListener('click', addNewTag)
     // document.getElementById('delete-scene').addEventListener('click', deleteScene);
 }

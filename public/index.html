@@ -44,7 +44,11 @@
             <a-sky id="image-360" radius="200"></a-sky>
     
             <!-- Sphère avec coordonnées sphériques -->
+<<<<<<< Updated upstream
             <a-sphere color="#33F" radius="2" fromspherical='fi: 0; theta: 90; r: 40'></a-sphere>
+=======
+            <!-- <a-sphere color="#33F" radius="2" fromspherical='fi: 0; theta: 90; r: 40'></a-sphere> -->
+>>>>>>> Stashed changes
     
             <a-camera wasd-controls="enabled: false">
                 <a-cursor id="cursor" color="white"
@@ -72,6 +76,27 @@
             <div id="tag-name" class="tag-name">
                 <h3 class="subtitle">Nom</h3>
                 <input class="tag-name-input" id="tag-name-input" type="text">
+<<<<<<< Updated upstream
+            </div>
+            <div id="tag-legend" class="tag-legend">
+                <h3 class="subtitle">Légende</h3>
+                <textarea id="tag-legend-area" class="tag-legend-area"></textarea>
+            </div>
+            <div id="tag-position" class="tag-position">
+                <h3 class="subtitle">Position</h3>
+                <div class="coordonnees">
+                    <div class="position-container">
+                        <input id="r" class="input-position" type="number">
+                        <p class="text">Distance</p>
+                    </div>
+                    <div class="position-container">
+                        <input id="theta" class="input-position" type="number">
+                        <p class="text">Latitude</p>
+                    </div>
+                    <div class="position-container">
+                        <input id="fi" class="input-position" type="number">
+                        <p class="text">Longitude</p>
+=======
             </div>
             <div id="tag-legend" class="tag-legend">
                 <h3 class="subtitle">Légende</h3>
@@ -118,6 +143,49 @@
       </div>
       <div class="right-side">
         <button id="save-button" class="save-button">Sauvegarder</button>
+        <a href="/experience"><button id="run-button" class="run-button">Run</button></a>
+      </div>
+    </div>
+
+    <div id="popup-overlay" class="overlay"></div>
+        <div id="file-popup" class="popup">
+            <form id="upload-form" class="form-popup" action="/upload" method="POST" enctype="multipart/form-data">
+                <div class="file-choose">
+                    <div class="file-import">
+                        <img class="file-import-img" src="assets/import-icon.svg" alt="import">
+                        <input type="file" class="form-input-btn" id="file-upload" name="file" accept="image/*, .pdf">
+                        <label for="file-upload" class="custom-file-upload">
+                            Importer
+                        </label>
+>>>>>>> Stashed changes
+                    </div>
+                </div>
+            </div>
+            <div id="tag-type-container" class="tag-type-container">
+                <h3 class="subtitle">Type</h3>
+                <select id="tag-type-selector" class="tag-type-selector">
+                    <option value="porte">Porte</option>
+                    <option value="info">Info</option>
+                </select>
+            </div>
+            <div id="scene-selector-container" class="scene-selector-container" style="display:none;">
+                <h3 class="subtitle">Action</h3>
+                <select id="scene-selector" class="scene-selector"></select>
+            </div>
+        </div>
+<<<<<<< Updated upstream
+    </div>
+
+    <div class="bottom-panel">
+      <div class="left-side">
+        <div class="scenes" id="scenes">
+        </div>
+        <div id="add-scene" class="add-scene">
+          <img src="assets/add-icon.svg" alt="Add">
+        </div> 
+      </div>
+      <div class="right-side">
+        <button id="save-button" class="save-button">Sauvegarder</button>
       </div>
     </div>
 
@@ -133,6 +201,8 @@
         </form>
         <button id="close-popup-btn">Fermer</button>
     </div>
+=======
+>>>>>>> Stashed changes
 </main>
 
 </body>
