@@ -269,19 +269,66 @@ function hideTags() {
     document.getElementById('tag-position').style = "display:none";
 }
 
+// function updateCanvaTags(scene) {
+//     let canva = document.getElementById('a-scene');
+//     let pastTags = document.querySelectorAll('a-sphere', 'a-text');
+//     pastTags.forEach((pastTag) => {
+//         pastTag.remove();
+//     })
+//     scene.tags.forEach((tag) => {
+//         let tagSphere = document.createElement('a-sphere');
+//         tagSphere.setAttribute('color', tag.type == 'porte' ? 'red' : 'blue');
+//         tagSphere.setAttribute('id', tag.id);
+//         tagSphere.setAttribute('radius', 1);
+//         tagSphere.setAttribute('fromspherical', 'fi:' + tag.position.fi + '; theta:' + tag.position.theta + '; r:' + tag.position.r + ';');
+//         canva.appendChild(tagSphere);
+//         let tagText = document.createElement('a-text');
+//         tagText.setAttribute('value', tag.legend);
+//         tagText.setAttribute('fromspherical', 'fi: ' + tag.position.fi + "; theta: " + tag.position.theta - (-4) + "; r: " + tag.position.r + ";")
+//         tagText.setAttribute('color', 'white');
+//         tagText.setAttribute('align', 'center');
+//         tagText.setAttribute('width', '20');
+//         tagText.setAttribute('look-at', '[camera]');
+//         canva.appendChild(tagText);
+//     });
+// }
+
 function updateCanvaTags(scene) {
     let canva = document.getElementById('a-scene');
-    let pastTags = document.querySelectorAll('a-sphere');
+    let pastTags = document.querySelectorAll('a-sphere, a-text'); // Sélectionner aussi les éléments de texte
     pastTags.forEach((pastTag) => {
-        pastTag.remove();
-    })
+        pastTag.remove(); // Supprimer les anciennes sphères et textes
+    });
+
     scene.tags.forEach((tag) => {
+
+        // Créer une sphère pour le tag
         let tagSphere = document.createElement('a-sphere');
-        tagSphere.setAttribute('color', tag.type == 'porte' ? 'red' : 'blue');
-        tagSphere.setAttribute('id', tag.id);
+        tagSphere.setAttribute('color', tag.type === 'porte' ? 'red' : 'blue');
+        tagSphere.setAttribute('id', tag.name);
         tagSphere.setAttribute('radius', 1);
-        tagSphere.setAttribute('fromspherical', 'fi:' + tag.position.fi + '; theta:' + tag.position.theta + '; r:' + tag.position.r + ';');
+
+        // Ajouter le composant de conversion des coordonnées sphériques
+        tagSphere.setAttribute('fromspherical', `fi:${tag.position.fi}; theta:${tag.position.theta}; r:${tag.position.r};`);
+
+        // Ajouter la sphère au canvas
         canva.appendChild(tagSphere);
+
+        // Créer un texte pour la légende du tag
+        let tagText = document.createElement('a-text');
+        tagText.setAttribute('value', tag.legend);
+
+        // Utiliser les mêmes coordonnées pour placer le texte
+        // En supposant que le composant a déjà mis à jour la position de la sphère
+        tagText.setAttribute('fromspherical', `fi:${tag.position.fi}; theta:${tag.position.theta - (-4)}; r:${tag.position.r};`); // Ajustement pour le texte
+
+        tagText.setAttribute('color', 'white');
+        tagText.setAttribute('align', 'center'); // Centrer le texte par rapport à la sphère
+        tagText.setAttribute('width', '20');
+        tagText.setAttribute('look-at', '[camera]');
+
+        // Ajouter le texte au canvas
+        canva.appendChild(tagText);
     });
 }
 
@@ -354,91 +401,131 @@ function loadFromLocalStorage() {
 function initializeDefaultData() {
     jsonData = {
         scenes: [
+    {
+        "name": "Entrée Studio",
+        "image": "GS__3523.JPG",
+        "camera": {
+            "vertical": "0",
+            "horizontal": "0"
+        },
+        "tags": [
             {
-                "name": "Entrée Studio",
-                "image": "GS__3523.JPG",
-                "camera": { "vertical": "0", "horizontal": "0" },
-                "tags": [
-                    {
-                        "id": "1",
-                        "name": "Porte Studio (côté extérieur)",
-                        "legend": "Rentrer dans le studio",
-                        "type": "porte",
-                        "action": "1",
-                        "position": { "r": "25", "theta": "90", "fi": "-110" }
-                    },
-                    {
-                        "id": "2",
-                        "name": "Une information",
-                        "type": "info",
-                        "legend": "Nouvelle information",
-                        "action": "1",
-                        "position": { "r": "30", "theta": "90", "fi": "-40" }
-                    }
-                ]
+                "id": "1",
+                "name": "Porte Studio (côté extérieur)",
+                "legend": "Rentrer dans le studio",
+                "type": "porte",
+                "action": "1",
+                "position": {
+                    "r": "25",
+                    "theta": "90",
+                    "fi": "-115"
+                }
             },
             {
-                "name": "Salle 1 Studio",
-                "image": "GS__3524.JPG",
-                "camera": { "vertical": "0", "horizontal": "0" },
-                "tags": [
-                    {
-                        "id": "3",
-                        "name": "Porte Studio (côté intérieur)",
-                        "legend": "Sortir du studio",
-                        "type": "porte",
-                        "action": "0",
-                        "position": { "r": "30", "theta": "90", "fi": "135" }
-                    },
-                    {
-                        "id": "4",
-                        "name": "Porte Salle 2 Studio",
-                        "legend": "Rentrer dans la 2e salle du studio",
-                        "type": "porte",
-                        "action": "2",
-                        "position": { "r": "30", "theta": "90", "fi": "-40" }
-                    }
-                ]
-            },
-            {
-                "name": "Salle 2 Studio",
-                "image": "GS__3525.JPG",
-                "camera": { "vertical": "0", "horizontal": "0" },
-                "tags": [
-                    {
-                        "id": "5",
-                        "name": "Porte Salle 1 Studio",
-                        "legend": "Sortir de la 2e salle du studio",
-                        "type": "porte",
-                        "action": "1",
-                        "position": { "r": "30", "theta": "90", "fi": "-40" }
-                    },
-                    {
-                        "id": "6",
-                        "name": "Porte Salle 3 Studio",
-                        "legend": "Rentrer dans la 3e salle du studio",
-                        "type": "porte",
-                        "action": "3",
-                        "position": { "r": "40", "theta": "90", "fi": "-140" }
-                    }
-                ]
-            },
-            {
-                "name": "Salle 3 Studio",
-                "image": "GS__3526.JPG",
-                "camera": { "vertical": "0", "horizontal": "0" },
-                "tags": [
-                    {
-                        "id": "7",
-                        "name": "Porte Salle 2 Studio",
-                        "legend": "Sortir de la 3e salle du studio",
-                        "type": "porte",
-                        "action": "2",
-                        "position": { "r": "40", "theta": "90", "fi": "-65" }
-                    }
-                ]
+                "id": "2",
+                "name": "Une information",
+                "type": "info",
+                "legend": "Nouvelle information",
+                "action": "1",
+                "position": {
+                    "r": "30",
+                    "theta": "90",
+                    "fi": "-40"
+                }
             }
         ]
+    },
+    {
+        "name": "Salle 1 Studio",
+        "image": "GS__3524.JPG",
+        "camera": {
+            "vertical": "0",
+            "horizontal": "0"
+        },
+        "tags": [
+            {
+                "id": "3",
+                "name": "Porte Studio (côté intérieur)",
+                "legend": "Sortir du studio",
+                "type": "porte",
+                "action": "0",
+                "position": {
+                    "r": "30",
+                    "theta": "90",
+                    "fi": "135"
+                }
+            },
+            {
+                "id": "4",
+                "name": "Porte Salle 2 Studio",
+                "legend": "Rentrer dans la 2e salle du studio",
+                "type": "porte",
+                "action": "2",
+                "position": {
+                    "r": "30",
+                    "theta": "90",
+                    "fi": "-40"
+                }
+            }
+        ]
+    },
+    {
+        "name": "Salle 2 Studio",
+        "image": "GS__3525.JPG",
+        "camera": {
+            "vertical": "0",
+            "horizontal": "0"
+        },
+        "tags": [
+            {
+                "id": "5",
+                "name": "Porte Salle 1 Studio",
+                "legend": "Sortir de la 2e salle du studio",
+                "type": "porte",
+                "action": "1",
+                "position": {
+                    "r": "30",
+                    "theta": "90",
+                    "fi": "-40"
+                }
+            },
+            {
+                "id": "6",
+                "name": "Porte Salle 3 Studio",
+                "legend": "Rentrer dans la 3e salle du studio",
+                "type": "porte",
+                "action": "3",
+                "position": {
+                    "r": "40",
+                    "theta": "90",
+                    "fi": "-140"
+                }
+            }
+        ]
+    },
+    {
+        "name": "Salle 3 Studio",
+        "image": "GS__3526.JPG",
+        "camera": {
+            "vertical": "0",
+            "horizontal": "0"
+        },
+        "tags": [
+            {
+                "id": "7",
+                "name": "Porte Salle 2 Studio",
+                "legend": "Sortir de la 3e salle du studio",
+                "type": "porte",
+                "action": "2",
+                "position": {
+                    "r": "40",
+                    "theta": "90",
+                    "fi": "-65"
+                }
+            }
+        ]
+    }
+]
     };
     saveToLocalStorage();
 }
@@ -458,12 +545,28 @@ function saveToLocalStorage() {
     localStorage.setItem('jsonData', JSON.stringify(jsonData));
 }
 
+// Fonction pour exporter les données JSON
+function exportToJson() {
+    const jsonString = JSON.stringify(jsonData, null, 2); // Formate le JSON avec des indentations
+    const blob = new Blob([jsonString], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'scenes_data.json'; // Nom du fichier téléchargé
+    a.click();
+
+    // Libérer l'URL après utilisation
+    URL.revokeObjectURL(url);
+}
+
 // Initialisation
 async function init() {
     await loadPageData();
     document.getElementById('add-scene').addEventListener('click', addNewScene);
     document.getElementById('save-button').addEventListener('click', saveToLocalStorage);
     document.getElementById('add-tag-btn').addEventListener('click', addNewTag)
+    document.getElementById('export-json').addEventListener('click', exportToJson);
     // document.getElementById('delete-scene').addEventListener('click', deleteScene);
 }
 

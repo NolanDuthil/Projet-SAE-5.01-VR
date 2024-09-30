@@ -137,7 +137,7 @@ main{
     font-weight: 400;
 }
 
-.save-button, .run-button{
+.save-button, .run-button, .export-button{
     border: var(--classic-border);
     background-color: var(--clr-white);
     color: var(--clr-black);
@@ -146,7 +146,7 @@ main{
     font-family: var(--ff-Raleway);
 }
 
-.save-button:hover, .run-button:hover{
+.save-button:hover, .run-button:hover, .export-button:hover{
     border: 1.5px solid var(--clr-white);
     background-color: var(--clr-black);
     color: var(--clr-white);
@@ -274,6 +274,8 @@ main{
 .scenes {
     display: flex;
     gap: 1.5rem;
+    /* max-width: 50%;
+    overflow-x: scroll; */
 }
 
 .scene-item {

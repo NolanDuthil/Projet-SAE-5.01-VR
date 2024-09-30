@@ -6,6 +6,7 @@
     <title>Scene 3D</title>
 
     <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
     <script type="module" src="./js/script.js"></script>
     <link rel="stylesheet" href="./style.css">
 </head>
@@ -42,7 +43,7 @@
             <!-- Sphère avec coordonnées sphériques -->
             <!-- <a-sphere color="#33F" radius="2" fromspherical='fi: 0; theta: 90; r: 40'></a-sphere> -->
     
-            <a-camera wasd-controls="enabled: false">
+            <a-camera camera look-controls wasd-controls="enabled: false">
                 <a-cursor id="cursor" color="white"
                           geometry="primitive: sphere; radius: 0.008"
                           material="color: white; shader: flat">
@@ -113,8 +114,9 @@
         </div> 
       </div>
       <div class="right-side">
+        <button id="export-json" class="export-button">Exporter les données</button>
         <button id="save-button" class="save-button">Sauvegarder</button>
-        <a href=".//experience"><button id="run-button" class="run-button">Run</button></a>
+        <a href="./experience"><button id="run-button" class="run-button">Run</button></a>
       </div>
     </div>
 
