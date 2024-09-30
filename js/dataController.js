@@ -1,23 +1,7 @@
-// URL du fichier JSON externe
-const jsonUrl = 'http://localhost:3000/data'; // URL de l'API du serveur
-
 // Déclarez jsonData ici pour qu'il soit accessible à toutes les fonctions
 let jsonData = { scenes: [] };
 let selectedScene = {};
 let selectedTag = 0;
-
-// Fonction asynchrone pour récupérer les données JSON
-async function fetchData() {
-    try {
-        const response = await fetch(jsonUrl);
-        if (!response.ok) {
-            throw new Error('Erreur lors de la récupération du fichier: ' + response.statusText);
-        }
-        jsonData = await response.json(); // Mettez à jour jsonData ici
-    } catch (error) {
-        console.error('Erreur lors de la récupération du fichier:', error);
-    }
-}
 
 // Fonction pour remplir le menu des scènes
 function populateSceneList(scenes) {
@@ -32,7 +16,7 @@ function populateSceneList(scenes) {
         // Créer une image pour la scène
         const sceneImage = document.createElement('img');
         // Vérifier si l'image est vide et utiliser l'image par défaut si c'est le cas
-        sceneImage.src = scene.image ? "./public/uploaded_images/" + scene.image : "./public//assets/grey-background.avif";
+        sceneImage.src = scene.image ? "./uploaded_images/" + scene.image : "./assets/grey-background.avif";
         sceneImage.alt = scene.name;
 
         // Créer une étiquette pour le nom de la scène
@@ -90,7 +74,7 @@ function updateSceneDetails(scene) {
 
     // Nom & Image de la scène
     sceneNameInput.value = scene.name;
-    scene.image ? document.getElementById('image-360').setAttribute('src', "./public/uploaded_images/" + scene.image) : document.getElementById('image-360').setAttribute('src', "./public/assets/grey-background.avif");
+    scene.image ? document.getElementById('image-360').setAttribute('src', "./uploaded_images/" + scene.image) : document.getElementById('image-360').setAttribute('src', "./assets/grey-background.avif");
 
     // Angle Caméra de la scène
     cameraVerticalInput.value = scene.camera.vertical;
@@ -212,7 +196,7 @@ function createFileListItem(fileName, fileList) {
 
     if (/\.(jpg|jpeg|png|gif|webp)$/i.test(fileName)) {
         const img = document.createElement('img');
-        img.src = `./public/uploaded_images/${fileName}`;
+        img.src = `./uploaded_images/${fileName}`;
         img.alt = fileName;
         img.style.width = "100px";
         li.appendChild(img);
@@ -436,10 +420,105 @@ async function addNewTag() {
     updateSceneDetails(selectedScene);
 }
 
+// Fonction pour charger les données JSON depuis localStorage
+function loadFromLocalStorage() {
+    const storedData = localStorage.getItem('jsonData');
+    if (storedData) {
+        jsonData = JSON.parse(storedData);
+    } else {
+        initializeDefaultData();
+    }
+}
+
+// Fonction pour initialiser les données par défaut dans localStorage
+function initializeDefaultData() {
+    jsonData = {
+        scenes: [
+            {
+                "name": "Entrée Studio",
+                "image": "GS__3523.JPG",
+                "camera": { "vertical": "0", "horizontal": "0" },
+                "tags": [
+                    {
+                        "name": "Porte Studio (côté extérieur)",
+                        "legend": "Rentrer dans le studio",
+                        "type": "porte",
+                        "action": "1",
+                        "position": { "r": "25", "theta": "90", "fi": "-110" }
+                    },
+                    {
+                        "name": "Une information",
+                        "type": "info",
+                        "legend": "Nouvelle information",
+                        "action": "1",
+                        "position": { "r": "30", "theta": "90", "fi": "-40" }
+                    }
+                ]
+            },
+            {
+                "name": "Salle 1 Studio",
+                "image": "GS__3524.JPG",
+                "camera": { "vertical": "0", "horizontal": "0" },
+                "tags": [
+                    {
+                        "name": "Porte Studio (côté intérieur)",
+                        "legend": "Sortir du studio",
+                        "type": "porte",
+                        "action": "0",
+                        "position": { "r": "30", "theta": "90", "fi": "135" }
+                    },
+                    {
+                        "name": "Porte Salle 2 Studio",
+                        "legend": "Rentrer dans la 2e salle du studio",
+                        "type": "porte",
+                        "action": "2",
+                        "position": { "r": "30", "theta": "90", "fi": "-40" }
+                    }
+                ]
+            },
+            {
+                "name": "Salle 2 Studio",
+                "image": "GS__3525.JPG",
+                "camera": { "vertical": "0", "horizontal": "0" },
+                "tags": [
+                    {
+                        "name": "Porte Salle 1 Studio",
+                        "legend": "Sortir de la 2e salle du studio",
+                        "type": "porte",
+                        "action": "1",
+                        "position": { "r": "30", "theta": "90", "fi": "-40" }
+                    },
+                    {
+                        "name": "Porte Salle 3 Studio",
+                        "legend": "Rentrer dans la 3e salle du studio",
+                        "type": "porte",
+                        "action": "3",
+                        "position": { "r": "40", "theta": "90", "fi": "-140" }
+                    }
+                ]
+            },
+            {
+                "name": "Salle 3 Studio",
+                "image": "GS__3526.JPG",
+                "camera": { "vertical": "0", "horizontal": "0" },
+                "tags": [
+                    {
+                        "name": "Porte Salle 2 Studio",
+                        "legend": "Sortir de la 3e salle du studio",
+                        "type": "porte",
+                        "action": "2",
+                        "position": { "r": "40", "theta": "90", "fi": "-65" }
+                    }
+                ]
+            }
+        ]
+    };
+    saveToLocalStorage();
+}
+
 // Fonction pour charger les données de la page lorsque le document est prêt
 async function loadPageData() {
-    await fetchData();
-
+    loadFromLocalStorage();
     let scenes = jsonData.scenes;
     populateSceneList(scenes);
     if (scenes.length > 0) {
@@ -447,31 +526,16 @@ async function loadPageData() {
     }
 }
 
-// Fonction pour mettre à jour le fichier JSON
-async function updateJSON() {
-    try {
-        const response = await fetch(jsonUrl, {
-            method: 'PUT', // Utilisez PUT pour mettre à jour
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(jsonData)
-        });
-
-        if (!response.ok) {
-            throw new Error('Erreur lors de la mise à jour du fichier: ' + response.statusText);
-        }
-        console.log('Données enregistrées avec succès!');
-    } catch (error) {
-        console.error('Erreur lors de la sauvegarde des données:', error);
-    }
+// Fonction pour sauvegarder les données JSON dans localStorage
+function saveToLocalStorage() {
+    localStorage.setItem('jsonData', JSON.stringify(jsonData));
 }
 
 // Initialisation
 async function init() {
     await loadPageData();
     document.getElementById('add-scene').addEventListener('click', addNewScene);
-    document.getElementById('save-button').addEventListener('click', updateJSON);
+    document.getElementById('save-button').addEventListener('click', saveToLocalStorage);
     document.getElementById('add-tag-btn').addEventListener('click', addNewTag)
     // document.getElementById('delete-scene').addEventListener('click', deleteScene);
 }

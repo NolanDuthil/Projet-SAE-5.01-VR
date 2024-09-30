@@ -1,9 +1,8 @@
 import fromSpherical from "../js/fromSpherical.js";
 fromSpherical();
 
-const jsonUrl = 'http://localhost:3000/data'; // URL du fichier JSON
+const jsonUrl = '/data.json'; // URL du fichier JSON
 let jsonData = { scenes: [] };
-let selectedScene = {};
 
 // Charger les données JSON
 async function loadJSON() {
