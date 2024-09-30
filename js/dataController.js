@@ -43,10 +43,10 @@ let sceneNameListener;
 let cameraVerticalListener;
 let cameraHorizontalListener;
 let tagSelectListener;
-let fileUploadFormListener;
+/*let fileUploadFormListener;
 let viewFilesBtnListener;
 let closePopupBtnListener;
-let popupOverlayListener;
+let popupOverlayListener;*/
 let saveButtonListener;
 
 // Fonction pour mettre à jour les détails de la scène
@@ -56,20 +56,26 @@ function updateSceneDetails(scene) {
     const cameraVerticalInput = document.getElementById('camera-vertical');
     const cameraHorizontalInput = document.getElementById('camera-horizontal');
     const tagSelect = document.getElementById('tags-select');
-    const fileUploadForm = document.getElementById('upload-form');
+    /*const fileUploadForm = document.getElementById('upload-form');
     const viewFilesBtn = document.getElementById('view-files-btn');
     const closePopupBtn = document.getElementById('close-popup-btn');
-    const popupOverlay = document.getElementById('popup-overlay');
+    const popupOverlay = document.getElementById('popup-overlay');*/
+
+    // Vérifiez si tous les éléments existent avant de procéder
+    if (!sceneNameInput || !cameraVerticalInput || !cameraHorizontalInput || !tagSelect /*|| !fileUploadForm || !viewFilesBtn || !closePopupBtn || !popupOverlay*/) {
+        console.error("Un ou plusieurs éléments DOM sont introuvables.");
+        return; // Arrêtez l'exécution si un élément est introuvable
+    }
 
     // Supprimer les anciens EventListeners s'ils existent
     if (sceneNameListener) sceneNameInput.removeEventListener('input', sceneNameListener);
     if (cameraVerticalListener) cameraVerticalInput.removeEventListener('input', cameraVerticalListener);
     if (cameraHorizontalListener) cameraHorizontalInput.removeEventListener('input', cameraHorizontalListener);
     if (tagSelectListener) tagSelect.removeEventListener('change', tagSelectListener);
-    if (fileUploadFormListener) fileUploadForm.removeEventListener('submit', fileUploadFormListener);
+   /* if (fileUploadFormListener) fileUploadForm.removeEventListener('submit', fileUploadFormListener);
     if (viewFilesBtnListener) viewFilesBtn.removeEventListener('click', viewFilesBtnListener);
     if (closePopupBtnListener) closePopupBtn.removeEventListener('click', closePopupBtnListener);
-    if (popupOverlayListener) popupOverlay.removeEventListener('click', popupOverlayListener);
+    if (popupOverlayListener) popupOverlay.removeEventListener('click', popupOverlayListener);*/
     if (saveButtonListener) saveButton.removeEventListener('click', saveButtonListener);
 
     // Nom & Image de la scène
@@ -100,55 +106,46 @@ function updateSceneDetails(scene) {
     }
 
     // Créer et ajouter de nouveaux EventListeners
-
-    // Listener pour le nom de la scène
     sceneNameListener = function () {
         scene.name = this.value;
     };
     sceneNameInput.addEventListener('input', sceneNameListener);
 
-    // Listener pour l'angle vertical de la caméra
     cameraVerticalListener = function () {
         scene.camera.vertical = this.value;
     };
     cameraVerticalInput.addEventListener('input', cameraVerticalListener);
 
-    // Listener pour l'angle horizontal de la caméra
     cameraHorizontalListener = function () {
         scene.camera.horizontal = this.value;
     };
     cameraHorizontalInput.addEventListener('input', cameraHorizontalListener);
 
-    // Listener pour le changement de tag
     tagSelectListener = function () {
         loadTagDetails(tags, this.value);
     };
     tagSelect.addEventListener('change', tagSelectListener);
 
-    // Listener pour le formulaire d'upload de fichier
-    fileUploadFormListener = function (event) {
+    /*fileUploadFormListener = function (event) {
         event.preventDefault(); // Empêche la soumission classique
         handleFileUpload();
     };
     fileUploadForm.addEventListener('submit', fileUploadFormListener);
 
-    // Listener pour le bouton de visualisation des fichiers
     viewFilesBtnListener = function () {
         showFilePopup();
     };
     viewFilesBtn.addEventListener('click', viewFilesBtnListener);
 
-    // Listener pour le bouton de fermeture de la popup
     closePopupBtnListener = function () {
         closeFilePopup();
     };
     closePopupBtn.addEventListener('click', closePopupBtnListener);
 
-    // Listener pour l'overlay de la popup (fermer la popup)
     popupOverlayListener = function () {
         closeFilePopup();
     };
-    popupOverlay.addEventListener('click', popupOverlayListener);
+    popupOverlay.addEventListener('click', popupOverlayListener);*/
 }
 
 // Variables pour stocker les fonctions des EventListeners des tags
@@ -171,7 +168,7 @@ function loadTagDetails(tags, selectedTagIndex) {
 
     const tag = tags[selectedTagIndex];
     const tagNameInput = document.getElementById('tag-name-input');
-    const tagLegendInput = document.getElementById('tag-legend-area');
+    const tagLegendArea = document.getElementById('tag-legend-area');
     const rInput = document.getElementById('r');
     const thetaInput = document.getElementById('theta');
     const fiInput = document.getElementById('fi');
@@ -179,10 +176,11 @@ function loadTagDetails(tags, selectedTagIndex) {
     const sceneSelectorContainer = document.getElementById('scene-selector-container');
     const sceneSelector = document.getElementById('scene-selector');
     const tagTypeSelector = document.getElementById('tag-type-selector');
+    const tagLegendDisplay = document.getElementById('tag-legend-display'); // Élément pour afficher la légende
 
     // Supprimer les anciens EventListeners s'ils existent
     if (tagNameListener) tagNameInput.removeEventListener('input', tagNameListener);
-    if (tagLegendListener) tagLegendInput.removeEventListener('input', tagLegendListener);
+    if (tagLegendListener) tagLegendArea.removeEventListener('input', tagLegendListener);
     if (rInputListener) rInput.removeEventListener('input', rInputListener);
     if (thetaInputListener) thetaInput.removeEventListener('input', thetaInputListener);
     if (fiInputListener) fiInput.removeEventListener('input', fiInputListener);
@@ -191,11 +189,15 @@ function loadTagDetails(tags, selectedTagIndex) {
 
     // Remplir les champs de formulaire avec les données du tag sélectionné
     tagNameInput.value = tag.name;
-    tagLegendInput.value = tag.legend;
+    tagLegendArea.value = tag.legend;
     rInput.value = tag.position.r;
     thetaInput.value = tag.position.theta;
     fiInput.value = tag.position.fi;
 
+    // Afficher la légende sous le tag
+    tagLegendDisplay.textContent = tag.legend; // Mettre à jour l'affichage de la légende
+
+    // Remplir le sélecteur de scène
     sceneSelector.innerHTML = ''; // Vider le sélecteur
     jsonData.scenes.forEach((scene, index) => {
         if (scene != selectedScene) {
@@ -216,7 +218,6 @@ function loadTagDetails(tags, selectedTagIndex) {
         // Ajouter un event listener pour mettre à jour l'action (numéro de scène)
         sceneSelectListener = function () {
             tag.action = this.value;
-            // updateCanvaTags(selectedScene);
         };
         sceneSelector.addEventListener('change', sceneSelectListener);
     } else {
@@ -241,29 +242,27 @@ function loadTagDetails(tags, selectedTagIndex) {
     tagNameListener = function () {
         tag.name = this.value;
         tagSelect.options[selectedTagIndex].textContent = this.value;
-        // updateCanvaTags(selectedScene);
+        tagLegendDisplay.textContent = tag.legend; // Met à jour l'affichage de la légende
     };
     tagNameInput.addEventListener('input', tagNameListener);
 
     tagLegendListener = function () {
         tag.legend = this.value;
+        tagLegendDisplay.textContent = tag.legend; // Met à jour l'affichage de la légende
     };
-    tagLegendInput.addEventListener('input', tagLegendListener);
+    tagLegendArea.addEventListener('input', tagLegendListener);
 
     rInputListener = function () {
-        // updateCanvaTags(selectedScene);
         tag.position.r = this.value === '' ? 0 : this.value;
     };
     rInput.addEventListener('input', rInputListener);
 
     thetaInputListener = function () {
-        // updateCanvaTags(selectedScene);
         tag.position.theta = this.value === '' ? 0 : this.value;
     };
     thetaInput.addEventListener('input', thetaInputListener);
 
     fiInputListener = function () {
-        // updateCanvaTags(selectedScene);
         tag.position.fi = this.value === '' ? 0 : this.value;
     };
     fiInput.addEventListener('input', fiInputListener);
@@ -278,17 +277,35 @@ function hideTags() {
 
 function updateCanvaTags(scene) {
     let canva = document.getElementById('a-scene');
-    let pastTags = document.querySelectorAll('a-sphere');
+    let pastTags = document.querySelectorAll('a-sphere, a-text'); // Sélectionner aussi les éléments de texte
     pastTags.forEach((pastTag) => {
-        pastTag.remove();
-    })
+        pastTag.remove(); // Supprimer les anciennes sphères et textes
+    });
+
     scene.tags.forEach((tag) => {
+        console.log(`Ajout du tag: ${tag.name} avec légende: ${tag.legend}`); // Débogage
+
+        // Créer une sphère pour le tag
         let tagSphere = document.createElement('a-sphere');
-        tagSphere.setAttribute('color', tag.type == 'porte' ? 'red' : 'blue');
+        tagSphere.setAttribute('color', tag.type === 'porte' ? 'red' : 'blue');
         tagSphere.setAttribute('id', tag.name);
         tagSphere.setAttribute('radius', 1);
-        tagSphere.setAttribute('fromspherical', 'fi:' + tag.position.fi + '; theta:' + tag.position.theta + '; r:' + tag.position.r + ';');
+        tagSphere.setAttribute('fromspherical', `fi:${tag.position.fi}; theta:${tag.position.theta}; r:${tag.position.r};`);
+
+        // Ajouter la sphère au canvas
         canva.appendChild(tagSphere);
+
+        // Créer un texte pour la légende du tag
+        let tagText = document.createElement('a-text');
+        tagText.setAttribute('value', 'Test');
+        tagText.setAttribute('position', '0 0 0'); // Utilisez des valeurs simples
+        tagText.setAttribute('color', 'black');
+        tagText.setAttribute('align', 'center');
+        tagText.setAttribute('width', '4');
+
+        // Ajouter le texte au canvas
+        canva.appendChild(tagText);
+        console.log(tagText);
     });
 }
 
@@ -317,20 +334,25 @@ async function addNewTag() {
     const newTag = {
         name: "nouveau tag",
         type: "porte",
-        legend: "nouveau tag",
-        "position": {
-            "r": "2",
-            "theta": "0",
-            "fi": "0"
+        legend: "nouveau tag",  // Assurez-vous que la légende est initialisée
+        position: {
+            r: "2",
+            theta: "0",
+            fi: "0"
         }
     };
 
-    // Ajouter la nouvelle scène à jsonData
-    selectedScene.tags.push(newTag);
-    console.log(jsonData)
+    // Ajouter le nouveau tag à la scène sélectionnée
+    if (selectedScene) { // Vérifiez que selectedScene existe
+        selectedScene.tags.push(newTag); // Ajoutez le tag à la scène sélectionnée
+        console.log(jsonData); // Vérifiez la structure de jsonData
 
-    // Mettre à jour l'affichage avec les scènes mises à jour
-    updateSceneDetails(selectedScene);
+        // Mettre à jour les détails de la scène
+        updateSceneDetails(selectedScene);
+        updateCanvaTags(selectedScene); // Mettre à jour le canvas avec le nouveau tag
+    } else {
+        console.error("Aucune scène sélectionnée pour ajouter le tag.");
+    }
 }
 
 // Fonction pour charger les données JSON depuis localStorage
