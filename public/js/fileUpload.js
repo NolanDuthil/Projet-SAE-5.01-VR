@@ -103,12 +103,6 @@ export default function fileUpload() {
     document.getElementById('popup-overlay').style.display = 'none';
   }
 
-  document.getElementById('view-files-btn').addEventListener('click', showFilePopup);
-
-  document.getElementById('close-popup-btn').addEventListener('click', closeFilePopup);
-
-  document.getElementById('popup-overlay').addEventListener('click', closeFilePopup);
-
   let jsonData = {};  // Déclaration globale de jsonData
   let selectedFileName = "";  // Variable pour stocker le fichier sélectionné
 
@@ -118,15 +112,41 @@ export default function fileUpload() {
       .then(response => response.json())
       .then(data => {
         jsonData = data;  // Stocker les données dans la variable globale
+        loadSceneImage(); // Charger l'image de la scène après avoir récupéré les données
       })
       .catch(error => {
         console.error('Erreur lors du chargement des données:', error);
       });
   }
 
+  // Fonction pour charger l'image de la scène
+  function loadSceneImage() {
+    const sceneName = document.getElementById('scene-name').value;  // Nom de la scène sélectionnée
+    const scene = jsonData.scenes.find(scene => scene.name === sceneName);  // Chercher la scène dans les données
+
+    let imageSrc;
+
+    if (scene && scene.image) {
+      // Si l'image est définie dans data.json, elle a la priorité
+      imageSrc = `./uploaded_images/${scene.image}`;
+      console.log('Image chargée depuis data.json:', imageSrc);
+    } else if (localStorage.getItem('savedImage360')) {
+      // Si aucune image n'est dans data.json, on vérifie le localStorage
+      imageSrc = localStorage.getItem('savedImage360');
+      console.log('Image chargée depuis localStorage:', imageSrc);
+    } else {
+      // Image par défaut si aucune n'est définie
+      imageSrc = './assets/default_image.jpg';
+      console.log('Aucune image trouvée, chargement de l\'image par défaut:', imageSrc);
+    }
+
+    // Appliquer l'image à la balise <a-sky>
+    document.getElementById('image-360').setAttribute('src', imageSrc);
+  }
+
   window.onload = function () {
     loadData(); // Charger les données quand la page est chargée
-    
+
     // Ajouter un événement de clic au bouton de sauvegarde
     const saveButton = document.getElementById('save-button');
     if (saveButton) {
@@ -141,7 +161,7 @@ export default function fileUpload() {
     selectedFileName = fileName;  // Stocker le fichier sélectionné, mais ne pas l'appliquer encore
   }
 
-  // Fonction déclenchée lors du clic sur "sauvegarde"
+  // Fonction déclenchée lors du clic sur "Sauvegarder"
   function saveSceneChanges() {
     const sceneName = document.getElementById('scene-name').value;  // Nom de la scène sélectionnée
 
@@ -157,14 +177,8 @@ export default function fileUpload() {
     if (scene && selectedFileName) {
       scene.image = selectedFileName;  // Mettre à jour l'image de la scène dans jsonData
 
-      // Sélectionner l'élément image (ou élément image du DOM, selon ton usage)
-      const imageElement = new Image();
-      imageElement.src = `./uploaded_images/${selectedFileName}`;  // Utiliser le chemin correct vers l'image
-
-      // Charger la texture une fois l'image chargée
-      imageElement.onload = function () {
-        loadTextureForScene(gl, imageElement);  // Appel à la fonction pour charger la texture dans WebGL
-      };
+      // Sauvegarder également dans le localStorage pour persistance
+      localStorage.setItem('savedImage360', `./uploaded_images/${selectedFileName}`);
 
       // Envoyer la mise à jour au serveur pour sauvegarder dans data.json
       saveData();
@@ -194,43 +208,4 @@ export default function fileUpload() {
       console.error('Erreur lors de la sauvegarde des données :', error);
     }
   }
-
-  // Fonction pour charger la texture dans WebGL
-  function loadTextureForScene(gl, image) {
-    // Supprimer la texture existante si elle est immuable
-    if (gl.isTexture(currentTexture)) {
-      gl.deleteTexture(currentTexture);
-      currentTexture = null;  // Réinitialiser après suppression
-    }
-
-    // Créer une nouvelle texture
-    currentTexture = gl.createTexture();
-    gl.bindTexture(gl.TEXTURE_2D, currentTexture);
-
-    // Configurer les paramètres de la texture
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-
-    // Désactiver les mipmaps pour les images non-puissance de 2
-    if (!isPowerOf2(image.width) || !isPowerOf2(image.height)) {
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-    } else {
-      // Générer des mipmaps si l'image est en puissance de 2
-      gl.generateMipmap(gl.TEXTURE_2D);
-    }
-
-    // Charger l'image dans la texture
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
-
-    // Détacher la texture après configuration
-    gl.bindTexture(gl.TEXTURE_2D, null);
-  }
-
-  // Fonction pour vérifier si une dimension est une puissance de 2
-  function isPowerOf2(value) {
-    return (value & (value - 1)) === 0;
-  }
-
 }

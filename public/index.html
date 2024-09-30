@@ -45,9 +45,6 @@
                 <!-- Image 3D -->
                 <a-sky id="image-360" radius="200"></a-sky>
 
-                <!-- Sphère avec coordonnées sphériques -->
-                <!-- <a-sphere color="#33F" radius="2" fromspherical='fi: 0; theta: 90; r: 40'></a-sphere> -->
-
                 <a-camera wasd-controls="enabled: true">
                     <a-cursor id="cursor" color="white" geometry="primitive: sphere; radius: 0.008"
                         material="color: white; shader: flat">
@@ -113,16 +110,16 @@
 
         <div id="popup-overlay" class="overlay"></div>
         <div id="file-popup" class="popup">
-            <form id="upload-form" class="form-popup" action="/upload" method="POST" enctype="multipart/form-data">
+            <form id="upload-form" class="form-popup">
                 <div class="file-choose">
                     <div class="file-import">
                         <img class="file-import-img" src="assets/import-icon.svg" alt="import">
-                        <input type="file" class="form-input-btn" id="file-upload" name="file" accept="image/*, .pdf">
+                        <input type="file" class="form-input-btn" id="file-upload" name="file" accept="image/*">
                         <label for="file-upload" class="custom-file-upload">
                             Importer
                         </label>
                     </div>
-                    <button class="form-validate-btn" type="submit"><img class="form-validate-img"
+                    <button class="form-validate-btn" type="button" id="upload-button"><img class="form-validate-img"
                             src="assets/validate-icon.svg" alt="validate"></button>
                 </div>
                 <img id="close-popup-btn" class="popup-close-img" src="assets/close-icon.svg" alt="close">
@@ -130,7 +127,6 @@
             <ul id="file-list" class="file-list"></ul>
         </div>
     </main>
-
 </body>
 
 </html>
