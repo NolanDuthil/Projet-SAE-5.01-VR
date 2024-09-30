@@ -61,6 +61,7 @@ main{
     flex-direction: column;
     align-items: center;
     gap: 3rem;
+    overflow-y: scroll;
 }
 
 .bottom-panel{
@@ -70,6 +71,12 @@ main{
     border-top: var(--classic-border);
     padding: 45px 15px;
     box-sizing: border-box;
+}
+
+.right-side{
+    display: flex;
+    flex-direction: row;
+    gap: .5rem;
 }
 
 .scene{
@@ -111,7 +118,7 @@ main{
     transform: scale(1.15);
 }
 
-.image, .camera, .tag-name, .tag-legend, .tag-position{
+.camera, .tag-name, .tag-legend, .tag-position, .scene-selector-container, .tag-type-container{
     display: flex;
     flex-direction: column;
     align-items: left;
@@ -130,16 +137,16 @@ main{
     font-weight: 400;
 }
 
-.image-button{
+.save-button, .run-button{
     border: var(--classic-border);
     background-color: var(--clr-white);
     color: var(--clr-black);
     border-radius: var(--classic-radius);
-    padding: .5rem 0; 
+    padding: .5rem 1rem; 
     font-family: var(--ff-Raleway);
 }
 
-.image-button:hover{
+.save-button:hover, .run-button:hover{
     border: 1.5px solid var(--clr-white);
     background-color: var(--clr-black);
     color: var(--clr-white);
@@ -321,6 +328,21 @@ main{
 .add-scene:hover {
     transform: scale(1.05);
 }
+
+.scene-selector, .tag-type-selector {
+    border: var(--classic-border);
+    border-radius: var(--classic-radius);
+    padding: var(--classic-padding);
+    outline: none;
+    font-size: large;
+    font-weight: 400;
+    color: var(--clr-black);
+    font-family: var(--ff-Raleway);
+    cursor: pointer;
+    width: 100%;
+    box-sizing: border-box;
+}
+
 
 /* Styles pour l'overlay (arrière-plan sombre de la popup) */
 .overlay {

@@ -67,6 +67,16 @@ async function addNewScene() {
     populateSceneList(jsonData.scenes);
 }
 
+// Function pour supprimer une scène
+async function deleteScene() {
+
+
+    jsonData.scenes.delete();
+
+    // Mettre à jour l'affichage avec les scènes mises à jour
+    populateSceneList(jsonData.scenes);
+}
+
 // Fonction pour mettre à jour les détails de la scène
 function updateSceneDetails(scene) {
     const sceneNameInput = document.getElementById('scene-name');
@@ -93,9 +103,30 @@ function updateSceneDetails(scene) {
         loadTagDetails(tags, 0);
     }
 
-    // Ajouter un événement de changement pour le champ de nom de scène
+    // Écouter les changements sur le champ de nom de scène
     sceneNameInput.addEventListener('input', function() {
-        scene.name = this.value;
+        jsonData.scenes.forEach(s => {
+            if (s.name === scene.name) {
+                s.name = this.value; // Mettre à jour le nom dans jsonData
+            }
+        });
+    });
+
+    // Écouter les changements sur les angles de la caméra
+    document.getElementById('camera-vertical').addEventListener('input', function() {
+        jsonData.scenes.forEach(s => {
+            if (s.name === scene.name) {
+                s.camera.vertical = this.value; // Mettre à jour l'angle vertical dans jsonData
+            }
+        });
+    });
+
+    document.getElementById('camera-horizontal').addEventListener('input', function() {
+        jsonData.scenes.forEach(s => {
+            if (s.name === scene.name) {
+                s.camera.horizontal = this.value; // Mettre à jour l'angle horizontal dans jsonData
+            }
+        });
     });
 
     // Écouter le changement du tag sélectionné
@@ -105,11 +136,11 @@ function updateSceneDetails(scene) {
 }
 
 
-// Fonction pour remplir les détails du tag sélectionné
+
 function loadTagDetails(tags, selectedTagIndex) {
     const tag = tags[selectedTagIndex];
-    const tagNameInput = document.getElementById('tag-name');
-    const tagLegendInput = document.getElementById('tag-legend');
+    const tagNameInput = document.getElementById('tag-name-input');
+    const tagLegendInput = document.getElementById('tag-legend-area');
     const rInput = document.getElementById('r');
     const thetaInput = document.getElementById('theta');
     const fiInput = document.getElementById('fi');
@@ -123,29 +154,47 @@ function loadTagDetails(tags, selectedTagIndex) {
 
     // Ajouter des écouteurs d'événements pour enregistrer les modifications
     tagNameInput.addEventListener('input', function() {
-        // Mettre à jour le nom du tag dans les données
-        tag.name = this.value;
-
+        // Mettre à jour le nom du tag dans jsonData
+        jsonData.scenes.forEach(scene => {
+            if (scene.tags[selectedTagIndex]) {
+                scene.tags[selectedTagIndex].name = this.value; // Utiliser jsonData
+            }
+        });
         // Mettre à jour l'option correspondante dans la liste déroulante
         const tagSelect = document.getElementById('tags-select');
         tagSelect.options[selectedTagIndex].textContent = this.value;
-        tagSelect.options[selectedTagIndex].value = this.value;
     });
 
     tagLegendInput.addEventListener('input', function() {
-        tag.legend = this.value;
+        jsonData.scenes.forEach(scene => {
+            if (scene.tags[selectedTagIndex]) {
+                scene.tags[selectedTagIndex].legend = this.value; // Utiliser jsonData
+            }
+        });
     });
 
     rInput.addEventListener('input', function() {
-        tag.position.r = this.value;
+        jsonData.scenes.forEach(scene => {
+            if (scene.tags[selectedTagIndex]) {
+                scene.tags[selectedTagIndex].position.r = this.value; // Utiliser jsonData
+            }
+        });
     });
 
     thetaInput.addEventListener('input', function() {
-        tag.position.theta = this.value;
+        jsonData.scenes.forEach(scene => {
+            if (scene.tags[selectedTagIndex]) {
+                scene.tags[selectedTagIndex].position.theta = this.value; // Utiliser jsonData
+            }
+        });
     });
 
     fiInput.addEventListener('input', function() {
-        tag.position.fi = this.value;
+        jsonData.scenes.forEach(scene => {
+            if (scene.tags[selectedTagIndex]) {
+                scene.tags[selectedTagIndex].position.fi = this.value; // Utiliser jsonData
+            }
+        });
     });
 }
 
@@ -166,32 +215,18 @@ async function saveData() {
     const cameraVertical = document.getElementById('camera-vertical').value;
     const cameraHorizontal = document.getElementById('camera-horizontal').value;
 
-    const tagSelect = document.getElementById('tags-select');
-    const tags = [];
-
-    Array.from(tagSelect.options).forEach((option, index) => {
-        tags.push({
-            name: document.getElementById('tag-name').value,
-            legend: document.getElementById('tag-legend').value,
-            position: {
-                r: document.getElementById('r').value,
-                theta: document.getElementById('theta').value,
-                fi: document.getElementById('fi').value,
-            }
-        });
-    });
-
+    // Mettre à jour les données de la scène correspondante dans jsonData
     jsonData.scenes.forEach(scene => {
         if (scene.name === sceneName) {
             scene.camera = {
                 vertical: cameraVertical,
                 horizontal: cameraHorizontal
             };
-            scene.tags = tags;
+            // Pas besoin de mettre à jour les tags ici, car ils sont déjà mis à jour via les événements
         }
     });
 
-    await updateJSON(jsonData);
+    await updateJSON(jsonData); // Enregistrer les données JSON
 }
 
 // Fonction pour mettre à jour le fichier JSON
@@ -215,12 +250,12 @@ async function updateJSON(data) {
     }
 }
 
-
 // Initialisation
 async function init(){
     await loadPageData();
     document.getElementById('add-scene').addEventListener('click', addNewScene); 
     document.getElementById('save-button').addEventListener('click', saveData); 
+    document.getElementById('delete-scene').addEventListener('click', deleteScene);
 }
 
 // Charger les données de la page lorsque le document est prêt

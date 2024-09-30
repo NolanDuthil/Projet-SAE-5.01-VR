@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expérience</title>
+    <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+    <script type="module" src="./script.js"></script>
+</head>
+<body>
+    <main>
+        <a-scene id="a-scene">
+            <!-- Le ciel, où l'image sera projetée -->
+            <a-sky id="image-360" radius="200"></a-sky>
+
+            <!-- La caméra -->
+            <a-camera wasd-controls="enabled: false">
+                <a-cursor id="cursor" color="white"
+                          geometry="primitive: sphere; radius: 0.008"
+                          material="color: white; shader: flat">
+                </a-cursor>
+            </a-camera>
+        </a-scene>
+    </main>
+</body>
+</html>
