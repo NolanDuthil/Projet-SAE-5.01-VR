@@ -44,7 +44,6 @@ let cameraVerticalListener;
 let cameraHorizontalListener;
 let tagSelectListener;
 let fileUploadFormListener;
-let viewFilesBtnListener;
 let closePopupBtnListener;
 let popupOverlayListener;
 let saveButtonListener;
@@ -57,7 +56,6 @@ function updateSceneDetails(scene) {
     const cameraHorizontalInput = document.getElementById('camera-horizontal');
     const tagSelect = document.getElementById('tags-select');
     const fileUploadForm = document.getElementById('upload-form');
-    const viewFilesBtn = document.getElementById('view-files-btn');
     const closePopupBtn = document.getElementById('close-popup-btn');
     const popupOverlay = document.getElementById('popup-overlay');
 
@@ -67,7 +65,6 @@ function updateSceneDetails(scene) {
     if (cameraHorizontalListener) cameraHorizontalInput.removeEventListener('input', cameraHorizontalListener);
     if (tagSelectListener) tagSelect.removeEventListener('change', tagSelectListener);
     if (fileUploadFormListener) fileUploadForm.removeEventListener('submit', fileUploadFormListener);
-    if (viewFilesBtnListener) viewFilesBtn.removeEventListener('click', viewFilesBtnListener);
     if (closePopupBtnListener) closePopupBtn.removeEventListener('click', closePopupBtnListener);
     if (popupOverlayListener) popupOverlay.removeEventListener('click', popupOverlayListener);
     if (saveButtonListener) saveButton.removeEventListener('click', saveButtonListener);
@@ -131,12 +128,6 @@ function updateSceneDetails(scene) {
         handleFileUpload();
     };
     fileUploadForm.addEventListener('submit', fileUploadFormListener);
-
-    // Listener pour le bouton de visualisation des fichiers
-    viewFilesBtnListener = function () {
-        showFilePopup();
-    };
-    viewFilesBtn.addEventListener('click', viewFilesBtnListener);
 
     // Listener pour le bouton de fermeture de la popup
     closePopupBtnListener = function () {
