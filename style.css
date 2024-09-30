@@ -118,7 +118,7 @@ main{
     transform: scale(1.15);
 }
 
-.image, .camera, .tag-name, .tag-legend, .tag-position, .scene-selector-container, .tag-type-container{
+.camera, .tag-name, .tag-legend, .tag-position, .scene-selector-container, .tag-type-container{
     display: flex;
     flex-direction: column;
     align-items: left;
@@ -137,7 +137,7 @@ main{
     font-weight: 400;
 }
 
-.image-button, .save-button, .run-button{
+.save-button, .run-button{
     border: var(--classic-border);
     background-color: var(--clr-white);
     color: var(--clr-black);
@@ -146,7 +146,7 @@ main{
     font-family: var(--ff-Raleway);
 }
 
-.image-button:hover, .save-button:hover, .run-button:hover{
+.save-button:hover, .run-button:hover{
     border: 1.5px solid var(--clr-white);
     background-color: var(--clr-black);
     color: var(--clr-white);
