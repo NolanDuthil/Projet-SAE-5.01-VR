@@ -269,30 +269,6 @@ function hideTags() {
     document.getElementById('tag-position').style = "display:none";
 }
 
-// function updateCanvaTags(scene) {
-//     let canva = document.getElementById('a-scene');
-//     let pastTags = document.querySelectorAll('a-sphere', 'a-text');
-//     pastTags.forEach((pastTag) => {
-//         pastTag.remove();
-//     })
-//     scene.tags.forEach((tag) => {
-//         let tagSphere = document.createElement('a-sphere');
-//         tagSphere.setAttribute('color', tag.type == 'porte' ? 'red' : 'blue');
-//         tagSphere.setAttribute('id', tag.id);
-//         tagSphere.setAttribute('radius', 1);
-//         tagSphere.setAttribute('fromspherical', 'fi:' + tag.position.fi + '; theta:' + tag.position.theta + '; r:' + tag.position.r + ';');
-//         canva.appendChild(tagSphere);
-//         let tagText = document.createElement('a-text');
-//         tagText.setAttribute('value', tag.legend);
-//         tagText.setAttribute('fromspherical', 'fi: ' + tag.position.fi + "; theta: " + tag.position.theta - (-4) + "; r: " + tag.position.r + ";")
-//         tagText.setAttribute('color', 'white');
-//         tagText.setAttribute('align', 'center');
-//         tagText.setAttribute('width', '20');
-//         tagText.setAttribute('look-at', '[camera]');
-//         canva.appendChild(tagText);
-//     });
-// }
-
 function updateCanvaTags(scene) {
     let canva = document.getElementById('a-scene');
     let pastTags = document.querySelectorAll('a-sphere, a-text'); // Sélectionner aussi les éléments de texte
@@ -301,41 +277,29 @@ function updateCanvaTags(scene) {
     });
 
     scene.tags.forEach((tag) => {
-
-        // Créer une sphère pour le tag
         let tagSphere = document.createElement('a-sphere');
         tagSphere.setAttribute('color', tag.type === 'porte' ? 'red' : 'blue');
-        tagSphere.setAttribute('id', tag.name);
+        tagSphere.setAttribute('id', tag.id);
         tagSphere.setAttribute('radius', 1);
-
-        // Ajouter le composant de conversion des coordonnées sphériques
         tagSphere.setAttribute('fromspherical', `fi:${tag.position.fi}; theta:${tag.position.theta}; r:${tag.position.r};`);
-
-        // Ajouter la sphère au canvas
         canva.appendChild(tagSphere);
 
-        // Créer un texte pour la légende du tag
         let tagText = document.createElement('a-text');
+        tagText.setAttribute('id', tag.id + "-text")
         tagText.setAttribute('value', tag.legend);
-
-        // Utiliser les mêmes coordonnées pour placer le texte
-        // En supposant que le composant a déjà mis à jour la position de la sphère
         tagText.setAttribute('fromspherical', `fi:${tag.position.fi}; theta:${tag.position.theta - (-4)}; r:${tag.position.r};`); // Ajustement pour le texte
-
         tagText.setAttribute('color', 'white');
         tagText.setAttribute('align', 'center'); // Centrer le texte par rapport à la sphère
         tagText.setAttribute('width', '20');
         tagText.setAttribute('look-at', '[camera]');
-
-        // Ajouter le texte au canvas
         canva.appendChild(tagText);
     });
 }
 
 function updateCanvaTagInformations(tag){
     let canva = document.getElementById('a-scene');
-    let lastTag = document.getElementById(tag.id);
-    lastTag.remove();
+    document.getElementById(tag.id).remove();
+    document.getElementById(tag.id + '-text').remove();
 
     let tagSphere = document.createElement('a-sphere');
     tagSphere.setAttribute('color', tag.type == 'porte' ? 'red' : 'blue');
@@ -343,6 +307,16 @@ function updateCanvaTagInformations(tag){
     tagSphere.setAttribute('radius', 1);
     tagSphere.setAttribute('fromspherical', 'fi:' + tag.position.fi + '; theta:' + tag.position.theta + '; r:' + tag.position.r + ';');
     canva.appendChild(tagSphere);
+
+    let tagText = document.createElement('a-text');
+    tagText.setAttribute('id', tag.id + "-text")
+    tagText.setAttribute('value', tag.legend);
+    tagText.setAttribute('fromspherical', `fi:${tag.position.fi}; theta:${tag.position.theta - (-4)}; r:${tag.position.r};`); // Ajustement pour le texte
+    tagText.setAttribute('color', 'white');
+    tagText.setAttribute('align', 'center'); // Centrer le texte par rapport à la sphère
+    tagText.setAttribute('width', '20');
+    tagText.setAttribute('look-at', '[camera]');
+    canva.appendChild(tagText);
 }
 
 // Fonction pour ajouter une nouvelle scène
