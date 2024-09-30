@@ -194,8 +194,6 @@ function loadTagDetails(tags, selectedTagIndex) {
     thetaInput.value = tag.position.theta;
     fiInput.value = tag.position.fi;
 
-    // Afficher la légende sous le tag
-    tagLegendDisplay.textContent = tag.legend; // Mettre à jour l'affichage de la légende
 
     // Remplir le sélecteur de scène
     sceneSelector.innerHTML = ''; // Vider le sélecteur
@@ -283,13 +281,14 @@ function updateCanvaTags(scene) {
     });
 
     scene.tags.forEach((tag) => {
-        console.log(`Ajout du tag: ${tag.name} avec légende: ${tag.legend}`); // Débogage
 
         // Créer une sphère pour le tag
         let tagSphere = document.createElement('a-sphere');
         tagSphere.setAttribute('color', tag.type === 'porte' ? 'red' : 'blue');
         tagSphere.setAttribute('id', tag.name);
         tagSphere.setAttribute('radius', 1);
+
+        // Ajouter le composant de conversion des coordonnées sphériques
         tagSphere.setAttribute('fromspherical', `fi:${tag.position.fi}; theta:${tag.position.theta}; r:${tag.position.r};`);
 
         // Ajouter la sphère au canvas
@@ -297,15 +296,19 @@ function updateCanvaTags(scene) {
 
         // Créer un texte pour la légende du tag
         let tagText = document.createElement('a-text');
-        tagText.setAttribute('value', 'Test');
-        tagText.setAttribute('position', '0 0 0'); // Utilisez des valeurs simples
-        tagText.setAttribute('color', 'black');
-        tagText.setAttribute('align', 'center');
-        tagText.setAttribute('width', '4');
+        tagText.setAttribute('value', tag.legend);
+
+        // Utiliser les mêmes coordonnées pour placer le texte
+        // En supposant que le composant a déjà mis à jour la position de la sphère
+        tagText.setAttribute('fromspherical', `fi:${tag.position.fi}; theta:${tag.position.theta - (-4)}; r:${tag.position.r};`); // Ajustement pour le texte
+
+        tagText.setAttribute('color', 'white');
+        tagText.setAttribute('align', 'center'); // Centrer le texte par rapport à la sphère
+        tagText.setAttribute('width', '20');
+        tagText.setAttribute('look-at', '[camera]');
 
         // Ajouter le texte au canvas
         canva.appendChild(tagText);
-        console.log(tagText);
     });
 }
 
@@ -329,7 +332,7 @@ async function addNewScene() {
     loadTagDetails(selectedScene.tags, selectedTag);
 }
 
-// Fonction pour ajouter une nouvelle scène
+// Fonction pour ajouter un nouveau tag
 async function addNewTag() {
     const newTag = {
         name: "nouveau tag",
