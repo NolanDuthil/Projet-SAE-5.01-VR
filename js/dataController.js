@@ -225,6 +225,7 @@ function loadTagDetails(tags, selectedTagIndex) {
         } else {
             sceneSelectorContainer.style.display = 'none'; // Cache le sélecteur de scène
         }
+        updateCanvaTagInformations(tag);
     };
     tagTypeSelector.addEventListener('change', tagTypeListener);
 
@@ -232,7 +233,6 @@ function loadTagDetails(tags, selectedTagIndex) {
     tagNameListener = function () {
         tag.name = this.value;
         tagSelect.options[selectedTagIndex].textContent = this.value;
-        // updateCanvaTags(selectedScene);
     };
     tagNameInput.addEventListener('input', tagNameListener);
 
@@ -242,20 +242,22 @@ function loadTagDetails(tags, selectedTagIndex) {
     tagLegendInput.addEventListener('input', tagLegendListener);
 
     rInputListener = function () {
-        // updateCanvaTags(selectedScene);
         tag.position.r = this.value === '' ? 0 : this.value;
+        updateCanvaTagInformations(tag);
     };
     rInput.addEventListener('input', rInputListener);
 
     thetaInputListener = function () {
-        // updateCanvaTags(selectedScene);
         tag.position.theta = this.value === '' ? 0 : this.value;
+        updateCanvaTagInformations(tag);
+        console.log(tag);
     };
     thetaInput.addEventListener('input', thetaInputListener);
 
     fiInputListener = function () {
-        // updateCanvaTags(selectedScene);
         tag.position.fi = this.value === '' ? 0 : this.value;
+        updateCanvaTagInformations(tag);
+        console.log(tag);
     };
     fiInput.addEventListener('input', fiInputListener);
 }
@@ -276,11 +278,24 @@ function updateCanvaTags(scene) {
     scene.tags.forEach((tag) => {
         let tagSphere = document.createElement('a-sphere');
         tagSphere.setAttribute('color', tag.type == 'porte' ? 'red' : 'blue');
-        tagSphere.setAttribute('id', tag.name);
+        tagSphere.setAttribute('id', tag.id);
         tagSphere.setAttribute('radius', 1);
         tagSphere.setAttribute('fromspherical', 'fi:' + tag.position.fi + '; theta:' + tag.position.theta + '; r:' + tag.position.r + ';');
         canva.appendChild(tagSphere);
     });
+}
+
+function updateCanvaTagInformations(tag){
+    let canva = document.getElementById('a-scene');
+    let lastTag = document.getElementById(tag.id);
+    lastTag.remove();
+
+    let tagSphere = document.createElement('a-sphere');
+    tagSphere.setAttribute('color', tag.type == 'porte' ? 'red' : 'blue');
+    tagSphere.setAttribute('id', tag.id);
+    tagSphere.setAttribute('radius', 1);
+    tagSphere.setAttribute('fromspherical', 'fi:' + tag.position.fi + '; theta:' + tag.position.theta + '; r:' + tag.position.r + ';');
+    canva.appendChild(tagSphere);
 }
 
 // Fonction pour ajouter une nouvelle scène
@@ -306,13 +321,14 @@ async function addNewScene() {
 // Fonction pour ajouter une nouvelle scène
 async function addNewTag() {
     const newTag = {
+        id: Date.now(),
         name: "nouveau tag",
         type: "porte",
         legend: "nouveau tag",
-        "position": {
-            "r": "2",
-            "theta": "0",
-            "fi": "0"
+        position: {
+            r: "2",
+            theta: "0",
+            fi: "0"
         }
     };
 
@@ -344,6 +360,7 @@ function initializeDefaultData() {
                 "camera": { "vertical": "0", "horizontal": "0" },
                 "tags": [
                     {
+                        "id": "1",
                         "name": "Porte Studio (côté extérieur)",
                         "legend": "Rentrer dans le studio",
                         "type": "porte",
@@ -351,6 +368,7 @@ function initializeDefaultData() {
                         "position": { "r": "25", "theta": "90", "fi": "-110" }
                     },
                     {
+                        "id": "2",
                         "name": "Une information",
                         "type": "info",
                         "legend": "Nouvelle information",
@@ -365,6 +383,7 @@ function initializeDefaultData() {
                 "camera": { "vertical": "0", "horizontal": "0" },
                 "tags": [
                     {
+                        "id": "3",
                         "name": "Porte Studio (côté intérieur)",
                         "legend": "Sortir du studio",
                         "type": "porte",
@@ -372,6 +391,7 @@ function initializeDefaultData() {
                         "position": { "r": "30", "theta": "90", "fi": "135" }
                     },
                     {
+                        "id": "4",
                         "name": "Porte Salle 2 Studio",
                         "legend": "Rentrer dans la 2e salle du studio",
                         "type": "porte",
@@ -386,6 +406,7 @@ function initializeDefaultData() {
                 "camera": { "vertical": "0", "horizontal": "0" },
                 "tags": [
                     {
+                        "id": "5",
                         "name": "Porte Salle 1 Studio",
                         "legend": "Sortir de la 2e salle du studio",
                         "type": "porte",
@@ -393,6 +414,7 @@ function initializeDefaultData() {
                         "position": { "r": "30", "theta": "90", "fi": "-40" }
                     },
                     {
+                        "id": "6",
                         "name": "Porte Salle 3 Studio",
                         "legend": "Rentrer dans la 3e salle du studio",
                         "type": "porte",
@@ -407,6 +429,7 @@ function initializeDefaultData() {
                 "camera": { "vertical": "0", "horizontal": "0" },
                 "tags": [
                     {
+                        "id": "7",
                         "name": "Porte Salle 2 Studio",
                         "legend": "Sortir de la 3e salle du studio",
                         "type": "porte",
