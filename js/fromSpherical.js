@@ -1,5 +1,5 @@
 // Coordonnées Sphériques
-export default function fromSpherical(){
+function fromSpherical(){
     AFRAME.registerComponent('fromspherical', {
         // we will use two angles and a radius provided by the user 
         schema: {
@@ -28,3 +28,5 @@ export default function fromSpherical(){
         }  
     })
 }
+
+fromSpherical();

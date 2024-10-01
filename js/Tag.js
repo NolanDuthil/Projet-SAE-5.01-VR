@@ -1,9 +1,9 @@
 export default class Tag {
-    constructor(id, name, position = { r: 0, theta: 0, fi: 0 }, type = "tag") {
+    constructor(id, name, position = { r: 0, theta: 0, fi: 0 }) {
         this._id = id;
         this._name = name;
         this._position = position;
-        this._type = type;
+        this._type = 'tag';
     }
 
     // Getters and setters

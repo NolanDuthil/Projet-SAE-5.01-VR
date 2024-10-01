@@ -18,10 +18,10 @@
             <h2 class="title">Scène</h2>
             <div class="scene-settings">
                 <input class="scene-name" id="scene-name" type="text">
-                <div class="actions">
+                <!-- <div class="actions">
                     <img id="duplicate-scene" class="scene-icons" src="./assets/duplicate-icon.svg" alt="Duplicate">
                     <img id="delete-scene" class="scene-icons" src="./assets/delete-icon.svg" alt="Delete">
-                </div>
+                </div> -->
             </div>
             <div class="camera">
                 <h3 class="subtitle">Angle de la caméra</h3>
@@ -52,17 +52,13 @@
         </a-scene>
 
         <div class="right-panel">
-            <div class="tag-header">
-                <h2 class="title">Tags</h2>
-                <button id="add-tag-btn" class="add-button">
-                    <img src="./assets/add-icon.svg" alt="Add">
-                </button>
-            </div>
+            <h2 class="title">Tags</h2>
             <div id="tag-settings" class="tag-settings">
                 <select id="tags-select" class="tags-select">
                 </select>
                 <div class="actions">
-                    <img id="duplicate-tag" class="scene-icons" src="./assets/duplicate-icon.svg" alt="Duplicate">
+                    <img id="add-tag" class="scene-icons" src="assets/add-icon.svg" alt="Add">
+                    <!-- <img id="duplicate-tag" class="scene-icons" src="./assets/duplicate-icon.svg" alt="Duplicate"> -->
                     <img id="delete-tag" class="scene-icons" src="./assets/delete-icon.svg" alt="Delete">
                 </div>
             </div>
@@ -91,13 +87,6 @@
                     </div>
                 </div>
             </div>
-            <div id="tag-type-container" class="tag-type-container">
-                <h3 class="subtitle">Type</h3>
-                <select id="tag-type-selector" class="tag-type-selector">
-                    <option value="porte">Porte</option>
-                    <option value="info">Info</option>
-                </select>
-            </div>
             <div id="scene-selector-container" class="scene-selector-container" style="display:none;">
                 <h3 class="subtitle">Action</h3>
                 <select id="scene-selector" class="scene-selector"></select>
@@ -109,9 +98,9 @@
       <div class="left-side">
         <div class="scenes" id="scenes">
         </div>
-        <div id="add-scene" class="add-scene">
+        <!-- <div id="add-scene" class="add-scene">
           <img src="./assets/add-icon.svg" alt="Add">
-        </div> 
+        </div>  -->
       </div>
       <div class="right-side">
         <button id="export-json" class="export-button">Exporter</button>
@@ -124,6 +113,12 @@
     <div id="overlay" class="overlay" style="display:none;"></div>
     <div id="import-popup" class="import-popup" style="display: none">
         <input type="file" id="import-json-input" accept="application/json">
+        <button id="close-popup">Close</button>
+    </div>
+    <div id="add-popup" class="add-popup" style="display: none">
+        <button id="porte">Porte</button>
+        <button id="info">Info</button>
+        <button id="text">Text</button>
         <button id="close-popup">Close</button>
     </div>
 </main>
