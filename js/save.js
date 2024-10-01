@@ -1,18 +1,14 @@
-import Scene from "./Scene.js";
-import TagInfo from "./TagInfo.js";
-import TagPorte from "./TagPorte.js";
-
 // Déclarez jsonData ici pour qu'il soit accessible à toutes les fonctions
-let scenesInstances = []; 
+let jsonData = { scenes: [] };
 let selectedScene = {};
 let selectedTag = 0;
 
 // Fonction pour remplir le menu des scènes
-function populateSceneList() {
+function populateSceneList(scenes) {
     const scenesContainer = document.getElementById('scenes');
     scenesContainer.innerHTML = ''; // Vider le conteneur
 
-    scenesInstances.forEach(scene => {
+    scenes.forEach(scene => {
         // Créer un élément pour la scène
         const sceneItem = document.createElement('div');
         sceneItem.classList.add('scene-item');
@@ -42,26 +38,48 @@ function populateSceneList() {
     });
 }
 
+// Variables pour stocker les fonctions des EventListeners
+let sceneNameListener;
+let cameraVerticalListener;
+let cameraHorizontalListener;
+let tagSelectListener;
+let fileUploadFormListener;
+let closePopupBtnListener;
+let popupOverlayListener;
+let saveButtonListener;
+
 // Fonction pour mettre à jour les détails de la scène
 function updateSceneDetails(scene) {
     selectedScene = scene;
-    console.log(selectedScene)
     const sceneNameInput = document.getElementById('scene-name');
     const cameraVerticalInput = document.getElementById('camera-vertical');
     const cameraHorizontalInput = document.getElementById('camera-horizontal');
     const tagSelect = document.getElementById('tags-select');
+    const fileUploadForm = document.getElementById('upload-form');
+    const closePopupBtn = document.getElementById('close-popup-btn');
+    const popupOverlay = document.getElementById('popup-overlay');
+
+    // Supprimer les anciens EventListeners s'ils existent
+    if (sceneNameListener) sceneNameInput.removeEventListener('input', sceneNameListener);
+    if (cameraVerticalListener) cameraVerticalInput.removeEventListener('input', cameraVerticalListener);
+    if (cameraHorizontalListener) cameraHorizontalInput.removeEventListener('input', cameraHorizontalListener);
+    if (tagSelectListener) tagSelect.removeEventListener('change', tagSelectListener);
+    if (fileUploadFormListener) fileUploadForm.removeEventListener('submit', fileUploadFormListener);
+    if (closePopupBtnListener) closePopupBtn.removeEventListener('click', closePopupBtnListener);
+    if (popupOverlayListener) popupOverlay.removeEventListener('click', popupOverlayListener);
+    if (saveButtonListener) saveButton.removeEventListener('click', saveButtonListener);
 
     // Nom & Image de la scène
-    sceneNameInput.value = selectedScene.name;
-    selectedScene.image ? document.getElementById('image-360').setAttribute('src', "./uploaded_images/" + scene.image) : document.getElementById('image-360').setAttribute('src', "./assets/grey-background.avif");
+    sceneNameInput.value = scene.name;
+    scene.image ? document.getElementById('image-360').setAttribute('src', "./uploaded_images/" + scene.image) : document.getElementById('image-360').setAttribute('src', "./assets/grey-background.avif");
 
     // Angle Caméra de la scène
-    cameraVerticalInput.value = selectedScene.camera.vertical;
-    cameraHorizontalInput.value = selectedScene.camera.horizontal;
+    cameraVerticalInput.value = scene.camera.vertical;
+    cameraHorizontalInput.value = scene.camera.horizontal;
 
     // Liste de tags
     tagSelect.innerHTML = '';
-    const tags = selectedScene.tags || [];
+    const tags = scene.tags || [];
     tags.forEach((tag, index) => {
         const option = document.createElement('option');
         option.value = index;
@@ -69,7 +87,7 @@ function updateSceneDetails(scene) {
         tagSelect.appendChild(option);
     });
 
-    updateCanvaTags(selectedScene);
+    updateCanvaTags(scene);
 
     // Affichage des données du premier tag
     if (tags.length > 0) {
@@ -79,31 +97,43 @@ function updateSceneDetails(scene) {
     }
 
     // Listener pour le nom de la scène
-    sceneNameInput.addEventListener('input', ()=>{
-        selectedScene.name = this.value;
-    });
+    sceneNameListener = function () {
+        scene.name = this.value;
+    };
+    sceneNameInput.addEventListener('input', sceneNameListener);
 
     // Listener pour l'angle vertical de la caméra
-    cameraVerticalInput.addEventListener('input', ()=>{
-        selectedScene.camera.vertical = this.value
-    });
+    cameraVerticalListener = function () {
+        scene.camera.vertical = this.value;
+    };
+    cameraVerticalInput.addEventListener('input', cameraVerticalListener);
 
     // Listener pour l'angle horizontal de la caméra
-    cameraHorizontalInput.addEventListener('input', ()=>{
-        selectedScene.camera.horizontal = this.value;
-    });
+    cameraHorizontalListener = function () {
+        scene.camera.horizontal = this.value;
+    };
+    cameraHorizontalInput.addEventListener('input', cameraHorizontalListener);
 
     // Listener pour le changement de tag
-    tagSelect.addEventListener('change', ()=>{
+    tagSelectListener = function () {
         loadTagDetails(tags, this.value);
-    });
+    };
+    tagSelect.addEventListener('change', tagSelectListener);
 }
+
+// Variables pour stocker les fonctions des EventListeners des tags
+let tagNameListener;
+let tagLegendListener;
+let rInputListener;
+let thetaInputListener;
+let fiInputListener;
+let sceneSelectListener;
+let tagTypeListener;
 
 // Fonction pour remplir les détails du tag sélectionné
 function loadTagDetails(tags, selectedTagIndex) {
     selectedTag = selectedTagIndex;
 
-    // Affiche les paramètres des tags
     document.getElementById('tag-settings').style = "";
     document.getElementById('tag-name').style = "";
     document.getElementById('tag-legend').style = "";
@@ -120,6 +150,15 @@ function loadTagDetails(tags, selectedTagIndex) {
     const sceneSelector = document.getElementById('scene-selector');
     const tagTypeSelector = document.getElementById('tag-type-selector');
 
+    // Supprimer les anciens EventListeners s'ils existent
+    if (tagNameListener) tagNameInput.removeEventListener('input', tagNameListener);
+    if (tagLegendListener) tagLegendInput.removeEventListener('input', tagLegendListener);
+    if (rInputListener) rInput.removeEventListener('input', rInputListener);
+    if (thetaInputListener) thetaInput.removeEventListener('input', thetaInputListener);
+    if (fiInputListener) fiInput.removeEventListener('input', fiInputListener);
+    if (sceneSelectListener) sceneSelector.removeEventListener('change', sceneSelectListener);
+    if (tagTypeListener) tagTypeSelector.removeEventListener('change', tagTypeListener); // Supprimez le listener de type
+
     // Remplir les champs de formulaire avec les données du tag sélectionné
     tagNameInput.value = tag.name;
     tagLegendInput.value = tag.legend;
@@ -128,7 +167,7 @@ function loadTagDetails(tags, selectedTagIndex) {
     fiInput.value = tag.position.fi;
 
     sceneSelector.innerHTML = ''; // Vider le sélecteur
-    scenesInstances.forEach((scene, index) => {
+    jsonData.scenes.forEach((scene, index) => {
         if (scene != selectedScene) {
             const option = document.createElement('option');
             option.value = index;  // L'index de la scène
@@ -141,45 +180,52 @@ function loadTagDetails(tags, selectedTagIndex) {
     if (tag.type === 'porte') {
         sceneSelectorContainer.style.display = '';
         sceneSelector.value = tag.action;
-        sceneSelector.addEventListener('change', ()=>{
+        sceneSelectListener = function () {
             tag.action = this.value;
-        });
+        };
+        sceneSelector.addEventListener('change', sceneSelectListener);
     } else {
         sceneSelectorContainer.style.display = 'none';
     }
 
     // Ajouter un listener pour changer le type de tag
     tagTypeSelector.value = tag.type; 
-    tagTypeSelector.addEventListener('change', ()=>{
+    tagTypeListener = function () {
         tag.type = this.value;
         // Afficher ou cacher le sélecteur de scène selon le type sélectionné
         tag.type === 'porte' ? sceneSelectorContainer.style.display = '' : sceneSelectorContainer.style.display = 'none';
         updateCanvaTagInformations(tag);
-    });
+    };
+    tagTypeSelector.addEventListener('change', tagTypeListener);
 
-    tagNameInput.addEventListener('input', ()=>{
+    tagNameListener = function () {
         tag.name = this.value;
         tagSelect.options[selectedTagIndex].textContent = this.value;
-    });
+    };
+    tagNameInput.addEventListener('input', tagNameListener);
 
-    tagLegendInput.addEventListener('input', ()=>{
+    tagLegendListener = function () {
         tag.legend = this.value;
-    });
+    };
+    tagLegendInput.addEventListener('input', tagLegendListener);
 
-    rInput.addEventListener('input', ()=>{
+    rInputListener = function () {
         tag.position.r = this.value === '' ? 0 : this.value;
         updateCanvaTagInformations(tag);
-    });
+    };
+    rInput.addEventListener('input', rInputListener);
 
-    thetaInput.addEventListener('input', ()=>{
+    thetaInputListener = function () {
         tag.position.theta = this.value === '' ? 0 : this.value;
         updateCanvaTagInformations(tag);
-    });
+    };
+    thetaInput.addEventListener('input', thetaInputListener);
 
-    fiInput.addEventListener('input', ()=>{
+    fiInputListener = function () {
         tag.position.fi = this.value === '' ? 0 : this.value;
         updateCanvaTagInformations(tag);
-    });
+    };
+    fiInput.addEventListener('input', fiInputListener);
 }
 
 function hideTags() {
@@ -241,15 +287,16 @@ function updateCanvaTagInformations(tag){
 
 // Fonction pour ajouter une nouvelle scène
 async function addNewScene() {
-    const newScene = new Scene(
-        `Scene ${Date.now()}`,
-        "",
-        {
+    const newScene = {
+        name: `Scene ${Date.now()}`,
+        image: "",
+        camera: {
             vertical: "0",
-            horizontal: "0"      
-        }, 
-        []
-    )
+            horizontal: "0"
+        },
+        tags: {}
+    };
+
     // Ajouter la nouvelle scène à jsonData
     jsonData.scenes.push(newScene);
 
@@ -274,6 +321,7 @@ async function addNewTag() {
 
     // Ajouter la nouvelle scène à jsonData
     selectedScene.tags.push(newTag);
+    console.log(jsonData)
 
     // Mettre à jour l'affichage avec les scènes mises à jour
     updateSceneDetails(selectedScene);
@@ -282,93 +330,153 @@ async function addNewTag() {
 // Fonction pour charger les données JSON depuis localStorage
 function loadFromLocalStorage() {
     const storedData = localStorage.getItem('jsonData');
-    if (storedData){
-        return JSON.parse(storedData);
-    } else {
-        initializeDefaultData();
-        return null;
-    }
+    storedData ? jsonData = JSON.parse(storedData) : initializeDefaultData();
 }
 
 // Fonction pour initialiser les données par défaut dans localStorage
 function initializeDefaultData() {
-    // Créer les scènes avec des instances de classes
-    const scene1 = new Scene(
-        "Entrée Studio",
-        "GS__3523.JPG",
-        { vertical: "0", horizontal: "0" },
-        [
-            new TagPorte("1", "Porte Studio (côté extérieur)", "1", { r: "25", theta: "90", fi: "-115" }),
-            new TagInfo("2", "Une information", "Nouvelle information", { r: "30", theta: "90", fi: "-40" })
+    jsonData = {
+        scenes: [
+    {
+        "name": "Entrée Studio",
+        "image": "GS__3523.JPG",
+        "camera": {
+            "vertical": "0",
+            "horizontal": "0"
+        },
+        "tags": [
+            {
+                "id": "1",
+                "name": "Porte Studio (côté extérieur)",
+                "legend": "Rentrer dans le studio",
+                "type": "porte",
+                "action": "1",
+                "position": {
+                    "r": "25",
+                    "theta": "90",
+                    "fi": "-115"
+                }
+            },
+            {
+                "id": "2",
+                "name": "Une information",
+                "type": "info",
+                "legend": "Nouvelle information",
+                "action": "1",
+                "position": {
+                    "r": "30",
+                    "theta": "90",
+                    "fi": "-40"
+                }
+            }
         ]
-    );
-
-    const scene2 = new Scene(
-        "Salle 1 Studio",
-        "GS__3524.JPG",
-        { vertical: "0", horizontal: "0" },
-        [
-            new TagPorte("3", "Porte Studio (côté intérieur)", "0", { r: "30", theta: "90", fi: "135" }),
-            new TagPorte("4", "Porte Salle 2 Studio", "2", { r: "30", theta: "90", fi: "-40" })
+    },
+    {
+        "name": "Salle 1 Studio",
+        "image": "GS__3524.JPG",
+        "camera": {
+            "vertical": "0",
+            "horizontal": "0"
+        },
+        "tags": [
+            {
+                "id": "3",
+                "name": "Porte Studio (côté intérieur)",
+                "legend": "Sortir du studio",
+                "type": "porte",
+                "action": "0",
+                "position": {
+                    "r": "30",
+                    "theta": "90",
+                    "fi": "135"
+                }
+            },
+            {
+                "id": "4",
+                "name": "Porte Salle 2 Studio",
+                "legend": "Rentrer dans la 2e salle du studio",
+                "type": "porte",
+                "action": "2",
+                "position": {
+                    "r": "30",
+                    "theta": "90",
+                    "fi": "-40"
+                }
+            }
         ]
-    );
-
-    const scene3 = new Scene(
-        "Salle 2 Studio",
-        "GS__3525.JPG",
-        { vertical: "0", horizontal: "0" },
-        [
-            new TagPorte("5", "Porte Salle 1 Studio", "1", { r: "30", theta: "90", fi: "-40" }),
-            new TagPorte("6", "Porte Salle 3 Studio", "3", { r: "40", theta: "90", fi: "-140" })
+    },
+    {
+        "name": "Salle 2 Studio",
+        "image": "GS__3525.JPG",
+        "camera": {
+            "vertical": "0",
+            "horizontal": "0"
+        },
+        "tags": [
+            {
+                "id": "5",
+                "name": "Porte Salle 1 Studio",
+                "legend": "Sortir de la 2e salle du studio",
+                "type": "porte",
+                "action": "1",
+                "position": {
+                    "r": "30",
+                    "theta": "90",
+                    "fi": "-40"
+                }
+            },
+            {
+                "id": "6",
+                "name": "Porte Salle 3 Studio",
+                "legend": "Rentrer dans la 3e salle du studio",
+                "type": "porte",
+                "action": "3",
+                "position": {
+                    "r": "40",
+                    "theta": "90",
+                    "fi": "-140"
+                }
+            }
         ]
-    );
-
-    const scene4 = new Scene(
-        "Salle 3 Studio",
-        "GS__3526.JPG",
-        { vertical: "0", horizontal: "0" },
-        [
-            new TagPorte("7", "Porte Salle 2 Studio", "2", { r: "40", theta: "90", fi: "-65" })
+    },
+    {
+        "name": "Salle 3 Studio",
+        "image": "GS__3526.JPG",
+        "camera": {
+            "vertical": "0",
+            "horizontal": "0"
+        },
+        "tags": [
+            {
+                "id": "7",
+                "name": "Porte Salle 2 Studio",
+                "legend": "Sortir de la 3e salle du studio",
+                "type": "porte",
+                "action": "2",
+                "position": {
+                    "r": "40",
+                    "theta": "90",
+                    "fi": "-65"
+                }
+            }
         ]
-    );
-
-    // Ajouter les scènes au jsonData
-    scenesInstances.push(scene1, scene2, scene3, scene4);
-
-    // Enregistrer les données dans le stockage local
+    }
+]
+    };
     saveToLocalStorage();
 }
 
-
 // Fonction pour charger les données de la page lorsque le document est prêt
 async function loadPageData() {
-    let jsonData = loadFromLocalStorage();
-
-    // Créer des instances de la classe Scene à partir des données JSON
-    if (jsonData != null) {
-        scenesInstances = jsonData.map(sceneData => {
-            const tags = sceneData._tags.map(tagData => {
-                // Créer une instance de TagInfo ou TagPorte selon le type
-                if (tagData._type === 'porte') {
-                    return new TagPorte(tagData._id, tagData._name, tagData._legend, tagData._position, tagData._action);
-                } else {
-                    return new TagInfo(tagData._id, tagData._name, tagData._legend, tagData._position);
-                }
-            });
-            return new Scene(sceneData._name, sceneData._image, sceneData._camera, tags);
-        });
-    }
-    
-    populateSceneList();
-    if (scenesInstances.length > 0) {
-        selectedScene = scenesInstances[0];
-        updateSceneDetails(selectedScene);
-    }
+    loadFromLocalStorage();
+    let scenes = jsonData.scenes;
+    populateSceneList(scenes);
+    scenes.length > 0 ? updateSceneDetails(scenes[0]):'';
 }
 
 // Fonction pour sauvegarder les données JSON dans localStorage
 function saveToLocalStorage() {
-    localStorage.setItem('jsonData', JSON.stringify(scenesInstances));
+    localStorage.setItem('jsonData', JSON.stringify(jsonData));
 }
 
 // Fonction pour exporter les données JSON
