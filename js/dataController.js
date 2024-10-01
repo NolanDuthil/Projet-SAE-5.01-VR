@@ -72,10 +72,10 @@ function updateSceneDetails(scene) {
     if (cameraVerticalListener) cameraVerticalInput.removeEventListener('input', cameraVerticalListener);
     if (cameraHorizontalListener) cameraHorizontalInput.removeEventListener('input', cameraHorizontalListener);
     if (tagSelectListener) tagSelect.removeEventListener('change', tagSelectListener);
-   /* if (fileUploadFormListener) fileUploadForm.removeEventListener('submit', fileUploadFormListener);
-    if (viewFilesBtnListener) viewFilesBtn.removeEventListener('click', viewFilesBtnListener);
-    if (closePopupBtnListener) closePopupBtn.removeEventListener('click', closePopupBtnListener);
-    if (popupOverlayListener) popupOverlay.removeEventListener('click', popupOverlayListener);*/
+    /* if (fileUploadFormListener) fileUploadForm.removeEventListener('submit', fileUploadFormListener);
+     if (viewFilesBtnListener) viewFilesBtn.removeEventListener('click', viewFilesBtnListener);
+     if (closePopupBtnListener) closePopupBtn.removeEventListener('click', closePopupBtnListener);
+     if (popupOverlayListener) popupOverlay.removeEventListener('click', popupOverlayListener);*/
     if (saveButtonListener) saveButton.removeEventListener('click', saveButtonListener);
 
     // Nom & Image de la scène
@@ -273,43 +273,171 @@ function hideTags() {
     document.getElementById('tag-position').style = "display:none";
 }
 
+function getDistanceToCamera(el) {
+    // Récupérer la position de la caméra
+    let camera = document.querySelector('a-camera');
+    let cameraPos = camera.object3D.position;
+
+    // Récupérer la position de l'élément (la sphère)
+    let elPos = el.object3D.position;
+
+    // Calculer la distance entre la caméra et l'élément
+    let distance = elPos.distanceTo(cameraPos);
+
+    return distance;
+}
+
 function updateCanvaTags(scene) {
     let canva = document.getElementById('a-scene');
-    let pastTags = document.querySelectorAll('a-sphere, a-text'); // Sélectionner aussi les éléments de texte
+    let pastTags = document.querySelectorAll('a-sphere, a-text');
     pastTags.forEach((pastTag) => {
         pastTag.remove(); // Supprimer les anciennes sphères et textes
     });
 
+    // Variable pour garder une trace de la légende actuellement affichée pour les tags "info"
+    let currentlyVisibleInfoLegend = null;
+
     scene.tags.forEach((tag) => {
+        setupTag(canva, tag, currentlyVisibleInfoLegend);
+    });
+}
 
-        // Créer une sphère pour le tag
-        let tagSphere = document.createElement('a-sphere');
-        tagSphere.setAttribute('color', tag.type === 'porte' ? 'red' : 'blue');
-        tagSphere.setAttribute('id', tag.name);
-        tagSphere.setAttribute('radius', 1);
+function setupTag(canva, tag, currentlyVisibleInfoLegend) {
+    // Créer une sphère pour le tag
+    let tagSphere = document.createElement('a-sphere');
+    tagSphere.setAttribute('color', tag.type === 'porte' ? 'red' : 'blue');
+    tagSphere.setAttribute('id', tag.name);
+    tagSphere.setAttribute('radius', 1);
 
-        // Ajouter le composant de conversion des coordonnées sphériques
-        tagSphere.setAttribute('fromspherical', `fi:${tag.position.fi}; theta:${tag.position.theta}; r:${tag.position.r};`);
+    // Ajouter le composant de conversion des coordonnées sphériques
+    tagSphere.setAttribute('fromspherical', `fi:${tag.position.fi}; theta:${tag.position.theta}; r:${tag.position.r};`);
 
-        // Ajouter la sphère au canvas
-        canva.appendChild(tagSphere);
+    // Ajouter la sphère au canvas
+    canva.appendChild(tagSphere);
 
-        // Créer un texte pour la légende du tag
-        let tagText = document.createElement('a-text');
-        tagText.setAttribute('value', tag.legend);
+    // Créer un texte pour la légende du tag
+    let tagText = document.createElement('a-text');
+    tagText.setAttribute('value', tag.legend);
+    tagText.setAttribute('id', `${tag.name}-legend`); // ID unique pour la légende
+    tagText.setAttribute('color', 'white');
+    tagText.setAttribute('align', 'center');
+    tagText.setAttribute('width', '20');
+    tagText.setAttribute('opacity', tag.type === 'porte' ? '1' : '0'); // Légende "porte" toujours visible
+
+    // Attendre que la sphère soit positionnée pour calculer la distance
+    tagSphere.addEventListener('loaded', function () {
+        let distanceToCamera = getDistanceToCamera(tagSphere);
+
+        // Ajustement de l'écart vertical en fonction de la distance à la caméra
+        let baseOffset = -7; // Offset de base si proche
+        let thetaAdjustment = baseOffset + (distanceToCamera * 0.1); // Écart proportionnel à la distance
 
         // Utiliser les mêmes coordonnées pour placer le texte
-        // En supposant que le composant a déjà mis à jour la position de la sphère
-        tagText.setAttribute('fromspherical', `fi:${tag.position.fi}; theta:${tag.position.theta - (-4)}; r:${tag.position.r};`); // Ajustement pour le texte
-
-        tagText.setAttribute('color', 'white');
-        tagText.setAttribute('align', 'center'); // Centrer le texte par rapport à la sphère
-        tagText.setAttribute('width', '20');
-        tagText.setAttribute('look-at', '[camera]');
+        tagText.setAttribute('fromspherical', `fi:${tag.position.fi}; theta:${tag.position.theta - thetaAdjustment}; r:${tag.position.r};`);
 
         // Ajouter le texte au canvas
         canva.appendChild(tagText);
     });
+
+    // Ajouter un gestionnaire d'événements pour afficher la légende lorsque l'on clique sur le tag
+    tagSphere.addEventListener('click', () => {
+        // Si le tag est de type "info"
+        if (tag.type === 'info') {
+            // Si une légende est actuellement visible, la masquer
+            if (currentlyVisibleInfoLegend) {
+                currentlyVisibleInfoLegend.text.setAttribute('visible', 'false');
+                currentlyVisibleInfoLegend.text.setAttribute('opacity', '0'); // Réinitialiser l'opacité
+            }
+
+            // Vérifiez si le tagText est déjà visible
+            if (currentlyVisibleInfoLegend && currentlyVisibleInfoLegend.text === tagText) {
+                tagText.setAttribute('visible', 'false');
+                tagText.setAttribute('opacity', '0'); // Réinitialiser l'opacité
+                currentlyVisibleInfoLegend = null; // Réinitialiser la légende actuellement visible
+            } else {
+                tagText.setAttribute('visible', 'true'); // Affichez la légende du tag "info"
+                // Réinitialiser l'opacité pour afficher le texte
+                tagText.setAttribute('opacity', '1'); // Rendre le texte visible
+
+                currentlyVisibleInfoLegend = { text: tagText }; // Mettre à jour la légende actuellement visible
+            }
+        }
+    });
+
+    // Initialiser l'interaction de glisser-déposer
+    initializeTagInteraction(tagSphere, tagText);
+}
+
+function initializeTagInteraction(tagSphere, tagText) {
+    let isDragging = false; // Indicateur de glissement
+    let mousePosition; // Déclarer mousePosition ici pour qu'elle soit accessible
+
+    // Ajouter l'événement mousedown pour commencer le glissement
+    tagSphere.addEventListener('mousedown', function (event) {
+        event.preventDefault(); // Empêche le comportement par défaut
+        isDragging = true; // Commencer à glisser
+
+        // Conserver la visibilité des tags pendant le glissement
+        tagSphere.setAttribute('visible', 'true');
+        tagText.setAttribute('visible', 'true');
+
+        const mouseMoveHandler = (event) => {
+            if (isDragging) {
+                // Obtenir les coordonnées de la souris
+                mousePosition = getMousePosition(event);
+
+                // Mettre à jour la position de la sphère
+                tagSphere.setAttribute('position', {
+                    x: mousePosition.x,
+                    y: mousePosition.y,
+                    z: Math.max(mousePosition.z, 2) // S'assurer que Z est toujours à au moins 2
+                });
+
+                // Mettre à jour la position du texte
+                tagText.setAttribute('position', {
+                    x: mousePosition.x,
+                    y: mousePosition.y + 1, // Ajustez la position Y du texte selon vos besoins
+                    z: Math.max(mousePosition.z, 2) // S'assurer que Z est toujours à au moins 2
+                });
+            }
+        };
+
+        const mouseUpHandler = () => {
+            isDragging = false; // Arrête le glissement
+            window.removeEventListener('mousemove', mouseMoveHandler);
+            window.removeEventListener('mouseup', mouseUpHandler);
+
+            // Mettre à jour la position du tag dans la scène
+            if (mousePosition) { // Assurez-vous que mousePosition a une valeur avant de l'utiliser
+                let finalPosition = {
+                    fi: tagSphere.getAttribute('fromspherical').fi,
+                    theta: tagSphere.getAttribute('fromspherical').theta,
+                    r: mousePosition.z // Utiliser la position Z finale
+                };
+
+                // Enregistrer la nouvelle position du tag (ajuster selon votre logique)
+                tagSphere.setAttribute('fromspherical', `fi:${finalPosition.fi}; theta:${finalPosition.theta}; r:${finalPosition.r};`);
+            }
+        };
+
+        window.addEventListener('mousemove', mouseMoveHandler);
+        window.addEventListener('mouseup', mouseUpHandler);
+    });
+}
+
+// Fonction pour obtenir la position de la souris en coordonnées 3D
+function getMousePosition(event) {
+    let aScene = document.getElementById('a-scene');
+    let camera = document.querySelector('a-camera').components.camera.camera; // Obtenir la caméra correctement
+    let rect = aScene.getBoundingClientRect();
+
+    let x = ((event.clientX - rect.left) / rect.width) * 2 - 1; // Normaliser x
+    let y = -((event.clientY - rect.top) / rect.height) * 2 + 1; // Normaliser y
+
+    let mouseVector = new THREE.Vector3(x, y, 0.5); // Un vecteur avec une profondeur fixe (0.5)
+    mouseVector.unproject(camera); // Projeter le vecteur en utilisant la caméra
+
+    return { x: mouseVector.x, y: mouseVector.y, z: mouseVector.z };
 }
 
 // Fonction pour ajouter une nouvelle scène
@@ -339,8 +467,8 @@ async function addNewTag() {
         type: "porte",
         legend: "nouveau tag",  // Assurez-vous que la légende est initialisée
         position: {
-            r: "2",
-            theta: "0",
+            r: "15",
+            theta: "90",
             fi: "0"
         }
     };
