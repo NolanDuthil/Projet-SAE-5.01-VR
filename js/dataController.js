@@ -200,36 +200,25 @@ function loadTagDetails(tags, selectedTagIndex) {
     // Si le type du tag est "porte", afficher le sélecteur de scène
     if (tag.type === 'porte') {
         sceneSelectorContainer.style.display = '';
-
-        // Sélectionner la scène correspondante si elle est déjà définie
         sceneSelector.value = tag.action;
-
-        // Ajouter un event listener pour mettre à jour l'action (numéro de scène)
         sceneSelectListener = function () {
             tag.action = this.value;
-            // updateCanvaTags(selectedScene);
         };
         sceneSelector.addEventListener('change', sceneSelectListener);
     } else {
-        // Cacher le sélecteur si le type n'est pas "porte"
         sceneSelectorContainer.style.display = 'none';
     }
 
     // Ajouter un listener pour changer le type de tag
-    tagTypeSelector.value = tag.type; // Remplir le sélecteur avec le type actuel
+    tagTypeSelector.value = tag.type; 
     tagTypeListener = function () {
-        tag.type = this.value; // Met à jour le type du tag
+        tag.type = this.value;
         // Afficher ou cacher le sélecteur de scène selon le type sélectionné
-        if (tag.type === 'porte') {
-            sceneSelectorContainer.style.display = ''; // Affiche le sélecteur de scène
-        } else {
-            sceneSelectorContainer.style.display = 'none'; // Cache le sélecteur de scène
-        }
+        tag.type === 'porte' ? sceneSelectorContainer.style.display = '' : sceneSelectorContainer.style.display = 'none';
         updateCanvaTagInformations(tag);
     };
     tagTypeSelector.addEventListener('change', tagTypeListener);
 
-    // Ajouter de nouveaux EventListeners
     tagNameListener = function () {
         tag.name = this.value;
         tagSelect.options[selectedTagIndex].textContent = this.value;
@@ -250,14 +239,12 @@ function loadTagDetails(tags, selectedTagIndex) {
     thetaInputListener = function () {
         tag.position.theta = this.value === '' ? 0 : this.value;
         updateCanvaTagInformations(tag);
-        console.log(tag);
     };
     thetaInput.addEventListener('input', thetaInputListener);
 
     fiInputListener = function () {
         tag.position.fi = this.value === '' ? 0 : this.value;
         updateCanvaTagInformations(tag);
-        console.log(tag);
     };
     fiInput.addEventListener('input', fiInputListener);
 }
@@ -364,11 +351,7 @@ async function addNewTag() {
 // Fonction pour charger les données JSON depuis localStorage
 function loadFromLocalStorage() {
     const storedData = localStorage.getItem('jsonData');
-    if (storedData) {
-        jsonData = JSON.parse(storedData);
-    } else {
-        initializeDefaultData();
-    }
+    storedData ? jsonData = JSON.parse(storedData) : initializeDefaultData();
 }
 
 // Fonction pour initialiser les données par défaut dans localStorage
@@ -509,9 +492,7 @@ async function loadPageData() {
     loadFromLocalStorage();
     let scenes = jsonData.scenes;
     populateSceneList(scenes);
-    if (scenes.length > 0) {
-        updateSceneDetails(scenes[0]);
-    }
+    scenes.length > 0 ? updateSceneDetails(scenes[0]):'';
 }
 
 // Fonction pour sauvegarder les données JSON dans localStorage
