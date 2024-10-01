@@ -96,8 +96,6 @@ function updateSceneDetails(scene) {
         hideTags();
     }
 
-    // Créer et ajouter de nouveaux EventListeners
-
     // Listener pour le nom de la scène
     sceneNameListener = function () {
         scene.name = this.value;
@@ -121,25 +119,6 @@ function updateSceneDetails(scene) {
         loadTagDetails(tags, this.value);
     };
     tagSelect.addEventListener('change', tagSelectListener);
-
-    // Listener pour le formulaire d'upload de fichier
-    fileUploadFormListener = function (event) {
-        event.preventDefault(); // Empêche la soumission classique
-        handleFileUpload();
-    };
-    fileUploadForm.addEventListener('submit', fileUploadFormListener);
-
-    // Listener pour le bouton de fermeture de la popup
-    closePopupBtnListener = function () {
-        closeFilePopup();
-    };
-    closePopupBtn.addEventListener('click', closePopupBtnListener);
-
-    // Listener pour l'overlay de la popup (fermer la popup)
-    popupOverlayListener = function () {
-        closeFilePopup();
-    };
-    popupOverlay.addEventListener('click', popupOverlayListener);
 }
 
 // Variables pour stocker les fonctions des EventListeners des tags
@@ -515,6 +494,29 @@ function exportToJson() {
     URL.revokeObjectURL(url);
 }
 
+// Fonction pour importer un fichier JSON
+function importFromJson(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                const importedData = JSON.parse(e.target.result);
+                jsonData = importedData;
+                populateSceneList(jsonData.scenes);
+                if (jsonData.scenes.length > 0) {
+                    updateSceneDetails(jsonData.scenes[0]);
+                }
+                saveToLocalStorage();
+                alert('Données importées avec succès !');
+            } catch (error) {
+                alert('Erreur lors de l\'importation du fichier JSON.');
+            }
+        };
+        reader.readAsText(file);
+    }
+}
+
 // Initialisation
 async function init() {
     await loadPageData();
@@ -522,6 +524,7 @@ async function init() {
     document.getElementById('save-button').addEventListener('click', saveToLocalStorage);
     document.getElementById('add-tag-btn').addEventListener('click', addNewTag)
     document.getElementById('export-json').addEventListener('click', exportToJson);
+    document.getElementById('import-json-input').addEventListener('click', importFromJson);
     // document.getElementById('delete-scene').addEventListener('click', deleteScene);
 }
 

@@ -114,30 +114,18 @@
         </div> 
       </div>
       <div class="right-side">
-        <button id="export-json" class="export-button">Exporter les données</button>
+        <button id="export-json" class="export-button">Exporter</button>
+        <button id="import-json" class="import-button">Importer</button>
         <button id="save-button" class="save-button">Sauvegarder</button>
         <a href="./experience"><button id="run-button" class="run-button">Run</button></a>
       </div>
     </div>
 
-    <div id="popup-overlay" class="overlay"></div>
-        <div id="file-popup" class="popup">
-            <form id="upload-form" class="form-popup" action="/upload" method="POST" enctype="multipart/form-data">
-                <div class="file-choose">
-                    <div class="file-import">
-                        <img class="file-import-img" src="./assets/import-icon.svg" alt="import">
-                        <input type="file" class="form-input-btn" id="file-upload" name="file" accept="image/*, .pdf">
-                        <label for="file-upload" class="custom-file-upload">
-                            Importer
-                        </label>
-                    </div>
-                    <button class="form-validate-btn" type="submit"><img class="form-validate-img"
-                            src="./assets/validate-icon.svg" alt="validate"></button>
-                </div>
-                <img id="close-popup-btn" class="popup-close-img" src="./assets/close-icon.svg" alt="close">
-            </form>
-            <ul id="file-list" class="file-list"></ul>
-        </div>
+    <div id="overlay" class="overlay" style="display:none;"></div>
+    <div id="import-popup" class="import-popup" style="display: none">
+        <input type="file" id="import-json-input" accept="application/json">
+        <button id="close-popup">Close</button>
+    </div>
 </main>
 
 </body>
