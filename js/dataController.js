@@ -353,6 +353,11 @@ async function addNewTag(type) {
     updateSceneDetails(selectedScene);
 }
 
+async function deleteTag(){
+    selectedScene.removeTag(selectedTag);
+    updateSceneDetails(selectedScene);
+}
+
 // Fonction pour charger les données JSON depuis localStorage
 function loadFromLocalStorage() {
     const storedData = localStorage.getItem('jsonData');
@@ -489,6 +494,7 @@ async function init() {
     await loadPageData();
     // document.getElementById('add-scene').addEventListener('click', addNewScene);
     document.getElementById('save-button').addEventListener('click', saveToLocalStorage);
+    document.getElementById('delete-tag').addEventListener('click', deleteTag)
     document.getElementById('porte').addEventListener('click', function () {
         addNewTag('porte');
     });

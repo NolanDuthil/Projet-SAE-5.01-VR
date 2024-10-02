@@ -38,9 +38,4 @@ export default class Tag {
     set type(value) {
         this._type = value;
     }
-
-    // Method to update position
-    updatePosition(r, theta, fi) {
-        this._position = { r, theta, fi };
-    }
 }
