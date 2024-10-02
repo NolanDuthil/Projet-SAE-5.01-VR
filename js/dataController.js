@@ -6,6 +6,7 @@ import TagPorte from "./TagPorte.js";
 let scenesInstances = []; 
 let selectedScene = {};
 let selectedTag = 0;
+let currentlyVisibleInfoLegend = null;
 
 // Fonction pour remplir le menu des scènes
 function populateSceneList() {
@@ -198,11 +199,6 @@ function hideTags() {
 }
 
 function updateCanvaTags(scene) {
-    // let pastTags = document.querySelectorAll('a-sphere, a-text');
-    // pastTags.forEach((pastTag) => {
-    //     pastTag.remove(); // Supprimer les anciennes sphères et textes
-    // });
-
     scene.tags.forEach((tag) => {
         setupTag(tag);
     });
@@ -234,11 +230,13 @@ function setupTag(tag) {
     
     // Créer un texte pour la légende du tag
     let tagText = document.createElement('a-text');
-    tagText.setAttribute('value', tag.name);
+    tagText.setAttribute('value', tag.type === 'porte' ? tag.name : tag.legend);
     tagText.setAttribute('id', tag.id + '-text');
     tagText.setAttribute('color', 'white');
     tagText.setAttribute('align', 'center');
     tagText.setAttribute('width', '20');
+    tagText.setAttribute('look-at', '[camera]');
+    tagText.setAttribute('opacity', tag.type === 'porte' ? '1' : '0');
 
     // Attendre que la sphère soit positionnée pour calculer la distance
     tagSphere.addEventListener('loaded', function () {
@@ -254,6 +252,30 @@ function setupTag(tag) {
         // Ajouter le texte au canvas
         canva.appendChild(tagText);
     });
+
+    // Ajouter un gestionnaire d'événements pour afficher la légende lorsque l'on clique sur le tag
+    if (tag.type === 'info') {
+        tagSphere.addEventListener('click', () => {
+            // Si une légende est actuellement visible, la masquer
+            if (currentlyVisibleInfoLegend) {
+                currentlyVisibleInfoLegend.text.setAttribute('visible', 'false');
+                currentlyVisibleInfoLegend.text.setAttribute('opacity', '0');
+            }
+
+            // Vérifiez si le tagText est déjà visible
+            if (currentlyVisibleInfoLegend && currentlyVisibleInfoLegend.text === tagText) {
+                tagText.setAttribute('visible', 'false');
+                tagText.setAttribute('opacity', '0'); // Réinitialiser l'opacité
+                currentlyVisibleInfoLegend = null; // Réinitialiser la légende actuellement visible
+            } else {
+                tagText.setAttribute('visible', 'true'); // Affichez la légende du tag "info"
+                // Réinitialiser l'opacité pour afficher le texte
+                tagText.setAttribute('opacity', '1'); // Rendre le texte visible
+
+                currentlyVisibleInfoLegend = { text: tagText }; // Mettre à jour la légende actuellement visible
+            }
+        });
+    };
 }
 
 // Fonction pour ajouter une nouvelle scène
