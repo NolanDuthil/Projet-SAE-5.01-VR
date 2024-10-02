@@ -1,6 +1,7 @@
 import Scene from "./Scene.js";
 import TagInfo from "./TagInfo.js";
 import TagPorte from "./TagPorte.js";
+import TagText from "./TagText.js";
 
 // Déclarez jsonData ici pour qu'il soit accessible à toutes les fonctions
 let scenesInstances = []; 
@@ -332,13 +333,13 @@ async function addNewTag(type) {
             );
             break;
 
-        // case 'text':
-        //     newTag = new TagText(
-        //         Date.now(),
-        //         "nouveau tag",
-        //         "Texte d'exemple"
-        //     );
-        //     break;
+        case 'text':
+            newTag = new TagText(
+                Date.now(),
+                "nouveau tag",
+                "Texte d'exemple"
+            );
+            break;
 
         default:
             console.error('Type de tag inconnu:', type);
