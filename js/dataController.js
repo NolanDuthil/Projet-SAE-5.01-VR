@@ -1,7 +1,7 @@
 import Scene from "./Scene.js";
 import TagInfo from "./TagInfo.js";
 import TagPorte from "./TagPorte.js";
-import TagText from "./TagText.js";
+// import TagText from "./TagText.js";
 
 // Déclarez jsonData ici pour qu'il soit accessible à toutes les fonctions
 let scenesInstances = [];
@@ -333,13 +333,13 @@ async function addNewTag(type) {
             );
             break;
 
-        case 'text':
-            newTag = new TagText(
-                Date.now(),
-                "nouveau tag",
-                "Texte d'exemple"
-            );
-            break;
+        // case 'text':
+        //     newTag = new TagText(
+        //         Date.now(),
+        //         "nouveau tag",
+        //         "Texte d'exemple"
+        //     );
+        //     break;
 
         default:
             console.error('Type de tag inconnu:', type);
@@ -426,8 +426,8 @@ async function loadPageData() {
                         return new TagPorte(tagData._id, tagData._name, tagData._action, tagData._position);
                     case ("info"):
                         return new TagInfo(tagData._id, tagData._name, tagData._legend, tagData._position);
-                    case ("text"):
-                        return new TagText(tagData._id, tagData._name, tagData._legend, tagData._position);
+                    // case ("text"):
+                    //     return new TagText(tagData._id, tagData._name, tagData._legend, tagData._position);
                 }
             });
             return new Scene(sceneData._name, sceneData._image, sceneData._camera, tags);
@@ -495,9 +495,9 @@ async function init() {
     document.getElementById('info').addEventListener('click', function () {
         addNewTag('info');
     });
-    document.getElementById('text').addEventListener('click', function () {
-        addNewTag('text');
-    });
+    // document.getElementById('text').addEventListener('click', function () {
+    //     addNewTag('text');
+    // });
     document.getElementById('export-json').addEventListener('click', exportToJson);
     document.getElementById('import-json-input').addEventListener('click', importFromJson);
 }
