@@ -149,34 +149,46 @@ function loadTagDetails(tags, selectedTagIndex) {
         tagLegendContainer.style.display = '';
     }
 
-
     tagNameInput.addEventListener('input', (event) => {
         tag.name = event.target.value;
         tagSelect.options[selectedTagIndex].textContent = event.target.value;
-        updateCanvaTagInformations(tag);
+        setupTag(tag);
     });
     
     tagLegendInput.addEventListener('input', (event) => {
         tag.legend = event.target.value;
-        updateCanvaTagInformations(tag);
+        setupTag(tag);
     });
     
     rInput.addEventListener('input', (event) => {
         tag.position.r = event.target.value === '' ? 0 : event.target.value;
-        updateCanvaTagInformations(tag);
+        setupTag(tag);
     });
     
     thetaInput.addEventListener('input', (event) => {
         tag.position.theta = event.target.value === '' ? 0 : event.target.value;
-        updateCanvaTagInformations(tag);
+        setupTag(tag);
     });
     
     fiInput.addEventListener('input', (event) => {
         tag.position.fi = event.target.value === '' ? 0 : event.target.value;
-        updateCanvaTagInformations(tag);
+        setupTag(tag);
     });
-    
 }
+
+function getDistanceToCamera(el) {
+    // Récupérer la position de la caméra
+    let camera = document.querySelector('a-camera');
+    let cameraPos = camera.object3D.position;
+
+    // Récupérer la position de l'élément (la sphère)
+    let elPos = el.object3D.position;
+    // Calculer la distance entre la caméra et l'élément
+    let distance = elPos.distanceTo(cameraPos);
+
+    return distance;
+}
+
 
 function hideTags() {
     document.getElementById('tag-settings').style = "display:none";
@@ -186,53 +198,63 @@ function hideTags() {
 }
 
 function updateCanvaTags(scene) {
-    let canva = document.getElementById('a-scene');
-    let pastTags = document.querySelectorAll('a-sphere, a-text');
-    pastTags.forEach((pastTag) => {
-        pastTag.remove(); // Supprimer les anciennes sphères et textes
-    });
+    // let pastTags = document.querySelectorAll('a-sphere, a-text');
+    // pastTags.forEach((pastTag) => {
+    //     pastTag.remove(); // Supprimer les anciennes sphères et textes
+    // });
 
     scene.tags.forEach((tag) => {
-        let tagSphere = document.createElement('a-sphere');
-        tagSphere.setAttribute('color', tag.type === 'porte' ? 'red' : 'blue');
-        tagSphere.setAttribute('id', tag.id);
-        tagSphere.setAttribute('radius', 1);
-        tagSphere.setAttribute('fromspherical', `fi:${tag.position.fi}; theta:${tag.position.theta}; r:${tag.position.r};`);
-        canva.appendChild(tagSphere);
-
-        let tagText = document.createElement('a-text');
-        tagText.setAttribute('id', tag.id + "-text")
-        tagText.setAttribute('value', tag.name);
-        tagText.setAttribute('fromspherical', `fi:${tag.position.fi}; theta:${tag.position.theta - (-4)}; r:${tag.position.r};`);
-        tagText.setAttribute('color', 'white');
-        tagText.setAttribute('align', 'center');
-        tagText.setAttribute('width', '20');
-        tagText.setAttribute('look-at', '[camera]');
-        canva.appendChild(tagText);
+        setupTag(tag);
     });
 }
 
-function updateCanvaTagInformations(tag){
+function setupTag(tag) {
     let canva = document.getElementById('a-scene');
-    document.getElementById(tag.id).remove();
-    document.getElementById(tag.id + '-text').remove();
 
+    let pastTag = document.getElementById(tag.id);
+    let pastText = document.getElementById(tag.id + "-text");
+    if(pastTag){
+        pastTag.remove();
+    }
+    if(pastText){
+        pastText.remove();
+    }
+
+    // Créer une sphère pour le tag
     let tagSphere = document.createElement('a-sphere');
-    tagSphere.setAttribute('color', tag.type == 'porte' ? 'red' : 'blue');
+    tagSphere.setAttribute('color', tag.type === 'porte' ? 'red' : 'blue');
     tagSphere.setAttribute('id', tag.id);
     tagSphere.setAttribute('radius', 1);
-    tagSphere.setAttribute('fromspherical', 'fi:' + tag.position.fi + '; theta:' + tag.position.theta + '; r:' + tag.position.r + ';');
-    canva.appendChild(tagSphere);
 
+    // Ajouter le composant de conversion des coordonnées sphériques
+    tagSphere.setAttribute('fromspherical', `fi:${tag.position.fi}; theta:${tag.position.theta}; r:${tag.position.r};`);
+
+    // Ajouter la sphère au canvas
+    canva.appendChild(tagSphere);
+    
+    // Créer un texte pour la légende du tag
     let tagText = document.createElement('a-text');
-    tagText.setAttribute('id', tag.id + "-text")
-    tagText.setAttribute('value', tag.legend);
-    tagText.setAttribute('fromspherical', `fi:${tag.position.fi}; theta:${tag.position.theta - (-4)}; r:${tag.position.r};`); // Ajustement pour le texte
+    tagText.setAttribute('value', tag.name);
+    tagText.setAttribute('id', tag.id + '-text');
     tagText.setAttribute('color', 'white');
-    tagText.setAttribute('align', 'center'); // Centrer le texte par rapport à la sphère
+    tagText.setAttribute('align', 'center');
     tagText.setAttribute('width', '20');
-    tagText.setAttribute('look-at', '[camera]');
-    canva.appendChild(tagText);
+    tagText.setAttribute('opacity', tag.type === 'porte' ? '1' : '0');
+
+    // Attendre que la sphère soit positionnée pour calculer la distance
+    tagSphere.addEventListener('loaded', function () {
+        let distanceToCamera = getDistanceToCamera(tagSphere);
+        // Ajustement de l'écart vertical en fonction de la distance à la caméra
+        let baseOffset = -7; // Offset de base si proche
+
+        let thetaAdjustment = baseOffset + (distanceToCamera * 0.1); // Écart proportionnel à la distance
+
+        // Utiliser les mêmes coordonnées pour placer le texte
+        tagText.setAttribute('fromspherical', `fi:${tag.position.fi}; theta:${tag.position.theta - thetaAdjustment}; r:${tag.position.r};`);
+
+        // Ajouter le texte au canvas
+        canva.appendChild(tagText);
+    });
 }
 
 // Fonction pour ajouter une nouvelle scène
