@@ -1,14 +1,20 @@
+import Scene from "./Scene.js";
+import TagInfo from "./TagInfo.js";
+import TagPorte from "./TagPorte.js";
+import TagText from "./TagText.js";
+
 // Déclarez jsonData ici pour qu'il soit accessible à toutes les fonctions
-let jsonData = { scenes: [] };
+let scenesInstances = [];
 let selectedScene = {};
 let selectedTag = 0;
+let currentlyVisibleInfoLegend = null;
 
 // Fonction pour remplir le menu des scènes
-function populateSceneList(scenes) {
+function populateSceneList() {
     const scenesContainer = document.getElementById('scenes');
     scenesContainer.innerHTML = ''; // Vider le conteneur
 
-    scenes.forEach(scene => {
+    scenesInstances.forEach(scene => {
         // Créer un élément pour la scène
         const sceneItem = document.createElement('div');
         sceneItem.classList.add('scene-item');
@@ -38,17 +44,6 @@ function populateSceneList(scenes) {
     });
 }
 
-// Variables pour stocker les fonctions des EventListeners
-let sceneNameListener;
-let cameraVerticalListener;
-let cameraHorizontalListener;
-let tagSelectListener;
-/*let fileUploadFormListener;
-let viewFilesBtnListener;
-let closePopupBtnListener;
-let popupOverlayListener;*/
-let saveButtonListener;
-
 // Fonction pour mettre à jour les détails de la scène
 function updateSceneDetails(scene) {
     selectedScene = scene;
@@ -56,39 +51,18 @@ function updateSceneDetails(scene) {
     const cameraVerticalInput = document.getElementById('camera-vertical');
     const cameraHorizontalInput = document.getElementById('camera-horizontal');
     const tagSelect = document.getElementById('tags-select');
-    /*const fileUploadForm = document.getElementById('upload-form');
-    const viewFilesBtn = document.getElementById('view-files-btn');
-    const closePopupBtn = document.getElementById('close-popup-btn');
-    const popupOverlay = document.getElementById('popup-overlay');*/
-
-    // Vérifiez si tous les éléments existent avant de procéder
-    if (!sceneNameInput || !cameraVerticalInput || !cameraHorizontalInput || !tagSelect /*|| !fileUploadForm || !viewFilesBtn || !closePopupBtn || !popupOverlay*/) {
-        console.error("Un ou plusieurs éléments DOM sont introuvables.");
-        return; // Arrêtez l'exécution si un élément est introuvable
-    }
-
-    // Supprimer les anciens EventListeners s'ils existent
-    if (sceneNameListener) sceneNameInput.removeEventListener('input', sceneNameListener);
-    if (cameraVerticalListener) cameraVerticalInput.removeEventListener('input', cameraVerticalListener);
-    if (cameraHorizontalListener) cameraHorizontalInput.removeEventListener('input', cameraHorizontalListener);
-    if (tagSelectListener) tagSelect.removeEventListener('change', tagSelectListener);
-    /* if (fileUploadFormListener) fileUploadForm.removeEventListener('submit', fileUploadFormListener);
-     if (viewFilesBtnListener) viewFilesBtn.removeEventListener('click', viewFilesBtnListener);
-     if (closePopupBtnListener) closePopupBtn.removeEventListener('click', closePopupBtnListener);
-     if (popupOverlayListener) popupOverlay.removeEventListener('click', popupOverlayListener);*/
-    if (saveButtonListener) saveButton.removeEventListener('click', saveButtonListener);
 
     // Nom & Image de la scène
-    sceneNameInput.value = scene.name;
-    scene.image ? document.getElementById('image-360').setAttribute('src', "./uploaded_images/" + scene.image) : document.getElementById('image-360').setAttribute('src', "./assets/grey-background.avif");
+    sceneNameInput.value = selectedScene.name;
+    selectedScene.image ? document.getElementById('image-360').setAttribute('src', "./uploaded_images/" + scene.image) : document.getElementById('image-360').setAttribute('src', "./assets/grey-background.avif");
 
     // Angle Caméra de la scène
-    cameraVerticalInput.value = scene.camera.vertical;
-    cameraHorizontalInput.value = scene.camera.horizontal;
+    cameraVerticalInput.value = selectedScene.camera.vertical;
+    cameraHorizontalInput.value = selectedScene.camera.horizontal;
 
     // Liste de tags
     tagSelect.innerHTML = '';
-    const tags = scene.tags || [];
+    const tags = selectedScene.tags || [];
     tags.forEach((tag, index) => {
         const option = document.createElement('option');
         option.value = index;
@@ -96,7 +70,7 @@ function updateSceneDetails(scene) {
         tagSelect.appendChild(option);
     });
 
-    updateCanvaTags(scene);
+    updateCanvaTags(selectedScene);
 
     // Affichage des données du premier tag
     if (tags.length > 0) {
@@ -105,62 +79,32 @@ function updateSceneDetails(scene) {
         hideTags();
     }
 
-    // Créer et ajouter de nouveaux EventListeners
-    sceneNameListener = function () {
-        scene.name = this.value;
-    };
-    sceneNameInput.addEventListener('input', sceneNameListener);
+    // Listener pour le nom de la scène
+    sceneNameInput.addEventListener('input', (event) => {
+        selectedScene.name = event.target.value;
+    });
 
-    cameraVerticalListener = function () {
-        scene.camera.vertical = this.value;
-    };
-    cameraVerticalInput.addEventListener('input', cameraVerticalListener);
+    // Listener pour l'angle vertical de la caméra
+    cameraVerticalInput.addEventListener('input', (event) => {
+        selectedScene.camera.vertical = event.target.value;
+    });
 
-    cameraHorizontalListener = function () {
-        scene.camera.horizontal = this.value;
-    };
-    cameraHorizontalInput.addEventListener('input', cameraHorizontalListener);
+    // Listener pour l'angle horizontal de la caméra
+    cameraHorizontalInput.addEventListener('input', (event) => {
+        selectedScene.camera.horizontal = event.target.value;
+    });
 
-    tagSelectListener = function () {
-        loadTagDetails(tags, this.value);
-    };
-    tagSelect.addEventListener('change', tagSelectListener);
-
-    /*fileUploadFormListener = function (event) {
-        event.preventDefault(); // Empêche la soumission classique
-        handleFileUpload();
-    };
-    fileUploadForm.addEventListener('submit', fileUploadFormListener);
-
-    viewFilesBtnListener = function () {
-        showFilePopup();
-    };
-    viewFilesBtn.addEventListener('click', viewFilesBtnListener);
-
-    closePopupBtnListener = function () {
-        closeFilePopup();
-    };
-    closePopupBtn.addEventListener('click', closePopupBtnListener);
-
-    popupOverlayListener = function () {
-        closeFilePopup();
-    };
-    popupOverlay.addEventListener('click', popupOverlayListener);*/
+    // Listener pour le changement de tag
+    tagSelect.addEventListener('change', (event) => {
+        loadTagDetails(tags, event.target.value);
+    });
 }
-
-// Variables pour stocker les fonctions des EventListeners des tags
-let tagNameListener;
-let tagLegendListener;
-let rInputListener;
-let thetaInputListener;
-let fiInputListener;
-let sceneSelectListener;
-let tagTypeListener;
 
 // Fonction pour remplir les détails du tag sélectionné
 function loadTagDetails(tags, selectedTagIndex) {
     selectedTag = selectedTagIndex;
 
+    // Affiche les paramètres des tags
     document.getElementById('tag-settings').style = "";
     document.getElementById('tag-name').style = "";
     document.getElementById('tag-legend').style = "";
@@ -168,36 +112,24 @@ function loadTagDetails(tags, selectedTagIndex) {
 
     const tag = tags[selectedTagIndex];
     const tagNameInput = document.getElementById('tag-name-input');
-    const tagLegendArea = document.getElementById('tag-legend-area');
+    const tagLegendContainer = document.getElementById('tag-legend')
+    const tagLegendInput = document.getElementById('tag-legend-area');
     const rInput = document.getElementById('r');
     const thetaInput = document.getElementById('theta');
     const fiInput = document.getElementById('fi');
     const tagSelect = document.getElementById('tags-select');
     const sceneSelectorContainer = document.getElementById('scene-selector-container');
     const sceneSelector = document.getElementById('scene-selector');
-    const tagTypeSelector = document.getElementById('tag-type-selector');
-    const tagLegendDisplay = document.getElementById('tag-legend-display'); // Élément pour afficher la légende
-
-    // Supprimer les anciens EventListeners s'ils existent
-    if (tagNameListener) tagNameInput.removeEventListener('input', tagNameListener);
-    if (tagLegendListener) tagLegendArea.removeEventListener('input', tagLegendListener);
-    if (rInputListener) rInput.removeEventListener('input', rInputListener);
-    if (thetaInputListener) thetaInput.removeEventListener('input', thetaInputListener);
-    if (fiInputListener) fiInput.removeEventListener('input', fiInputListener);
-    if (sceneSelectListener) sceneSelector.removeEventListener('change', sceneSelectListener);
-    if (tagTypeListener) tagTypeSelector.removeEventListener('change', tagTypeListener); // Supprimez le listener de type
 
     // Remplir les champs de formulaire avec les données du tag sélectionné
     tagNameInput.value = tag.name;
-    tagLegendArea.value = tag.legend;
+    tagLegendInput.value = tag.legend;
     rInput.value = tag.position.r;
     thetaInput.value = tag.position.theta;
     fiInput.value = tag.position.fi;
 
-
-    // Remplir le sélecteur de scène
     sceneSelector.innerHTML = ''; // Vider le sélecteur
-    jsonData.scenes.forEach((scene, index) => {
+    scenesInstances.forEach((scene, index) => {
         if (scene != selectedScene) {
             const option = document.createElement('option');
             option.value = index;  // L'index de la scène
@@ -208,69 +140,42 @@ function loadTagDetails(tags, selectedTagIndex) {
 
     // Si le type du tag est "porte", afficher le sélecteur de scène
     if (tag.type === 'porte') {
+        tagLegendContainer.style.display = 'none';
         sceneSelectorContainer.style.display = '';
-
-        // Sélectionner la scène correspondante si elle est déjà définie
         sceneSelector.value = tag.action;
-
-        // Ajouter un event listener pour mettre à jour l'action (numéro de scène)
-        sceneSelectListener = function () {
+        sceneSelector.addEventListener('change', () => {
             tag.action = this.value;
-        };
-        sceneSelector.addEventListener('change', sceneSelectListener);
+        });
     } else {
-        // Cacher le sélecteur si le type n'est pas "porte"
         sceneSelectorContainer.style.display = 'none';
+        tagLegendContainer.style.display = '';
     }
 
-    // Ajouter un listener pour changer le type de tag
-    tagTypeSelector.value = tag.type; // Remplir le sélecteur avec le type actuel
-    tagTypeListener = function () {
-        tag.type = this.value; // Met à jour le type du tag
-        // Afficher ou cacher le sélecteur de scène selon le type sélectionné
-        if (tag.type === 'porte') {
-            sceneSelectorContainer.style.display = ''; // Affiche le sélecteur de scène
-        } else {
-            sceneSelectorContainer.style.display = 'none'; // Cache le sélecteur de scène
-        }
-    };
-    tagTypeSelector.addEventListener('change', tagTypeListener);
+    tagNameInput.addEventListener('input', (event) => {
+        tag.name = event.target.value;
+        tagSelect.options[selectedTagIndex].textContent = event.target.value;
+        setupTag(tag);
+    });
 
-    // Ajouter de nouveaux EventListeners
-    tagNameListener = function () {
-        tag.name = this.value;
-        tagSelect.options[selectedTagIndex].textContent = this.value;
-        tagLegendDisplay.textContent = tag.legend; // Met à jour l'affichage de la légende
-    };
-    tagNameInput.addEventListener('input', tagNameListener);
+    tagLegendInput.addEventListener('input', (event) => {
+        tag.legend = event.target.value;
+        setupTag(tag);
+    });
 
-    tagLegendListener = function () {
-        tag.legend = this.value;
-        tagLegendDisplay.textContent = tag.legend; // Met à jour l'affichage de la légende
-    };
-    tagLegendArea.addEventListener('input', tagLegendListener);
+    rInput.addEventListener('input', (event) => {
+        tag.position.r = event.target.value === '' ? 0 : event.target.value;
+        setupTag(tag);
+    });
 
-    rInputListener = function () {
-        tag.position.r = this.value === '' ? 0 : this.value;
-    };
-    rInput.addEventListener('input', rInputListener);
+    thetaInput.addEventListener('input', (event) => {
+        tag.position.theta = event.target.value === '' ? 0 : event.target.value;
+        setupTag(tag);
+    });
 
-    thetaInputListener = function () {
-        tag.position.theta = this.value === '' ? 0 : this.value;
-    };
-    thetaInput.addEventListener('input', thetaInputListener);
-
-    fiInputListener = function () {
-        tag.position.fi = this.value === '' ? 0 : this.value;
-    };
-    fiInput.addEventListener('input', fiInputListener);
-}
-
-function hideTags() {
-    document.getElementById('tag-settings').style = "display:none";
-    document.getElementById('tag-name').style = "display:none";
-    document.getElementById('tag-legend').style = "display:none";
-    document.getElementById('tag-position').style = "display:none";
+    fiInput.addEventListener('input', (event) => {
+        tag.position.fi = event.target.value === '' ? 0 : event.target.value;
+        setupTag(tag);
+    });
 }
 
 function getDistanceToCamera(el) {
@@ -280,35 +185,46 @@ function getDistanceToCamera(el) {
 
     // Récupérer la position de l'élément (la sphère)
     let elPos = el.object3D.position;
-
-    console.log(elPos);
-
     // Calculer la distance entre la caméra et l'élément
     let distance = elPos.distanceTo(cameraPos);
 
     return distance;
 }
 
+
+function hideTags() {
+    document.getElementById('tag-settings').style = "display:none";
+    document.getElementById('tag-name').style = "display:none";
+    document.getElementById('tag-legend').style = "display:none";
+    document.getElementById('tag-position').style = "display:none";
+}
+
 function updateCanvaTags(scene) {
-    let canva = document.getElementById('a-scene');
     let pastTags = document.querySelectorAll('a-sphere, a-text');
-    pastTags.forEach((pastTag) => {
-        pastTag.remove(); // Supprimer les anciennes sphères et textes
-    });
-
-    // Variable pour garder une trace de la légende actuellement affichée pour les tags "info"
-    let currentlyVisibleInfoLegend = null;
-
+    pastTags.forEach((tag) => {
+        tag.remove();
+    })
     scene.tags.forEach((tag) => {
-        setupTag(canva, tag, currentlyVisibleInfoLegend);
+        setupTag(tag);
     });
 }
 
-function setupTag(canva, tag, currentlyVisibleInfoLegend) {
+function setupTag(tag) {
+    let canva = document.getElementById('a-scene');
+
+    let pastTag = document.getElementById(tag.id);
+    let pastText = document.getElementById(tag.id + "-text");
+    if (pastTag) {
+        pastTag.remove();
+    }
+    if (pastText) {
+        pastText.remove();
+    }
+
     // Créer une sphère pour le tag
     let tagSphere = document.createElement('a-sphere');
     tagSphere.setAttribute('color', tag.type === 'porte' ? 'red' : 'blue');
-    tagSphere.setAttribute('id', tag.name);
+    tagSphere.setAttribute('id', tag.id);
     tagSphere.setAttribute('radius', 1);
 
     // Ajouter le composant de conversion des coordonnées sphériques
@@ -319,22 +235,21 @@ function setupTag(canva, tag, currentlyVisibleInfoLegend) {
 
     // Créer un texte pour la légende du tag
     let tagText = document.createElement('a-text');
-    tagText.setAttribute('value', tag.legend);
-    tagText.setAttribute('id', `${tag.name}-legend`); // ID unique pour la légende
+    tagText.setAttribute('value', tag.type === 'porte' ? tag.name : tag.legend);
+    tagText.setAttribute('id', tag.id + '-text');
     tagText.setAttribute('color', 'white');
     tagText.setAttribute('align', 'center');
     tagText.setAttribute('width', '20');
-    tagText.setAttribute('opacity', tag.type === 'porte' ? '1' : '0'); // Légende "porte" toujours visible
+    tagText.setAttribute('look-at', '[camera]');
+    tagText.setAttribute('opacity', tag.type === 'porte' ? '1' : '0');
 
     // Attendre que la sphère soit positionnée pour calculer la distance
     tagSphere.addEventListener('loaded', function () {
         let distanceToCamera = getDistanceToCamera(tagSphere);
-
         // Ajustement de l'écart vertical en fonction de la distance à la caméra
         let baseOffset = -7; // Offset de base si proche
-        let thetaAdjustment = baseOffset + (distanceToCamera * 0.1); // Écart proportionnel à la distance
 
-        console.log(thetaAdjustment);
+        let thetaAdjustment = baseOffset + (distanceToCamera * 0.1); // Écart proportionnel à la distance
 
         // Utiliser les mêmes coordonnées pour placer le texte
         tagText.setAttribute('fromspherical', `fi:${tag.position.fi}; theta:${tag.position.theta - thetaAdjustment}; r:${tag.position.r};`);
@@ -344,13 +259,12 @@ function setupTag(canva, tag, currentlyVisibleInfoLegend) {
     });
 
     // Ajouter un gestionnaire d'événements pour afficher la légende lorsque l'on clique sur le tag
-    tagSphere.addEventListener('click', () => {
-        // Si le tag est de type "info"
-        if (tag.type === 'info') {
+    if (tag.type === 'info') {
+        tagSphere.addEventListener('click', () => {
             // Si une légende est actuellement visible, la masquer
             if (currentlyVisibleInfoLegend) {
                 currentlyVisibleInfoLegend.text.setAttribute('visible', 'false');
-                currentlyVisibleInfoLegend.text.setAttribute('opacity', '0'); // Réinitialiser l'opacité
+                currentlyVisibleInfoLegend.text.setAttribute('opacity', '0');
             }
 
             // Vérifiez si le tagText est déjà visible
@@ -365,254 +279,230 @@ function setupTag(canva, tag, currentlyVisibleInfoLegend) {
 
                 currentlyVisibleInfoLegend = { text: tagText }; // Mettre à jour la légende actuellement visible
             }
-        }
-    });
-
-    // Initialiser l'interaction de glisser-déposer
-    initializeTagInteraction(tagSphere, tagText);
-}
-
-function initializeTagInteraction(tagSphere, tagText) {
-    let isDragging = false; // Indicateur de glissement
-    let mousePosition; // Déclarer mousePosition ici pour qu'elle soit accessible
-
-    // Ajouter l'événement mousedown pour commencer le glissement
-    tagSphere.addEventListener('mousedown', function (event) {
-        event.preventDefault(); // Empêche le comportement par défaut
-        isDragging = true; // Commencer à glisser
-
-        // Conserver la visibilité des tags pendant le glissement
-        tagSphere.setAttribute('visible', 'true');
-        tagText.setAttribute('visible', 'true');
-
-        const mouseMoveHandler = (event) => {
-            if (isDragging) {
-                // Obtenir les coordonnées de la souris
-                mousePosition = getMousePosition(event);
-
-                // Mettre à jour la position de la sphère
-                tagSphere.setAttribute('position', {
-                    x: mousePosition.x,
-                    y: mousePosition.y,
-                    z: Math.max(mousePosition.z, 2) // S'assurer que Z est toujours à au moins 2
-                });
-
-                // Mettre à jour la position du texte
-                tagText.setAttribute('position', {
-                    x: mousePosition.x,
-                    y: mousePosition.y + 1, // Ajustez la position Y du texte selon vos besoins
-                    z: Math.max(mousePosition.z, 2) // S'assurer que Z est toujours à au moins 2
-                });
-            }
-        };
-
-        const mouseUpHandler = () => {
-            isDragging = false; // Arrête le glissement
-            window.removeEventListener('mousemove', mouseMoveHandler);
-            window.removeEventListener('mouseup', mouseUpHandler);
-
-            // Mettre à jour la position du tag dans la scène
-            if (mousePosition) { // Assurez-vous que mousePosition a une valeur avant de l'utiliser
-                let finalPosition = {
-                    fi: tagSphere.getAttribute('fromspherical').fi,
-                    theta: tagSphere.getAttribute('fromspherical').theta,
-                    r: mousePosition.z // Utiliser la position Z finale
-                };
-
-                // Enregistrer la nouvelle position du tag (ajuster selon votre logique)
-                tagSphere.setAttribute('fromspherical', `fi:${finalPosition.fi}; theta:${finalPosition.theta}; r:${finalPosition.r};`);
-            }
-        };
-
-        window.addEventListener('mousemove', mouseMoveHandler);
-        window.addEventListener('mouseup', mouseUpHandler);
-    });
-}
-
-// Fonction pour obtenir la position de la souris en coordonnées 3D
-function getMousePosition(event) {
-    let aScene = document.getElementById('a-scene');
-    let camera = document.querySelector('a-camera').components.camera.camera; // Obtenir la caméra correctement
-    let rect = aScene.getBoundingClientRect();
-
-    let x = ((event.clientX - rect.left) / rect.width) * 2 - 1; // Normaliser x
-    let y = -((event.clientY - rect.top) / rect.height) * 2 + 1; // Normaliser y
-
-    let mouseVector = new THREE.Vector3(x, y, 0.5); // Un vecteur avec une profondeur fixe (0.5)
-    mouseVector.unproject(camera); // Projeter le vecteur en utilisant la caméra
-
-    return { x: mouseVector.x, y: mouseVector.y, z: mouseVector.z };
+        });
+    };
 }
 
 // Fonction pour ajouter une nouvelle scène
 async function addNewScene() {
-    const newScene = {
-        name: `Scene ${Date.now()}`,
-        image: "",
-        camera: {
+    const newScene = new Scene(
+        `Scene ${Date.now()}`,
+        "",
+        {
             vertical: "0",
             horizontal: "0"
         },
-        tags: {}
-    };
-
+        []
+    )
     // Ajouter la nouvelle scène à jsonData
-    jsonData.scenes.push(newScene);
+    scenesInstances.push(newScene);
 
     // Mettre à jour l'affichage avec les scènes mises à jour
-    populateSceneList(jsonData.scenes);
+    populateSceneList(scenesInstances);
     loadTagDetails(selectedScene.tags, selectedTag);
 }
 
-// Fonction pour ajouter un nouveau tag
-async function addNewTag() {
-    const newTag = {
-        name: "nouveau tag",
-        type: "porte",
-        legend: "nouveau tag",  // Assurez-vous que la légende est initialisée
-        position: {
-            r: "15",
-            theta: "90",
-            fi: "0"
-        }
-    };
+// Fonction pour ajouter une nouvelle scène
+async function addNewTag(type) {
+    let newTag;
 
-    // Ajouter le nouveau tag à la scène sélectionnée
-    if (selectedScene) { // Vérifiez que selectedScene existe
-        selectedScene.tags.push(newTag); // Ajoutez le tag à la scène sélectionnée
-        console.log(jsonData); // Vérifiez la structure de jsonData
+    switch (type) {
+        case 'porte':
+            newTag = new TagPorte(
+                Date.now(),
+                "Nouveau tag",
+                "",
+                {
+                    r: "5",
+                    theta: "90",
+                    fi: "0"
+                }
+            );
+            break;
 
-        // Mettre à jour les détails de la scène
-        updateSceneDetails(selectedScene);
-        updateCanvaTags(selectedScene); // Mettre à jour le canvas avec le nouveau tag
-    } else {
-        console.error("Aucune scène sélectionnée pour ajouter le tag.");
+        case 'info':
+            newTag = new TagInfo(
+                Date.now(),
+                "Nouveau tag",
+                "Légende du nouveau tag",
+                {
+                    r: "5",
+                    theta: "90",
+                    fi: "0"
+                }
+            );
+            break;
+
+        case 'text':
+            newTag = new TagText(
+                Date.now(),
+                "nouveau tag",
+                "Texte d'exemple"
+            );
+            break;
+
+        default:
+            console.error('Type de tag inconnu:', type);
+            return;
     }
+
+    // Ajouter la nouvelle scène à jsonData
+    selectedScene.addTag(newTag);
+
+    // Mettre à jour l'affichage avec les scènes mises à jour
+    updateSceneDetails(selectedScene);
 }
 
 // Fonction pour charger les données JSON depuis localStorage
 function loadFromLocalStorage() {
     const storedData = localStorage.getItem('jsonData');
     if (storedData) {
-        jsonData = JSON.parse(storedData);
+        return JSON.parse(storedData);
     } else {
         initializeDefaultData();
+        return null;
     }
 }
 
 // Fonction pour initialiser les données par défaut dans localStorage
 function initializeDefaultData() {
-    jsonData = {
-        scenes: [
-            {
-                "name": "Entrée Studio",
-                "image": "GS__3523.JPG",
-                "camera": { "vertical": "0", "horizontal": "0" },
-                "tags": [
-                    {
-                        "name": "Porte Studio (côté extérieur)",
-                        "legend": "Rentrer dans le studio",
-                        "type": "porte",
-                        "action": "1",
-                        "position": { "r": "25", "theta": "90", "fi": "-110" }
-                    },
-                    {
-                        "name": "Une information",
-                        "type": "info",
-                        "legend": "Nouvelle information",
-                        "action": "1",
-                        "position": { "r": "30", "theta": "90", "fi": "-40" }
-                    }
-                ]
-            },
-            {
-                "name": "Salle 1 Studio",
-                "image": "GS__3524.JPG",
-                "camera": { "vertical": "0", "horizontal": "0" },
-                "tags": [
-                    {
-                        "name": "Porte Studio (côté intérieur)",
-                        "legend": "Sortir du studio",
-                        "type": "porte",
-                        "action": "0",
-                        "position": { "r": "30", "theta": "90", "fi": "135" }
-                    },
-                    {
-                        "name": "Porte Salle 2 Studio",
-                        "legend": "Rentrer dans la 2e salle du studio",
-                        "type": "porte",
-                        "action": "2",
-                        "position": { "r": "30", "theta": "90", "fi": "-40" }
-                    }
-                ]
-            },
-            {
-                "name": "Salle 2 Studio",
-                "image": "GS__3525.JPG",
-                "camera": { "vertical": "0", "horizontal": "0" },
-                "tags": [
-                    {
-                        "name": "Porte Salle 1 Studio",
-                        "legend": "Sortir de la 2e salle du studio",
-                        "type": "porte",
-                        "action": "1",
-                        "position": { "r": "30", "theta": "90", "fi": "-40" }
-                    },
-                    {
-                        "name": "Porte Salle 3 Studio",
-                        "legend": "Rentrer dans la 3e salle du studio",
-                        "type": "porte",
-                        "action": "3",
-                        "position": { "r": "40", "theta": "90", "fi": "-140" }
-                    }
-                ]
-            },
-            {
-                "name": "Salle 3 Studio",
-                "image": "GS__3526.JPG",
-                "camera": { "vertical": "0", "horizontal": "0" },
-                "tags": [
-                    {
-                        "name": "Porte Salle 2 Studio",
-                        "legend": "Sortir de la 3e salle du studio",
-                        "type": "porte",
-                        "action": "2",
-                        "position": { "r": "40", "theta": "90", "fi": "-65" }
-                    }
-                ]
-            }
+    // Créer les scènes avec des instances de classes
+    const scene1 = new Scene(
+        "Entrée Studio",
+        "GS__3523.JPG",
+        { vertical: "0", horizontal: "0" },
+        [
+            new TagPorte("1", "Porte Studio (côté extérieur)", "1", { r: "25", theta: "90", fi: "-115" }),
+            new TagInfo("2", "Une information", "Nouvelle information", { r: "30", theta: "90", fi: "-40" })
         ]
-    };
+    );
+
+    const scene2 = new Scene(
+        "Salle 1 Studio",
+        "GS__3524.JPG",
+        { vertical: "0", horizontal: "0" },
+        [
+            new TagPorte("3", "Porte Studio (côté intérieur)", "0", { r: "30", theta: "90", fi: "135" }),
+            new TagPorte("4", "Porte Salle 2 Studio", "2", { r: "30", theta: "90", fi: "-40" })
+        ]
+    );
+
+    const scene3 = new Scene(
+        "Salle 2 Studio",
+        "GS__3525.JPG",
+        { vertical: "0", horizontal: "0" },
+        [
+            new TagPorte("5", "Porte Salle 1 Studio", "1", { r: "30", theta: "90", fi: "-40" }),
+            new TagPorte("6", "Porte Salle 3 Studio", "3", { r: "40", theta: "90", fi: "-140" })
+        ]
+    );
+
+    const scene4 = new Scene(
+        "Salle 3 Studio",
+        "GS__3526.JPG",
+        { vertical: "0", horizontal: "0" },
+        [
+            new TagPorte("7", "Porte Salle 2 Studio", "2", { r: "40", theta: "90", fi: "-65" })
+        ]
+    );
+
+    // Ajouter les scènes au jsonData
+    scenesInstances.push(scene1, scene2, scene3, scene4);
+
+    // Enregistrer les données dans le stockage local
     saveToLocalStorage();
 }
 
 // Fonction pour charger les données de la page lorsque le document est prêt
 async function loadPageData() {
-    loadFromLocalStorage();
-    let scenes = jsonData.scenes;
-    populateSceneList(scenes);
-    if (scenes.length > 0) {
-        updateSceneDetails(scenes[0]);
+    let jsonData = loadFromLocalStorage();
+
+    // Créer des instances de la classe Scene à partir des données JSON
+    if (jsonData != null) {
+        scenesInstances = jsonData.map(sceneData => {
+            const tags = sceneData._tags.map(tagData => {
+                switch (tagData._type) {
+                    case ("porte"):
+                        return new TagPorte(tagData._id, tagData._name, tagData._action, tagData._position);
+                    case ("info"):
+                        return new TagInfo(tagData._id, tagData._name, tagData._legend, tagData._position);
+                    case ("text"):
+                        return new TagText(tagData._id, tagData._name, tagData._legend, tagData._position);
+                }
+            });
+            return new Scene(sceneData._name, sceneData._image, sceneData._camera, tags);
+        });
+    }
+
+    populateSceneList();
+    if (scenesInstances.length > 0) {
+        selectedScene = scenesInstances[0];
+        updateSceneDetails(selectedScene);
     }
 }
 
 // Fonction pour sauvegarder les données JSON dans localStorage
 function saveToLocalStorage() {
-    localStorage.setItem('jsonData', JSON.stringify(jsonData));
+    localStorage.setItem('jsonData', JSON.stringify(scenesInstances));
+}
+
+// Fonction pour exporter les données JSON
+function exportToJson() {
+    const jsonString = JSON.stringify(scenesInstances, null, 2);
+    const blob = new Blob([jsonString], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'scenes_data.json'; // Nom du fichier téléchargé
+    a.click();
+
+    // Libérer l'URL après utilisation
+    URL.revokeObjectURL(url);
+}
+
+// Fonction pour importer un fichier JSON
+function importFromJson(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            try {
+                const importedData = JSON.parse(e.target.result);
+                jsonData = importedData;
+                populateSceneList(jsonData.scenes);
+                if (jsonData.scenes.length > 0) {
+                    updateSceneDetails(jsonData.scenes[0]);
+                }
+                saveToLocalStorage();
+                alert('Données importées avec succès !');
+            } catch (error) {
+                alert('Erreur lors de l\'importation du fichier JSON.');
+            }
+        };
+        reader.readAsText(file);
+    }
 }
 
 // Initialisation
 async function init() {
     await loadPageData();
-    document.getElementById('add-scene').addEventListener('click', addNewScene);
+    // document.getElementById('add-scene').addEventListener('click', addNewScene);
     document.getElementById('save-button').addEventListener('click', saveToLocalStorage);
-    document.getElementById('add-tag-btn').addEventListener('click', addNewTag)
-    // document.getElementById('delete-scene').addEventListener('click', deleteScene);
+    document.getElementById('porte').addEventListener('click', function () {
+        addNewTag('porte');
+    });
+    document.getElementById('info').addEventListener('click', function () {
+        addNewTag('info');
+    });
+    document.getElementById('text').addEventListener('click', function () {
+        addNewTag('text');
+    });
+    document.getElementById('export-json').addEventListener('click', exportToJson);
+    document.getElementById('import-json-input').addEventListener('click', importFromJson);
 }
 
 // Charger les données de la page lorsque le document est prêt
 document.addEventListener('DOMContentLoaded', () => {
     init();
 });
-
-

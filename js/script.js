@@ -1,6 +1,3 @@
-import fromSpherical from "./fromSpherical.js";
-// import fileUpload from "./fileUpload.js";
+import "./fromSpherical.js";
 import "./dataController.js";
-
-fromSpherical();
-// fileUpload();
+import "./modales.js";
