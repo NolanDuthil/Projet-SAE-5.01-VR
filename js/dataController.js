@@ -4,7 +4,7 @@ import TagPorte from "./TagPorte.js";
 import TagText from "./TagText.js";
 
 // Déclarez jsonData ici pour qu'il soit accessible à toutes les fonctions
-let scenesInstances = []; 
+let scenesInstances = [];
 let selectedScene = {};
 let selectedTag = 0;
 let currentlyVisibleInfoLegend = null;
@@ -143,7 +143,7 @@ function loadTagDetails(tags, selectedTagIndex) {
         tagLegendContainer.style.display = 'none';
         sceneSelectorContainer.style.display = '';
         sceneSelector.value = tag.action;
-        sceneSelector.addEventListener('change', ()=>{
+        sceneSelector.addEventListener('change', () => {
             tag.action = this.value;
         });
     } else {
@@ -156,22 +156,22 @@ function loadTagDetails(tags, selectedTagIndex) {
         tagSelect.options[selectedTagIndex].textContent = event.target.value;
         setupTag(tag);
     });
-    
+
     tagLegendInput.addEventListener('input', (event) => {
         tag.legend = event.target.value;
         setupTag(tag);
     });
-    
+
     rInput.addEventListener('input', (event) => {
         tag.position.r = event.target.value === '' ? 0 : event.target.value;
         setupTag(tag);
     });
-    
+
     thetaInput.addEventListener('input', (event) => {
         tag.position.theta = event.target.value === '' ? 0 : event.target.value;
         setupTag(tag);
     });
-    
+
     fiInput.addEventListener('input', (event) => {
         tag.position.fi = event.target.value === '' ? 0 : event.target.value;
         setupTag(tag);
@@ -201,7 +201,7 @@ function hideTags() {
 
 function updateCanvaTags(scene) {
     let pastTags = document.querySelectorAll('a-sphere, a-text');
-    pastTags.forEach((tag)=>{
+    pastTags.forEach((tag) => {
         tag.remove();
     })
     scene.tags.forEach((tag) => {
@@ -214,10 +214,10 @@ function setupTag(tag) {
 
     let pastTag = document.getElementById(tag.id);
     let pastText = document.getElementById(tag.id + "-text");
-    if(pastTag){
+    if (pastTag) {
         pastTag.remove();
     }
-    if(pastText){
+    if (pastText) {
         pastText.remove();
     }
 
@@ -232,7 +232,7 @@ function setupTag(tag) {
 
     // Ajouter la sphère au canvas
     canva.appendChild(tagSphere);
-    
+
     // Créer un texte pour la légende du tag
     let tagText = document.createElement('a-text');
     tagText.setAttribute('value', tag.type === 'porte' ? tag.name : tag.legend);
@@ -290,8 +290,8 @@ async function addNewScene() {
         "",
         {
             vertical: "0",
-            horizontal: "0"      
-        }, 
+            horizontal: "0"
+        },
         []
     )
     // Ajouter la nouvelle scène à jsonData
@@ -311,7 +311,7 @@ async function addNewTag(type) {
             newTag = new TagPorte(
                 Date.now(),
                 "Nouveau tag",
-                "", 
+                "",
                 {
                     r: "5",
                     theta: "90",
@@ -319,7 +319,7 @@ async function addNewTag(type) {
                 }
             );
             break;
-        
+
         case 'info':
             newTag = new TagInfo(
                 Date.now(),
@@ -356,7 +356,7 @@ async function addNewTag(type) {
 // Fonction pour charger les données JSON depuis localStorage
 function loadFromLocalStorage() {
     const storedData = localStorage.getItem('jsonData');
-    if (storedData){
+    if (storedData) {
         return JSON.parse(storedData);
     } else {
         initializeDefaultData();
@@ -421,17 +421,19 @@ async function loadPageData() {
     if (jsonData != null) {
         scenesInstances = jsonData.map(sceneData => {
             const tags = sceneData._tags.map(tagData => {
-                switch (tagData._type){
+                switch (tagData._type) {
                     case ("porte"):
                         return new TagPorte(tagData._id, tagData._name, tagData._action, tagData._position);
                     case ("info"):
                         return new TagInfo(tagData._id, tagData._name, tagData._legend, tagData._position);
+                    case ("text"):
+                        return new TagText(tagData._id, tagData._name, tagData._legend, tagData._position);
                 }
             });
             return new Scene(sceneData._name, sceneData._image, sceneData._camera, tags);
         });
     }
-    
+
     populateSceneList();
     if (scenesInstances.length > 0) {
         selectedScene = scenesInstances[0];
@@ -464,7 +466,7 @@ function importFromJson(event) {
     const file = event.target.files[0];
     if (file) {
         const reader = new FileReader();
-        reader.onload = function(e) {
+        reader.onload = function (e) {
             try {
                 const importedData = JSON.parse(e.target.result);
                 jsonData = importedData;
@@ -487,15 +489,15 @@ async function init() {
     await loadPageData();
     // document.getElementById('add-scene').addEventListener('click', addNewScene);
     document.getElementById('save-button').addEventListener('click', saveToLocalStorage);
-    document.getElementById('porte').addEventListener('click', function() {
+    document.getElementById('porte').addEventListener('click', function () {
         addNewTag('porte');
     });
-    document.getElementById('info').addEventListener('click', function() {
+    document.getElementById('info').addEventListener('click', function () {
         addNewTag('info');
     });
-    // document.getElementById('text').addEventListener('click', function() {
-    //     addNewTag('text');
-    // });
+    document.getElementById('text').addEventListener('click', function () {
+        addNewTag('text');
+    });
     document.getElementById('export-json').addEventListener('click', exportToJson);
     document.getElementById('import-json-input').addEventListener('click', importFromJson);
 }
