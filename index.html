@@ -111,15 +111,16 @@
     </div>
 
     <div id="overlay" class="overlay" style="display:none;"></div>
-    <div id="import-popup" class="import-popup" style="display: none">
+    <div id="import-popup" class="popup import-popup" style="display:none;">
         <input type="file" id="import-json-input" accept="application/json">
-        <button id="close-popup">Close</button>
+        <button class="popup-btn import-btn">Import</button>
+        <button id="close-import-popup" class="popup-btn close-btn">Close</button>
     </div>
-    <div id="add-popup" class="add-popup" style="display: none">
-        <button id="porte">Porte</button>
-        <button id="info">Info</button>
-        <button id="text">Text</button>
-        <button id="close-popup">Close</button>
+    <div id="add-popup" class="popup add-popup" style="display:none;">
+        <button class="popup-btn porte-btn">Porte</button>
+        <button class="popup-btn info-btn">Info</button>
+        <button class="popup-btn text-btn">Text</button>
+        <button id="close-add-popup" class="popup-btn close-btn">Close</button>
     </div>
 </main>
 

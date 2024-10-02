@@ -199,6 +199,10 @@ function hideTags() {
 }
 
 function updateCanvaTags(scene) {
+    let pastTags = document.querySelectorAll('a-sphere, a-text');
+    pastTags.forEach((tag)=>{
+        tag.remove();
+    })
     scene.tags.forEach((tag) => {
         setupTag(tag);
     });

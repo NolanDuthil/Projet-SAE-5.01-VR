@@ -377,15 +377,83 @@ main{
     z-index: 10000;
   }
 
-.import-popup, .add-popup {
-    background-color: var(--clr-off-white);
-    width: 40%;
-    height: 20%;
+/* Style général pour toutes les popups */
+.popup {
+    background-color: var(--clr-darkBlue); /* Fond sombre */
+    color: var(--clr-white); /* Texte en blanc */
+    border: var(--classic-border); /* Bordure classique */
+    border-radius: var(--classic-radius); /* Coins arrondis */
+    padding: 2rem; /* Plus de padding pour espacer le contenu */
+    width: 400px; /* Taille standard */
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%); /* Centrer la popup */
     z-index: 10001;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4); /* Ombre visible */
+    display: flex;
+    flex-direction: column;
+    gap: 1rem; /* Espacement entre les éléments */
+}
+
+/* Style commun pour les boutons des popups */
+.popup-btn {
+    background-color: transparent;
+    border: var(--classic-border);
+    border-radius: var(--classic-radius);
+    color: var(--clr-white);
+    padding: 0.75rem 1.5rem;
+    cursor: pointer;
+    font-family: var(--ff-Raleway);
+    font-size: medium;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+/* Effets de survol pour les boutons */
+.popup-btn:hover {
+    background-color: var(--clr-black); /* Fond noir au survol */
+    transform: scale(1.05); /* Légère mise en avant */
+}
+
+/* Style spécifique pour le bouton Close */
+.close-btn {
+    margin-top: 1.5rem; /* Espacement supplémentaire en haut */
+}
+
+/* Style spécifique pour le bouton d'import */
+.import-btn {
+    margin-top: 0.5rem;
+}
+
+/* Style pour l'input file */
+.popup input[type="file"] {
+    border: var(--classic-border);
+    border-radius: var(--classic-radius);
+    padding: 0.75rem;
+    background-color: transparent;
+    color: var(--clr-white);
+    outline: none;
+    width: 100%;
+    box-sizing: border-box;
+    font-family: var(--ff-Raleway);
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+/* Effets de survol pour l'input file */
+.popup input[type="file"]:hover {
+    background-color: var(--clr-black); /* Fond plus sombre au survol */
+}
+
+/* Overlay */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Fond noir semi-transparent */
+    z-index: 10000;
 }
 
 .a-enter-vr-button{
