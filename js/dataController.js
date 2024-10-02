@@ -281,6 +281,8 @@ function getDistanceToCamera(el) {
     // Récupérer la position de l'élément (la sphère)
     let elPos = el.object3D.position;
 
+    console.log(elPos);
+
     // Calculer la distance entre la caméra et l'élément
     let distance = elPos.distanceTo(cameraPos);
 
@@ -331,6 +333,8 @@ function setupTag(canva, tag, currentlyVisibleInfoLegend) {
         // Ajustement de l'écart vertical en fonction de la distance à la caméra
         let baseOffset = -7; // Offset de base si proche
         let thetaAdjustment = baseOffset + (distanceToCamera * 0.1); // Écart proportionnel à la distance
+
+        console.log(thetaAdjustment);
 
         // Utiliser les mêmes coordonnées pour placer le texte
         tagText.setAttribute('fromspherical', `fi:${tag.position.fi}; theta:${tag.position.theta - thetaAdjustment}; r:${tag.position.r};`);
