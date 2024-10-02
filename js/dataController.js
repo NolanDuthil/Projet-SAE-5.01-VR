@@ -239,7 +239,6 @@ function setupTag(tag) {
     tagText.setAttribute('color', 'white');
     tagText.setAttribute('align', 'center');
     tagText.setAttribute('width', '20');
-    tagText.setAttribute('opacity', tag.type === 'porte' ? '1' : '0');
 
     // Attendre que la sphère soit positionnée pour calculer la distance
     tagSphere.addEventListener('loaded', function () {
