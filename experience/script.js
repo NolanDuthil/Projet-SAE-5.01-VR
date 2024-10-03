@@ -19,11 +19,11 @@ function loadFromLocalStorage() {
                 const tags = sceneData._tags.map(tagData => {
                     switch (tagData._type) {
                         case ("porte"):
-                            return new TagPorte(tagData._id, tagData._name, tagData._action, tagData._position);
+                            return new TagPorte(tagData._id, tagData._name, tagData._action, tagData._position, tagData._textColor);
                         case ("info"):
-                            return new TagInfo(tagData._id, tagData._name, tagData._legend, tagData._position);
+                            return new TagInfo(tagData._id, tagData._name, tagData._legend, tagData._position, tagData._textColor);
                         case ("text"):
-                            return new TagText(tagData._id, tagData._name, tagData._legend, tagData._position);
+                            return new TagText(tagData._id, tagData._name, tagData._legend, tagData._position, tagData._textColor);
                     }
                 });
                 return new Scene(sceneData._name, sceneData._image, sceneData._camera, tags);
@@ -31,6 +31,7 @@ function loadFromLocalStorage() {
         }
     } else {
         initializeDefaultData();
+        localStorage.setItem('jsonData', JSON.stringify(scenesInstances));
         return null;
     }
 }
@@ -43,8 +44,8 @@ function initializeDefaultData() {
         "GS__3523.JPG",
         { vertical: "0", horizontal: "0" },
         [
-            new TagPorte("1", "Porte Studio (côté extérieur)", "1", { r: "25", theta: "90", fi: "-115" }),
-            new TagInfo("2", "Une information", "Nouvelle information", { r: "30", theta: "90", fi: "-40" })
+            new TagPorte("1", "Porte Studio (côté extérieur)", "1", { r: "25", theta: "90", fi: "-115" }, "#ffffff"),
+            new TagInfo("2", "Une information", "Nouvelle information", { r: "30", theta: "90", fi: "-40" }, "#ffffff")
         ]
     );
 
@@ -53,8 +54,8 @@ function initializeDefaultData() {
         "GS__3524.JPG",
         { vertical: "0", horizontal: "0" },
         [
-            new TagPorte("3", "Porte Studio (côté intérieur)", "0", { r: "30", theta: "90", fi: "135" }),
-            new TagPorte("4", "Porte Salle 2 Studio", "2", { r: "30", theta: "90", fi: "-40" })
+            new TagPorte("3", "Porte Studio (côté intérieur)", "0", { r: "30", theta: "90", fi: "135" }, "#ffffff"),
+            new TagPorte("4", "Porte Salle 2 Studio", "2", { r: "30", theta: "90", fi: "-40" }, "#ffffff")
         ]
     );
 
@@ -63,8 +64,8 @@ function initializeDefaultData() {
         "GS__3525.JPG",
         { vertical: "0", horizontal: "0" },
         [
-            new TagPorte("5", "Porte Salle 1 Studio", "1", { r: "30", theta: "90", fi: "-40" }),
-            new TagPorte("6", "Porte Salle 3 Studio", "3", { r: "40", theta: "90", fi: "-140" })
+            new TagPorte("5", "Porte Salle 1 Studio", "1", { r: "30", theta: "90", fi: "-40" }, "#ffffff"),
+            new TagPorte("6", "Porte Salle 3 Studio", "3", { r: "40", theta: "90", fi: "-140" }, "#ffffff")
         ]
     );
 
@@ -73,7 +74,7 @@ function initializeDefaultData() {
         "GS__3526.JPG",
         { vertical: "0", horizontal: "0" },
         [
-            new TagPorte("7", "Porte Salle 2 Studio", "2", { r: "40", theta: "90", fi: "-65" })
+            new TagPorte("7", "Porte Salle 2 Studio", "2", { r: "40", theta: "90", fi: "-65" }, "#ffffff")
         ]
     );
 
@@ -84,13 +85,10 @@ function initializeDefaultData() {
     saveToLocalStorage();
 }
 
-// Fonction pour sauvegarder les données JSON dans localStorage
-function saveToLocalStorage() {
-    localStorage.setItem('jsonData', JSON.stringify(scenesInstances));
-}
-
 // Fonction pour charger une scène
 function loadScene(scene) {
+    console.log(scene);
+
     let canva = document.getElementById('a-scene');
 
     // Changer l'image de fond
@@ -124,7 +122,7 @@ function loadScene(scene) {
         tagText.setAttribute('id', tag.id + "-text")
         tagText.setAttribute('value', tag.type === 'porte' ? tag.name : tag.legend);
         tagText.setAttribute('fromspherical', `fi:${tag.position.fi}; theta:${tag.position.theta - (-4)}; r:${tag.position.r};`);
-        tagText.setAttribute('color', 'white');
+        tagText.setAttribute('color', tag.textColor);
         tagText.setAttribute('align', 'center');
         tagText.setAttribute('width', '20');
         tagText.setAttribute('look-at', '[camera]');
