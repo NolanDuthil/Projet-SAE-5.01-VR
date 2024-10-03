@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scene 3D</title>
+
+    <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
+    <script type="module" src="./js/script.js"></script>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+
+<main class="main">
+    <div class="main__top">
+        <div class="main__top__left_panel">
+            <h2 class="main__top__left_panel__title">Scène</h2>
+            <div class="main__top__left_panel__scene_settings">
+                <input class="main__top__left_panel__scene_settings__name" id="scene-name" type="text">
+                <!-- <div class="main__top__left_panel__scene_settings__actions">
+                    <img id="duplicate-scene" class="main__top__left_panel__scene_settings__actions__scene_icons" src="./assets/duplicate-icon.svg" alt="Duplicate">
+                    <img id="delete-scene" class="main__top__left-panel__scene-settings__actions__scene_icons" src="./assets/delete-icon.svg" alt="Delete">
+                </div> -->
+            </div>
+            <!-- <div class="main__top__left_panel__camera">
+                <h3 class="main__top__left_panel__camera__subtitle">Angle de la caméra</h3>
+                <div class="main__top__left_panel__camera__axe">
+                    <p class="main__top__left_panel__camera__axe__text">Axe vertical</p>
+                    <input id="camera-vertical" class="main__top__left_panel__camera__axe__input_camera" type="number">
+                </div>
+                <div class="main__top__left_panel__camera__axe">
+                    <p class="main__top__left_panel__camera__axe__text">Axe horizontal</p>
+                    <input id="camera-horizontal" class="main__top__left_panel__camera__axe__input_camera" type="number">
+                </div>
+            </div> -->
+        </div>
+
+        <a-scene id="a-scene" class="main__top__scene" embedded>
+            <!-- Image 3D -->
+            <a-sky id="image-360" radius="200"></a-sky>
+    
+            <!-- camera -->
+            <a-camera camera look-controls="enabled: true" wasd-controls="enabled: false">
+                <a-cursor id="cursor" color="white"
+                            geometry="primitive: sphere; radius: 0.008"
+                            material="color: white; shader: flat">
+                </a-cursor>
+            </a-camera>
+        </a-scene>
+
+        <div class="main__top__right_panel">
+            <h2 class="main__top__right_panel__title">Tags</h2>
+            <div id="tag-settings" class="main__top__right_panel__tag_settings">
+                <select id="tags-select" class="main__top__right_panel__tag_settings__select">
+                </select>
+                <div class="main__top__right_panel__tag_settings__actions">
+                    <img id="add-tag" class="main__top__right_panel__tag_settings__actions__scene_icons" src="assets/add-icon.svg" alt="Add">
+                    <!-- <img id="duplicate-tag" class="smain__top__right_panel__tag_settings__actions__cene_icons" src="./assets/duplicate-icon.svg" alt="Duplicate"> -->
+                    <img id="delete-tag" class="main__top__right_panel__tag_settings__actions__scene_icons" src="./assets/delete-icon.svg" alt="Delete">
+                </div>
+            </div>
+            <div id="tag-name" class="main__top__right_panel__tag_name">
+                <h3 class="main__top__right_panel__tag_name_subtitle">Nom</h3>
+                <input class="main__top__right_panel__tag_name__input" id="tag-name-input" type="text">
+            </div>
+            <div id="tag-legend" class="main__top__right_panel__tag_legend">
+                <h3 class="main__top__right_panel__tag_legend_subtitle">Légende</h3>
+                <textarea id="tag-legend-area" class="main__top__right_panel__tag_legend__area"></textarea>
+            </div>
+            <div id="tag-position" class="main__top__right_panel__tag_position">
+                <h3 class="main__top__right_panel__tag_position__subtitle">Position</h3>
+                <div class="main__top__right_panel__tag_position__coordonnees">
+                    <div class="main__top__right_panel__tag_position__coordonnees__container">
+                        <input id="r" class="main__top__right_panel__tag_position__coordonnees__container__input" type="number">
+                        <p class="main__top__right_panel__tag_position__coordonnees__container__text">Distance</p>
+                    </div>
+                    <div class="main__top__right_panel__tag_position__coordonnees__container">
+                        <input id="theta" class="main__top__right_panel__tag_position__coordonnees__container__input" type="number">
+                        <p class="main__top__right_panel__tag_position__coordonnees__container__text">Latitude</p>
+                    </div>
+                    <div class="main__top__right_panel__tag_position__coordonnees__container">
+                        <input id="fi" class="main__top__right_panel__tag_position__coordonnees__container__input" type="number">
+                        <p class="main__top__right_panel__tag_position__coordonnees__container__text">Longitude</p>
+                    </div>
+                </div>
+            </div>
+            <div id="color-selector-container" class="main__top__right_panel__text_color">
+                <h3 class="main__top__right_panel__text_color__subtitle">Couleur du texte</h3>
+                <input type="color" id="color-selector" class="main__top__right_panel__text_color__selector">
+            </div>
+            <div id="scene-selector-container" class="main__top__right_panel__scene" style="display:none;">
+                <h3 class="main__top__right_panel__scene__subtitle">Action</h3>
+                <select id="scene-selector" class="main__top__right_panel__scene__selector"></select>
+            </div>
+        </div>
+    </div>
+
+    <div class="main__bottom_panel">
+      <div class="main__bottom_panel__left_side">
+        <div class="main__bottom_panel__left_side__scenes" id="scenes">
+        </div>
+        <!-- <div id="add-scene" class="main__bottom_panel__left_side__add_scene">
+          <img src="./assets/add-icon.svg" alt="Add">
+        </div>  -->
+      </div>
+      <div class="main__bottom_panel__right_side">
+        <button id="export-json" class="main__bottom_panel__right_side__button">Exporter</button>
+        <button id="import-json" class="main__bottom_panel__right_side__button">Importer</button>
+        <button id="save-button" class="main__bottom_panel__right_side__button">Sauvegarder</button>
+        <a href="./experience"><button id="run-button" class="main__bottom_panel__right_side__button">Visite</button></a>
+      </div>
+    </div>
+
+    <div id="overlay" class="main__overlay" style="display:none;"></div>
+    <div id="import-popup" class="main__import_popup" style="display:none;">
+        <form id="import-form" class="main__import_popup__form">
+            <input type="file" id="import-json-input" accept="application/json" class="main__import_popup__form__input">
+            <button type="submit" id="import-popup-button" class="main__import_popup__form__button">Importer</button>
+            <button type="button" id="close-import-popup" class="main__import_popup__form__button">Fermer</button>
+        </form>
+    </div>
+    <div id="add-popup" class="main__add_popup" style="display:none;">
+        <button id="porte" class="main__add_popup__button">Porte</button>
+        <button id="info" class="main__add_popup__button">Info</button>
+        <button id="text" class="main__add_popup__button">Text</button>
+        <button id="close-add-popup" class="main__add_popup__button">Fermer</button>
+    </div>
+</main>
+
+</body>
+</html>
