@@ -411,6 +411,11 @@ body, html {
   padding: 0.5rem 1rem;
   font-family: var(--ff-Raleway);
 }
+.main__bottom_panel__right_side__button:hover {
+  background-color: var(--clr-black);
+  color: var(--clr-white);
+  cursor: pointer;
+}
 .main__overlay {
   position: fixed;
   top: 0;

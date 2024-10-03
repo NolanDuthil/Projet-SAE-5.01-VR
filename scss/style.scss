@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
 
+// VARIABLES
+
 :root{
     /* colors */
     --clr-white: #FFFFFF;
@@ -16,6 +18,67 @@
     --classic-radius: 10px;
     --classic-blur: blur(30px);
 }
+
+// MIXINS
+
+@mixin classic-button {
+    border: var(--classic-border);
+    background-color: transparent;
+    color: var(--clr-white);
+    border-radius: var(--classic-radius);
+    padding: .5rem 1rem; 
+    font-family: var(--ff-Raleway);
+
+    &:hover {
+        background-color: var(--clr-black);
+        color: var(--clr-white);
+        cursor: pointer;
+    }
+}
+
+@mixin classic-popup-button {
+    background-color: transparent;
+    border: var(--classic-border);
+    border-radius: var(--classic-radius);
+    color: var(--clr-white);
+    padding: 0.75rem 1.5rem;
+    cursor: pointer;
+    font-family: var(--ff-Raleway);
+    font-size: medium;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+
+    &:hover {
+        background-color: var(--clr-black);
+        transform: scale(1.05);
+    }
+}
+
+@mixin classic-position {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: center;
+    gap: .5rem;
+    width: 100%;
+}
+
+@mixin panel {
+    width: 20%;
+    background-color: var(--clr-darkBlue);
+    backdrop-filter: var(--classic-blur);
+    border-radius: 1rem;
+    padding: 15px 45px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3rem;
+    overflow-y: scroll;
+    margin: 1rem;
+    z-index: 2;
+}
+
+// CLASSES
 
 *{
     margin: 0;
@@ -42,19 +105,7 @@ body, html{
         height: 75%;
 
         &__left_panel {
-            width: 20%;
-            background-color: var(--clr-darkBlue);
-            backdrop-filter: var(--classic-blur);
-            border-radius: 1rem;
-            padding: 15px 45px;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 3rem;
-            overflow-y: scroll;
-            margin: 1rem;
-            z-index: 2;
+            @include panel;
 
             &__title {
                 font-size: xx-large;
@@ -154,19 +205,7 @@ body, html{
         }
     
         &__right_panel {
-            width: 20%;
-            background-color: var(--clr-darkBlue);
-            backdrop-filter: var(--classic-blur);
-            border-radius: 1rem;
-            padding: 15px 45px;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 3rem;
-            overflow-y: scroll;
-            margin: 1rem;
-            z-index: 2;
+            @include panel;
 
             &__title {
                 font-size: xx-large;
@@ -210,12 +249,7 @@ body, html{
             }
 
             &__tag_name {
-                display: flex;
-                flex-direction: column;
-                align-items: left;
-                justify-content: center;
-                gap: .5rem;
-                width: 100%;
+                @include classic-position;
 
                 &__subtitle {
                     font-size: larger;
@@ -237,12 +271,7 @@ body, html{
             }
 
             &__tag_legend {
-                display: flex;
-                flex-direction: column;
-                align-items: left;
-                justify-content: center;
-                gap: .5rem;
-                width: 100%;
+                @include classic-position;
 
                 &__subtitle {
                     font-size: larger;
@@ -265,12 +294,7 @@ body, html{
             }
 
             &__tag_position {
-                display: flex;
-                flex-direction: column;
-                align-items: left;
-                justify-content: center;
-                gap: .5rem;
-                width: 100%;
+                @include classic-position;
 
                 &__subtitle {
                     font-size: larger;
@@ -316,12 +340,7 @@ body, html{
             }
 
             &__text_color {
-                display: flex;
-                flex-direction: column;
-                align-items: left;
-                justify-content: center;
-                gap: .5rem;
-                width: 100%;
+                @include classic-position;
 
                 &__subtitle {
                     font-size: larger;
@@ -345,12 +364,7 @@ body, html{
             }
 
             &__scene {
-                display: flex;
-                flex-direction: column;
-                align-items: left;
-                justify-content: center;
-                gap: .5rem;
-                width: 100%;
+                @include classic-position;
 
                 &__subtitle {
                     font-size: larger;
@@ -459,12 +473,7 @@ body, html{
             gap: .5rem;
 
             &__button {
-                border: var(--classic-border);
-                background-color: transparent;
-                color: var(--clr-white);
-                border-radius: var(--classic-radius);
-                padding: .5rem 1rem; 
-                font-family: var(--ff-Raleway);
+                @include classic-button;
             }
         }
     }
@@ -518,20 +527,7 @@ body, html{
             }
 
             &__button {
-                background-color: transparent;
-                border: var(--classic-border);
-                border-radius: var(--classic-radius);
-                color: var(--clr-white);
-                padding: 0.75rem 1.5rem;
-                cursor: pointer;
-                font-family: var(--ff-Raleway);
-                font-size: medium;
-                transition: background-color 0.3s ease, transform 0.3s ease;
-
-                &:hover {
-                    background-color: var(--clr-black);
-                    transform: scale(1.05);
-                }
+                @include classic-popup-button;
             }
         }
     }
@@ -555,20 +551,7 @@ body, html{
         gap: 1rem;
 
         &__button {
-            background-color: transparent;
-            border: var(--classic-border);
-            border-radius: var(--classic-radius);
-            color: var(--clr-white);
-            padding: 0.75rem 1.5rem;
-            cursor: pointer;
-            font-family: var(--ff-Raleway);
-            font-size: medium;
-            transition: background-color 0.3s ease, transform 0.3s ease;
-            
-            &:hover {
-                background-color: var(--clr-black);
-                transform: scale(1.05);
-            }
+            @include classic-popup-button;
         }
     }
 }
