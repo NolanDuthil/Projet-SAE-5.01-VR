@@ -23,7 +23,7 @@
                     <img id="delete-scene" class="scene-icons" src="./assets/delete-icon.svg" alt="Delete">
                 </div> -->
             </div>
-            <div class="camera">
+            <!-- <div class="camera">
                 <h3 class="subtitle">Angle de la caméra</h3>
                 <div class="axe">
                     <p class="text">Axe vertical</p>
@@ -33,20 +33,18 @@
                     <p class="text">Axe horizontal</p>
                     <input id="camera-horizontal" class="input-camera" type="number">
                 </div>
-            </div>
+            </div> -->
         </div>
 
         <a-scene id="a-scene" class="scene" embedded>
             <!-- Image 3D -->
             <a-sky id="image-360" radius="200"></a-sky>
     
-            <!-- Sphère avec coordonnées sphériques -->
-            <!-- <a-sphere color="#33F" radius="2" fromspherical='fi: 0; theta: 90; r: 40'></a-sphere> -->
-    
-            <a-camera camera look-controls wasd-controls="enabled: false">
+            <!-- camera -->
+            <a-camera camera look-controls="enabled: true" wasd-controls="enabled: false">
                 <a-cursor id="cursor" color="white"
-                          geometry="primitive: sphere; radius: 0.008"
-                          material="color: white; shader: flat">
+                            geometry="primitive: sphere; radius: 0.008"
+                            material="color: white; shader: flat">
                 </a-cursor>
             </a-camera>
         </a-scene>
@@ -87,6 +85,10 @@
                     </div>
                 </div>
             </div>
+            <div id="color-selector-container" class="color-selector-container">
+                <h3 class="subtitle">Couleur du texte</h3>
+                <input type="color" id="color-selector" class="color-selector">
+            </div>
             <div id="scene-selector-container" class="scene-selector-container" style="display:none;">
                 <h3 class="subtitle">Action</h3>
                 <select id="scene-selector" class="scene-selector"></select>
@@ -112,9 +114,11 @@
 
     <div id="overlay" class="overlay" style="display:none;"></div>
     <div id="import-popup" class="popup import-popup" style="display:none;">
-        <input type="file" id="import-json-input" accept="application/json">
-        <button class="popup-btn import-btn">Import</button>
-        <button id="close-import-popup" class="popup-btn close-btn">Close</button>
+        <form id="import-form">
+            <input type="file" id="import-json-input" accept="application/json">
+            <button type="submit" class="popup-btn import-btn">Importer</button>
+            <button type="button" id="close-import-popup" class="popup-btn close-btn">Close</button>
+        </form>
     </div>
     <div id="add-popup" class="popup add-popup" style="display:none;">
         <button id="porte" class="popup-btn porte-btn">Porte</button>

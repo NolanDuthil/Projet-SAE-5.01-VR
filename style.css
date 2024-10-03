@@ -140,7 +140,7 @@ main{
     transform: scale(1.15);
 }
 
-.camera, .tag-name, .tag-legend, .tag-position, .scene-selector-container, .tag-type-container{
+.camera, .tag-name, .tag-legend, .tag-position, .scene-selector-container, .tag-type-container, .color-selector-container{
     display: flex;
     flex-direction: column;
     align-items: left;
@@ -365,6 +365,31 @@ main{
 .scene-selector option, .tag-type-selector option{
     color: var(--clr-black);
     font-family: var(--ff-Raleway);
+}
+
+.color-selector {
+    border: var(--classic-border);
+    border-radius: var(--classic-radius);
+    padding: var(--classic-padding);
+    background-color: transparent;
+    color: var(--clr-white);
+    outline: none;
+    font-size: large;
+    font-weight: 400;
+    width: 100%;
+    height: 3rem;
+    text-align: left;
+    cursor: pointer;
+}
+
+.color-selector::-webkit-color-swatch {
+    border: none;
+    border-radius: var(--classic-radius);
+}
+
+.color-selector::-webkit-color-swatch-wrapper {
+    padding: 0;
+    border-radius: var(--classic-radius);
 }
 
 .overlay {

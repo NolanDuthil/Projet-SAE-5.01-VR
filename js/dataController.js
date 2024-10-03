@@ -48,17 +48,17 @@ function populateSceneList() {
 function updateSceneDetails(scene) {
     selectedScene = scene;
     const sceneNameInput = document.getElementById('scene-name');
-    const cameraVerticalInput = document.getElementById('camera-vertical');
-    const cameraHorizontalInput = document.getElementById('camera-horizontal');
+    // const cameraVerticalInput = document.getElementById('camera-vertical');
+    // const cameraHorizontalInput = document.getElementById('camera-horizontal');
     const tagSelect = document.getElementById('tags-select');
 
     // Nom & Image de la scène
     sceneNameInput.value = selectedScene.name;
     selectedScene.image ? document.getElementById('image-360').setAttribute('src', "./uploaded_images/" + scene.image) : document.getElementById('image-360').setAttribute('src', "./assets/grey-background.avif");
 
-    // Angle Caméra de la scène
-    cameraVerticalInput.value = selectedScene.camera.vertical;
-    cameraHorizontalInput.value = selectedScene.camera.horizontal;
+    // // Angle Caméra de la scène
+    // cameraVerticalInput.value = selectedScene.camera.vertical;
+    // cameraHorizontalInput.value = selectedScene.camera.horizontal;
 
     // Liste de tags
     tagSelect.innerHTML = '';
@@ -84,15 +84,17 @@ function updateSceneDetails(scene) {
         selectedScene.name = event.target.value;
     });
 
-    // Listener pour l'angle vertical de la caméra
-    cameraVerticalInput.addEventListener('input', (event) => {
-        selectedScene.camera.vertical = event.target.value;
-    });
+    // // Listener pour l'angle vertical de la caméra
+    // cameraVerticalInput.addEventListener('input', (event) => {
+    //     selectedScene.camera.vertical = event.target.value;
+    //     updateCameraRotation()
+    // });
 
-    // Listener pour l'angle horizontal de la caméra
-    cameraHorizontalInput.addEventListener('input', (event) => {
-        selectedScene.camera.horizontal = event.target.value;
-    });
+    // // Listener pour l'angle horizontal de la caméra
+    // cameraHorizontalInput.addEventListener('input', (event) => {
+    //     selectedScene.camera.horizontal = event.target.value;
+    //     updateCameraRotation()
+    // });
 
     // Listener pour le changement de tag
     tagSelect.addEventListener('change', (event) => {
@@ -120,6 +122,7 @@ function loadTagDetails(tags, selectedTagIndex) {
     const tagSelect = document.getElementById('tags-select');
     const sceneSelectorContainer = document.getElementById('scene-selector-container');
     const sceneSelector = document.getElementById('scene-selector');
+    const colorSelector = document.getElementById('color-selector');
 
     // Remplir les champs de formulaire avec les données du tag sélectionné
     tagNameInput.value = tag.name;
@@ -127,6 +130,7 @@ function loadTagDetails(tags, selectedTagIndex) {
     rInput.value = tag.position.r;
     thetaInput.value = tag.position.theta;
     fiInput.value = tag.position.fi;
+    colorSelector.value = tag.textColor;
 
     sceneSelector.innerHTML = ''; // Vider le sélecteur
     scenesInstances.forEach((scene, index) => {
@@ -176,6 +180,11 @@ function loadTagDetails(tags, selectedTagIndex) {
         tag.position.fi = event.target.value === '' ? 0 : event.target.value;
         setupTag(tag);
     });
+
+    colorSelector.addEventListener('change', (event) => {
+        tag.textColor = event.target.value;
+        setupTag(tag);
+    })
 }
 
 function getDistanceToCamera(el) {
@@ -190,7 +199,6 @@ function getDistanceToCamera(el) {
 
     return distance;
 }
-
 
 function hideTags() {
     document.getElementById('tag-settings').style = "display:none";
@@ -237,7 +245,7 @@ function setupTag(tag) {
     let tagText = document.createElement('a-text');
     tagText.setAttribute('value', tag.type === 'porte' ? tag.name : tag.legend);
     tagText.setAttribute('id', tag.id + '-text');
-    tagText.setAttribute('color', 'white');
+    tagText.setAttribute('color', tag.textColor);
     tagText.setAttribute('align', 'center');
     tagText.setAttribute('width', '20');
     tagText.setAttribute('look-at', '[camera]');
@@ -316,7 +324,8 @@ async function addNewTag(type) {
                     r: "5",
                     theta: "90",
                     fi: "0"
-                }
+                },
+                "#ffffff"
             );
             break;
 
@@ -329,7 +338,8 @@ async function addNewTag(type) {
                     r: "5",
                     theta: "90",
                     fi: "0"
-                }
+                },
+                "#ffffff"
             );
             break;
 
@@ -337,7 +347,13 @@ async function addNewTag(type) {
             newTag = new TagText(
                 Date.now(),
                 "nouveau tag",
-                "Texte d'exemple"
+                "Texte d'exemple",
+                {
+                    r: "5",
+                    theta: "90",
+                    fi: "0"
+                },
+                "#ffffff"
             );
             break;
 
@@ -377,8 +393,8 @@ function initializeDefaultData() {
         "GS__3523.JPG",
         { vertical: "0", horizontal: "0" },
         [
-            new TagPorte("1", "Porte Studio (côté extérieur)", "1", { r: "25", theta: "90", fi: "-115" }),
-            new TagInfo("2", "Une information", "Nouvelle information", { r: "30", theta: "90", fi: "-40" })
+            new TagPorte("1", "Porte Studio (côté extérieur)", "1", { r: "25", theta: "90", fi: "-115" }, "#ffffff"),
+            new TagInfo("2", "Une information", "Nouvelle information", { r: "30", theta: "90", fi: "-40" }, "#ffffff")
         ]
     );
 
@@ -387,8 +403,8 @@ function initializeDefaultData() {
         "GS__3524.JPG",
         { vertical: "0", horizontal: "0" },
         [
-            new TagPorte("3", "Porte Studio (côté intérieur)", "0", { r: "30", theta: "90", fi: "135" }),
-            new TagPorte("4", "Porte Salle 2 Studio", "2", { r: "30", theta: "90", fi: "-40" })
+            new TagPorte("3", "Porte Studio (côté intérieur)", "0", { r: "30", theta: "90", fi: "135" }, "#ffffff"),
+            new TagPorte("4", "Porte Salle 2 Studio", "2", { r: "30", theta: "90", fi: "-40" }, "#ffffff")
         ]
     );
 
@@ -397,8 +413,8 @@ function initializeDefaultData() {
         "GS__3525.JPG",
         { vertical: "0", horizontal: "0" },
         [
-            new TagPorte("5", "Porte Salle 1 Studio", "1", { r: "30", theta: "90", fi: "-40" }),
-            new TagPorte("6", "Porte Salle 3 Studio", "3", { r: "40", theta: "90", fi: "-140" })
+            new TagPorte("5", "Porte Salle 1 Studio", "1", { r: "30", theta: "90", fi: "-40" }, "#ffffff"),
+            new TagPorte("6", "Porte Salle 3 Studio", "3", { r: "40", theta: "90", fi: "-140" }, "#ffffff")
         ]
     );
 
@@ -407,7 +423,7 @@ function initializeDefaultData() {
         "GS__3526.JPG",
         { vertical: "0", horizontal: "0" },
         [
-            new TagPorte("7", "Porte Salle 2 Studio", "2", { r: "40", theta: "90", fi: "-65" })
+            new TagPorte("7", "Porte Salle 2 Studio", "2", { r: "40", theta: "90", fi: "-65" }, "#ffffff")
         ]
     );
 
@@ -419,12 +435,10 @@ function initializeDefaultData() {
 }
 
 // Fonction pour charger les données de la page lorsque le document est prêt
-async function loadPageData() {
-    let jsonData = loadFromLocalStorage();
-
+async function loadPageData(data) {
     // Créer des instances de la classe Scene à partir des données JSON
-    if (jsonData != null) {
-        scenesInstances = jsonData.map(sceneData => {
+    if (data != null) {
+        scenesInstances = data.map(sceneData => {
             const tags = sceneData._tags.map(tagData => {
                 switch (tagData._type) {
                     case ("porte"):
@@ -453,7 +467,7 @@ function saveToLocalStorage() {
 
 // Fonction pour exporter les données JSON
 function exportToJson() {
-    const jsonString = JSON.stringify(scenesInstances, null, 2);
+    const jsonString = JSON.stringify(scenesInstances);
     const blob = new Blob([jsonString], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
 
@@ -466,32 +480,32 @@ function exportToJson() {
     URL.revokeObjectURL(url);
 }
 
-// Fonction pour importer un fichier JSON
+// Fonction pour importer un fichier JSON via le formulaire
 function importFromJson(event) {
-    const file = event.target.files[0];
+    event.preventDefault();
+    const fileInput = document.getElementById('import-json-input');
+    const file = fileInput.files[0];
     if (file) {
         const reader = new FileReader();
         reader.onload = function (e) {
             try {
                 const importedData = JSON.parse(e.target.result);
-                jsonData = importedData;
-                populateSceneList(jsonData.scenes);
-                if (jsonData.scenes.length > 0) {
-                    updateSceneDetails(jsonData.scenes[0]);
-                }
-                saveToLocalStorage();
+                loadPageData(importedData)
                 alert('Données importées avec succès !');
             } catch (error) {
                 alert('Erreur lors de l\'importation du fichier JSON.');
             }
         };
         reader.readAsText(file);
+    } else {
+        alert('Veuillez sélectionner un fichier JSON.');
     }
 }
 
 // Initialisation
 async function init() {
-    await loadPageData();
+    let jsonData = loadFromLocalStorage();
+    await loadPageData(jsonData);
     // document.getElementById('add-scene').addEventListener('click', addNewScene);
     document.getElementById('save-button').addEventListener('click', saveToLocalStorage);
     document.getElementById('delete-tag').addEventListener('click', deleteTag)
@@ -505,7 +519,7 @@ async function init() {
         addNewTag('text');
     });
     document.getElementById('export-json').addEventListener('click', exportToJson);
-    document.getElementById('import-json-input').addEventListener('click', importFromJson);
+    document.getElementById('import-form').addEventListener('submit', importFromJson);
 }
 
 // Charger les données de la page lorsque le document est prêt

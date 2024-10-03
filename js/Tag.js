@@ -1,8 +1,9 @@
 export default class Tag {
-    constructor(id, name, position = { r: 0, theta: 0, fi: 0 }) {
+    constructor(id, name, position = { r: 0, theta: 0, fi: 0 }, textColor) {
         this._id = id;
         this._name = name;
         this._position = position;
+        this._textColor = textColor;
         this._type = 'tag';
     }
 
@@ -37,5 +38,13 @@ export default class Tag {
 
     set type(value) {
         this._type = value;
+    }
+
+    get textColor() {
+        return this._textColor;
+    }
+
+    set textColor(color) {
+        this._textColor = color;
     }
 }
