@@ -18,17 +18,18 @@ function populateSceneList() {
     scenesInstances.forEach(scene => {
         // Créer un élément pour la scène
         const sceneItem = document.createElement('div');
-        sceneItem.classList.add('scene-item');
+        sceneItem.classList.add('main__bottom_panel__left_side__scenes__item');
 
         // Créer une image pour la scène
         const sceneImage = document.createElement('img');
         // Vérifier si l'image est vide et utiliser l'image par défaut si c'est le cas
         sceneImage.src = scene.image ? "./uploaded_images/" + scene.image : "./assets/grey-background.avif";
         sceneImage.alt = scene.name;
+        sceneImage.classList.add('main__bottom_panel__left_side__scenes__item__image');
 
         // Créer une étiquette pour le nom de la scène
         const sceneLabel = document.createElement('div');
-        sceneLabel.classList.add('label');
+        sceneLabel.classList.add('main__bottom_panel__left_side__scenes__item__label');
         sceneLabel.textContent = scene.name;
 
         // Ajouter l'image et l'étiquette à l'élément de scène
