@@ -422,6 +422,7 @@ body, html {
 }
 .main__import_popup {
   background-color: var(--clr-darkBlue);
+  backdrop-filter: var(--classic-blur);
   color: var(--clr-white);
   border: var(--classic-border);
   border-radius: var(--classic-radius);
@@ -470,6 +471,7 @@ body, html {
 }
 .main__add_popup {
   background-color: var(--clr-darkBlue);
+  backdrop-filter: var(--classic-blur);
   color: var(--clr-white);
   border: var(--classic-border);
   border-radius: var(--classic-radius);
