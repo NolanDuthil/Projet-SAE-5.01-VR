@@ -6,7 +6,8 @@ import TagText from "./TagText.js";
 // Déclarez jsonData ici pour qu'il soit accessible à toutes les fonctions
 let scenesInstances = [];
 let selectedScene = {};
-let selectedTag = 0;
+let selectedTagIndex = 0;
+let selectedTag = {};
 let currentlyVisibleInfoLegend = null;
 
 // Fonction pour remplir le menu des scènes
@@ -69,7 +70,6 @@ function updateSceneDetails(scene) {
         option.textContent = tag.name;
         tagSelect.appendChild(option);
     });
-
     updateCanvaTags(selectedScene);
 
     // Affichage des données du premier tag
@@ -103,8 +103,9 @@ function updateSceneDetails(scene) {
 }
 
 // Fonction pour remplir les détails du tag sélectionné
-function loadTagDetails(tags, selectedTagIndex) {
-    selectedTag = selectedTagIndex;
+function loadTagDetails(tags, selectedTagI) {
+    selectedTagIndex = selectedTagI;
+    selectedTag = tags[selectedTagIndex];
 
     // Affiche les paramètres des tags
     document.getElementById('tag-settings').style = "";
@@ -112,7 +113,6 @@ function loadTagDetails(tags, selectedTagIndex) {
     document.getElementById('tag-legend').style = "";
     document.getElementById('tag-position').style = "";
 
-    const tag = tags[selectedTagIndex];
     const tagNameInput = document.getElementById('tag-name-input');
     const tagLegendContainer = document.getElementById('tag-legend')
     const tagLegendInput = document.getElementById('tag-legend-area');
@@ -125,14 +125,14 @@ function loadTagDetails(tags, selectedTagIndex) {
     const colorSelector = document.getElementById('color-selector');
 
     // Remplir les champs de formulaire avec les données du tag sélectionné
-    tagNameInput.value = tag.name;
-    tagLegendInput.value = tag.legend;
-    rInput.value = tag.position.r;
-    thetaInput.value = tag.position.theta;
-    fiInput.value = tag.position.fi;
-    colorSelector.value = tag.textColor;
+    tagNameInput.value = selectedTag.name;
+    tagLegendInput.value = selectedTag.legend;
+    rInput.value = selectedTag.position.r;
+    thetaInput.value = selectedTag.position.theta;
+    fiInput.value = selectedTag.position.fi;
+    colorSelector.value = selectedTag.textColor;
 
-    sceneSelector.innerHTML = ''; // Vider le sélecteur
+    sceneSelector.innerHTML = '';
     scenesInstances.forEach((scene, index) => {
         if (scene != selectedScene) {
             const option = document.createElement('option');
@@ -143,12 +143,12 @@ function loadTagDetails(tags, selectedTagIndex) {
     });
 
     // Si le type du tag est "porte", afficher le sélecteur de scène
-    if (tag.type === 'porte') {
+    if (selectedTag.type === 'porte') {
         tagLegendContainer.style.display = 'none';
         sceneSelectorContainer.style.display = '';
-        sceneSelector.value = tag.action;
+        sceneSelector.value = selectedTag.action;
         sceneSelector.addEventListener('change', () => {
-            tag.action = this.value;
+            selectedTag.action = this.value;
         });
     } else {
         sceneSelectorContainer.style.display = 'none';
@@ -156,34 +156,35 @@ function loadTagDetails(tags, selectedTagIndex) {
     }
 
     tagNameInput.addEventListener('input', (event) => {
-        tag.name = event.target.value;
+        selectedTag.name = event.target.value;
         tagSelect.options[selectedTagIndex].textContent = event.target.value;
-        setupTag(tag);
+        setupTag(selectedTag);
     });
 
     tagLegendInput.addEventListener('input', (event) => {
-        tag.legend = event.target.value;
-        setupTag(tag);
+        selectedTag.legend = event.target.value;
+        setupTag(selectedTag);
     });
 
     rInput.addEventListener('input', (event) => {
-        tag.position.r = event.target.value === '' ? 0 : event.target.value;
-        setupTag(tag);
+        selectedTag.position.r = event.target.value === '' ? 0 : event.target.value;
+        setupTag(selectedTag);
     });
 
     thetaInput.addEventListener('input', (event) => {
-        tag.position.theta = event.target.value === '' ? 0 : event.target.value;
-        setupTag(tag);
+        selectedTag.position.theta = event.target.value === '' ? 0 : event.target.value;
+        setupTag(selectedTag);
     });
 
     fiInput.addEventListener('input', (event) => {
-        tag.position.fi = event.target.value === '' ? 0 : event.target.value;
-        setupTag(tag);
+        selectedTag.position.fi = event.target.value === '' ? 0 : event.target.value;
+        setupTag(selectedTag);
     });
 
-    colorSelector.addEventListener('change', (event) => {
-        tag.textColor = event.target.value;
-        setupTag(tag);
+    colorSelector.addEventListener('input', (event) => {
+        selectedTag.textColor = event.target.value;
+        console.log(selectedTag.textColor)
+        setupTag(selectedTag);
     })
 }
 
@@ -307,7 +308,7 @@ async function addNewScene() {
 
     // Mettre à jour l'affichage avec les scènes mises à jour
     populateSceneList(scenesInstances);
-    loadTagDetails(selectedScene.tags, selectedTag);
+    loadTagDetails(selectedScene.tags, selectedTagIndex);
 }
 
 // Fonction pour ajouter une nouvelle scène
@@ -370,7 +371,7 @@ async function addNewTag(type) {
 }
 
 async function deleteTag(){
-    selectedScene.removeTag(selectedTag);
+    selectedScene.removeTag(selectedTagIndex);
     updateSceneDetails(selectedScene);
 }
 
@@ -442,11 +443,11 @@ async function loadPageData(data) {
             const tags = sceneData._tags.map(tagData => {
                 switch (tagData._type) {
                     case ("porte"):
-                        return new TagPorte(tagData._id, tagData._name, tagData._action, tagData._position);
+                        return new TagPorte(tagData._id, tagData._name, tagData._action, tagData._position, tagData._textColor);
                     case ("info"):
-                        return new TagInfo(tagData._id, tagData._name, tagData._legend, tagData._position);
+                        return new TagInfo(tagData._id, tagData._name, tagData._legend, tagData._position, tagData._textColor);
                     case ("text"):
-                        return new TagText(tagData._id, tagData._name, tagData._legend, tagData._position);
+                        return new TagText(tagData._id, tagData._name, tagData._legend, tagData._position, tagData._textColor);
                 }
             });
             return new Scene(sceneData._name, sceneData._image, sceneData._camera, tags);
