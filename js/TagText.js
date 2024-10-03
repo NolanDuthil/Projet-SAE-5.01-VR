@@ -4,7 +4,7 @@ export default class TagText extends Tag {
     constructor(id, name, legend, position = { r: 0, theta: 0, fi: 0 }) {
         super(id, name, position);
         this._legend = legend;
-        this._type = "info";
+        this._type = "text";
     }
 
     // Getters and setters for legend

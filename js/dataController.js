@@ -212,6 +212,7 @@ function updateCanvaTags(scene) {
 function setupTag(tag) {
     let canva = document.getElementById('a-scene');
 
+    // Supprimer les anciennes instances du tag (sphère ou texte)
     let pastTag = document.getElementById(tag.id);
     let pastText = document.getElementById(tag.id + "-text");
     if (pastTag) {
@@ -221,66 +222,85 @@ function setupTag(tag) {
         pastText.remove();
     }
 
-    // Créer une sphère pour le tag
-    let tagSphere = document.createElement('a-sphere');
-    tagSphere.setAttribute('color', tag.type === 'porte' ? 'red' : 'blue');
-    tagSphere.setAttribute('id', tag.id);
-    tagSphere.setAttribute('radius', 1);
+    // Créer une sphère pour les tags de type 'porte' ou 'info'
+    if (tag.type === 'porte' || tag.type === 'info') {
+        let tagSphere = document.createElement('a-sphere');
+        tagSphere.setAttribute('color', tag.type === 'porte' ? 'red' : 'blue');
+        tagSphere.setAttribute('id', tag.id);
+        tagSphere.setAttribute('radius', 1);
 
-    // Ajouter le composant de conversion des coordonnées sphériques
-    tagSphere.setAttribute('fromspherical', `fi:${tag.position.fi}; theta:${tag.position.theta}; r:${tag.position.r};`);
+        // Ajouter le composant de conversion des coordonnées sphériques
+        tagSphere.setAttribute('fromspherical', `fi:${tag.position.fi}; theta:${tag.position.theta}; r:${tag.position.r};`);
 
-    // Ajouter la sphère au canvas
-    canva.appendChild(tagSphere);
+        // Ajouter la sphère au canvas
+        canva.appendChild(tagSphere);
 
-    // Créer un texte pour la légende du tag
-    let tagText = document.createElement('a-text');
-    tagText.setAttribute('value', tag.type === 'porte' ? tag.name : tag.legend);
-    tagText.setAttribute('id', tag.id + '-text');
-    tagText.setAttribute('color', 'white');
-    tagText.setAttribute('align', 'center');
-    tagText.setAttribute('width', '20');
-    tagText.setAttribute('look-at', '[camera]');
-    tagText.setAttribute('opacity', tag.type === 'porte' ? '1' : '0');
+        // Créer un texte sous le tag 'porte' ou pour la légende 'info'
+        let tagText = document.createElement('a-text');
+        tagText.setAttribute('value', tag.type === 'porte' ? tag.name : tag.legend);
+        tagText.setAttribute('id', tag.id + '-text');
+        tagText.setAttribute('color', 'white');
+        tagText.setAttribute('align', 'center');
+        tagText.setAttribute('width', '20');
+        tagText.setAttribute('look-at', '[camera]');  // Toujours orienté vers la caméra
 
-    // Attendre que la sphère soit positionnée pour calculer la distance
-    tagSphere.addEventListener('loaded', function () {
-        let distanceToCamera = getDistanceToCamera(tagSphere);
-        // Ajustement de l'écart vertical en fonction de la distance à la caméra
-        let baseOffset = -7; // Offset de base si proche
+        // Par défaut, masquer la légende des tags 'info'
+        if (tag.type === 'info') {
+            tagText.setAttribute('opacity', '0'); // Opacité à 0 (invisible)
+            tagText.setAttribute('visible', 'false'); // Masqué par défaut
+        }
 
-        let thetaAdjustment = baseOffset + (distanceToCamera * 0.1); // Écart proportionnel à la distance
+        // Attendre que la sphère soit chargée pour calculer la distance à la caméra
+        tagSphere.addEventListener('loaded', function () {
+            let distanceToCamera = getDistanceToCamera(tagSphere);
 
-        // Utiliser les mêmes coordonnées pour placer le texte
-        tagText.setAttribute('fromspherical', `fi:${tag.position.fi}; theta:${tag.position.theta - thetaAdjustment}; r:${tag.position.r};`);
+            // Ajustement de l'écart vertical en fonction de la distance à la caméra
+            let baseOffset = -7; // Offset de base si proche
+            let thetaAdjustment = baseOffset + (distanceToCamera * 0.1); // Écart proportionnel à la distance
+
+            // Positionner le texte en fonction de l'ajustement
+            tagText.setAttribute('fromspherical', `fi:${tag.position.fi}; theta:${tag.position.theta - thetaAdjustment}; r:${tag.position.r};`);
+
+            // Ajouter le texte au canvas
+            canva.appendChild(tagText);
+        });
+
+        // Gestion de l'événement de clic pour afficher/masquer la légende du tag 'info'
+        if (tag.type === 'info') {
+            tagSphere.addEventListener('click', () => {
+                // Si une légende est actuellement visible, la masquer
+                if (currentlyVisibleInfoLegend) {
+                    currentlyVisibleInfoLegend.text.setAttribute('visible', 'false');
+                    currentlyVisibleInfoLegend.text.setAttribute('opacity', '0');
+                }
+
+                // Vérifier si c'est la légende actuellement visible
+                if (currentlyVisibleInfoLegend && currentlyVisibleInfoLegend.text === tagText) {
+                    tagText.setAttribute('visible', 'false');
+                    tagText.setAttribute('opacity', '0'); // Réinitialiser l'opacité
+                    currentlyVisibleInfoLegend = null; // Réinitialiser l'état visible
+                } else {
+                    tagText.setAttribute('visible', 'true'); // Afficher la légende
+                    tagText.setAttribute('opacity', '1'); // Rendre le texte visible
+                    currentlyVisibleInfoLegend = { text: tagText }; // Mettre à jour l'état visible
+                }
+            });
+        }
+    }
+
+    // Pour les tags de type 'text', seulement créer le texte sans sphère
+    if (tag.type === 'text') {
+        let tagText = document.createElement('a-text');
+        tagText.setAttribute('value', tag.legend);
+        tagText.setAttribute('id', tag.id + '-text');
+        tagText.setAttribute('color', 'white');
+        tagText.setAttribute('align', 'center');
+        tagText.setAttribute('width', '20');
+        tagText.setAttribute('look-at', '[camera]');
 
         // Ajouter le texte au canvas
         canva.appendChild(tagText);
-    });
-
-    // Ajouter un gestionnaire d'événements pour afficher la légende lorsque l'on clique sur le tag
-    if (tag.type === 'info') {
-        tagSphere.addEventListener('click', () => {
-            // Si une légende est actuellement visible, la masquer
-            if (currentlyVisibleInfoLegend) {
-                currentlyVisibleInfoLegend.text.setAttribute('visible', 'false');
-                currentlyVisibleInfoLegend.text.setAttribute('opacity', '0');
-            }
-
-            // Vérifiez si le tagText est déjà visible
-            if (currentlyVisibleInfoLegend && currentlyVisibleInfoLegend.text === tagText) {
-                tagText.setAttribute('visible', 'false');
-                tagText.setAttribute('opacity', '0'); // Réinitialiser l'opacité
-                currentlyVisibleInfoLegend = null; // Réinitialiser la légende actuellement visible
-            } else {
-                tagText.setAttribute('visible', 'true'); // Affichez la légende du tag "info"
-                // Réinitialiser l'opacité pour afficher le texte
-                tagText.setAttribute('opacity', '1'); // Rendre le texte visible
-
-                currentlyVisibleInfoLegend = { text: tagText }; // Mettre à jour la légende actuellement visible
-            }
-        });
-    };
+    }
 }
 
 // Fonction pour ajouter une nouvelle scène
