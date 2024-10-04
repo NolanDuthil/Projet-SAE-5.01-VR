@@ -49,9 +49,10 @@ function populateSceneList() {
 // Fonction pour mettre à jour les détails de la scène
 function updateSceneDetails(scene) {
     selectedScene = scene;
+    updateCameraRotation()
     const sceneNameInput = document.getElementById('scene-name');
-    // const cameraVerticalInput = document.getElementById('camera-vertical');
-    // const cameraHorizontalInput = document.getElementById('camera-horizontal');
+    const cameraVerticalInput = document.getElementById('camera-vertical');
+    const cameraHorizontalInput = document.getElementById('camera-horizontal');
     const tagSelect = document.getElementById('tags-select');
 
     // Nom & Image de la scène
@@ -59,8 +60,8 @@ function updateSceneDetails(scene) {
     selectedScene.image ? document.getElementById('image-360').setAttribute('src', "./uploaded_images/" + scene.image) : document.getElementById('image-360').setAttribute('src', "./assets/grey-background.avif");
 
     // // Angle Caméra de la scène
-    // cameraVerticalInput.value = selectedScene.camera.vertical;
-    // cameraHorizontalInput.value = selectedScene.camera.horizontal;
+    cameraVerticalInput.value = selectedScene.camera.vertical;
+    cameraHorizontalInput.value = selectedScene.camera.horizontal;
 
     // Liste de tags
     tagSelect.innerHTML = '';
@@ -85,22 +86,43 @@ function updateSceneDetails(scene) {
         selectedScene.name = event.target.value;
     });
 
-    // // Listener pour l'angle vertical de la caméra
-    // cameraVerticalInput.addEventListener('input', (event) => {
-    //     selectedScene.camera.vertical = event.target.value;
-    //     updateCameraRotation()
-    // });
+    // Listener pour l'angle vertical de la caméra
+    cameraVerticalInput.addEventListener('input', (event) => {
+        selectedScene.camera.vertical = event.target.value;
+        updateCameraRotation()
+    });
 
-    // // Listener pour l'angle horizontal de la caméra
-    // cameraHorizontalInput.addEventListener('input', (event) => {
-    //     selectedScene.camera.horizontal = event.target.value;
-    //     updateCameraRotation()
-    // });
+    // Listener pour l'angle horizontal de la caméra
+    cameraHorizontalInput.addEventListener('input', (event) => {
+        selectedScene.camera.horizontal = event.target.value;
+        updateCameraRotation()
+    });
 
     // Listener pour le changement de tag
     tagSelect.addEventListener('change', (event) => {
         loadTagDetails(tags, event.target.value);
     });
+}
+
+function updateCameraRotation() {
+    let cameraEntity = document.getElementById('cam');
+    let camera = document.getElementById('camera');
+
+    // Désactiver temporairement les look-controls
+    camera.removeAttribute('look-controls');
+
+    // Réinitialiser la rotation
+    camera.setAttribute('rotation', { x: 0, y: 0, z: 0 });
+
+    // Appliquer la nouvelle rotation basée sur la scène sélectionnée
+    cameraEntity.setAttribute('rotation', {
+        x: selectedScene.camera.vertical,
+        y: selectedScene.camera.horizontal,
+        z: 0
+    });
+
+    // Réactiver les look-controls pour permettre à l'utilisateur de bouger la caméra ensuite
+    camera.setAttribute('look-controls', 'enabled: true');
 }
 
 // Fonction pour remplir les détails du tag sélectionné
@@ -184,7 +206,6 @@ function loadTagDetails(tags, selectedTagI) {
 
     colorSelector.addEventListener('input', (event) => {
         selectedTag.textColor = event.target.value;
-        console.log(selectedTag.textColor)
         setupTag(selectedTag);
     })
 }

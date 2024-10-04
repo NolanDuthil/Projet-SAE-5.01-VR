@@ -23,7 +23,7 @@
                     <img id="delete-scene" class="main__top__left-panel__scene-settings__actions__scene_icons" src="./assets/delete-icon.svg" alt="Delete">
                 </div> -->
             </div>
-            <!-- <div class="main__top__left_panel__camera">
+            <div class="main__top__left_panel__camera">
                 <h3 class="main__top__left_panel__camera__subtitle">Angle de la caméra</h3>
                 <div class="main__top__left_panel__camera__axe">
                     <p class="main__top__left_panel__camera__axe__text">Axe vertical</p>
@@ -33,7 +33,7 @@
                     <p class="main__top__left_panel__camera__axe__text">Axe horizontal</p>
                     <input id="camera-horizontal" class="main__top__left_panel__camera__axe__input_camera" type="number">
                 </div>
-            </div> -->
+            </div>
         </div>
 
         <a-scene id="a-scene" class="main__top__scene" embedded>
@@ -41,12 +41,14 @@
             <a-sky id="image-360" radius="200"></a-sky>
     
             <!-- camera -->
-            <a-camera camera look-controls="enabled: true" wasd-controls="enabled: false">
-                <a-cursor id="cursor" color="white"
-                            geometry="primitive: sphere; radius: 0.008"
-                            material="color: white; shader: flat">
-                </a-cursor>
-            </a-camera>
+             <a-entity id="cam">
+                 <a-camera id="camera" camera look-controls="enabled: true" wasd-controls="enabled: false">
+                     <a-cursor id="cursor" color="white"
+                                 geometry="primitive: sphere; radius: 0.008"
+                                 material="color: white; shader: flat">
+                     </a-cursor>
+                 </a-camera>
+             </a-entity>
         </a-scene>
 
         <div class="main__top__right_panel">
