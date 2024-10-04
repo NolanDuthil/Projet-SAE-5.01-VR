@@ -5,6 +5,8 @@ Lien vers l'expérience: https://nolanduthil.github.io/Projet-SAE-5.01-VR/experi
 
 Lien vers l'éditeur: https://nolanduthil.github.io/Projet-SAE-5.01-VR/
 
+Lien vers le Trello: https://trello.com/b/A4A0UwDI/projet-vr
+
 ## Branches Git
 1. [Sprint 1 (NodeJS)](https://github.com/NolanDuthil/Projet-SAE-5.01-VR/tree/Sprint-1-(NodeJS))
 2. [Sprint 2](https://github.com/NolanDuthil/Projet-SAE-5.01-VR/tree/Sprint-2)
