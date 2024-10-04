@@ -271,7 +271,7 @@ function setupTag(tag) {
         let tagText = document.createElement('a-text');
         tagText.setAttribute('value', tag.type === 'porte' ? tag.name : tag.legend);
         tagText.setAttribute('id', tag.id + '-text');
-        tagText.setAttribute('color', 'white');
+        tagText.setAttribute('color', tag.textColor);
         tagText.setAttribute('align', 'center');
         tagText.setAttribute('width', '20');
         tagText.setAttribute('look-at', '[camera]'); 
