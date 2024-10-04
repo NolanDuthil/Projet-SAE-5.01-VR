@@ -160,8 +160,8 @@ function loadTagDetails(tags, selectedTagI) {
     scenesInstances.forEach((scene, index) => {
         if (scene != selectedScene) {
             const option = document.createElement('option');
-            option.value = index;  // L'index de la scène
-            option.textContent = scene.name;  // Le nom de la scène
+            option.value = index; 
+            option.textContent = scene.name;
             sceneSelector.appendChild(option);
         }
     });
@@ -171,8 +171,8 @@ function loadTagDetails(tags, selectedTagI) {
         tagLegendContainer.style.display = 'none';
         sceneSelectorContainer.style.display = '';
         sceneSelector.value = selectedTag.action;
-        sceneSelector.addEventListener('change', () => {
-            selectedTag.action = this.value;
+        sceneSelector.addEventListener('change', (event) => {
+            selectedTag.action = event.target.value;
         });
     } else {
         sceneSelectorContainer.style.display = 'none';
