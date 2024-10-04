@@ -6,7 +6,7 @@ Lien vers l'expérience: https://nolanduthil.github.io/Projet-SAE-5.01-VR/experi
 Lien vers l'éditeur: https://nolanduthil.github.io/Projet-SAE-5.01-VR/
 
 ## Branches Git
-1. [Sprint 1 (NodeJS)](https://github.com/NolanDuthil/Projet-SAE-5.01-VR/tree/sprint-1-(NodeJS))
-2. [Sprint 2](https://github.com/NolanDuthil/Projet-SAE-5.01-VR/tree/sprint-2)
-3. [Sprint 3](https://github.com/NolanDuthil/Projet-SAE-5.01-VR/tree/sprint-3)
-4. [Version Finale](https://github.com/NolanDuthil/Projet-SAE-5.01-VR/tree/version-finale)
+1. [Sprint 1 (NodeJS)](https://github.com/NolanDuthil/Projet-SAE-5.01-VR/tree/Sprint-1-(NodeJS))
+2. [Sprint 2](https://github.com/NolanDuthil/Projet-SAE-5.01-VR/tree/Sprint-2)
+3. [Sprint 3](https://github.com/NolanDuthil/Projet-SAE-5.01-VR/tree/Sprint-3)
+4. [Version Finale](https://github.com/NolanDuthil/Projet-SAE-5.01-VR/tree/Version-Finale)
