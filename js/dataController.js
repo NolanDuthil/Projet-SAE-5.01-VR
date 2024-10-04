@@ -474,7 +474,6 @@ function importFromJson(event) {
 async function init() {
     scenesInstances = loadFromLocalStorage();
     await loadPageData();
-    // document.getElementById('add-scene').addEventListener('click', addNewScene);
     document.getElementById('save-button').addEventListener('click', saveToLocalStorage);
     document.getElementById('delete-tag').addEventListener('click', deleteTag)
     document.getElementById('porte').addEventListener('click', function () {
