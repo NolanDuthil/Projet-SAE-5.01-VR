@@ -15,12 +15,14 @@
             <a-sky id="image-360" radius="200"></a-sky>
 
             <!-- La caméra -->
-            <a-camera camera look-controls wasd-controls="enabled: false">
-                <a-cursor id="cursor" color="white"
-                          geometry="primitive: sphere; radius: 0.008"
-                          material="color: white; shader: flat">
-                </a-cursor>
-            </a-camera>
+            <a-entity id="cam">
+                <a-camera id="camera" camera look-controls wasd-controls="enabled: false">
+                    <a-cursor id="cursor" color="white"
+                              geometry="primitive: sphere; radius: 0.008"
+                              material="color: white; shader: flat">
+                    </a-cursor>
+                </a-camera>
+            </a-entity>
         </a-scene>
     </main>
 </body>

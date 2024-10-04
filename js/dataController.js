@@ -437,7 +437,7 @@ function initializeDefaultData() {
         "GS__3523.JPG",
         { vertical: "0", horizontal: "0" },
         [
-            new TagPorte("1", "Porte Studio (côté extérieur)", "1", { r: "25", theta: "90", fi: "-115" }, "#ffffff"),
+            new TagPorte("1", "Porte Studio (cote exterieur)", "1", { r: "25", theta: "90", fi: "-115" }, "#ffffff"),
             new TagText("2", "Départ", "Bienvenue dans la simulation !", { r: "15", theta: "90", fi: "0" }, "#ffffff")
         ]
     );
@@ -447,7 +447,7 @@ function initializeDefaultData() {
         "GS__3524.JPG",
         { vertical: "0", horizontal: "0" },
         [
-            new TagPorte("3", "Porte Studio (côté intérieur)", "0", { r: "30", theta: "90", fi: "135" }, "#ffffff"),
+            new TagPorte("3", "Porte Studio (cote interieur)", "0", { r: "30", theta: "90", fi: "135" }, "#ffffff"),
             new TagPorte("4", "Porte Salle 2 Studio", "2", { r: "30", theta: "90", fi: "-40" }, "#ffffff"),
             new TagInfo("5", "Bureau", "Un bureau", { r: "35", theta: "100", fi: "-170" }, "#ffffff")
         ]

@@ -44,7 +44,7 @@ function initializeDefaultData() {
         "GS__3523.JPG",
         { vertical: "0", horizontal: "0" },
         [
-            new TagPorte("1", "Porte Studio (côté extérieur)", "1", { r: "25", theta: "90", fi: "-115" }, "#ffffff"),
+            new TagPorte("1", "Porte Studio (cote exterieur)", "1", { r: "25", theta: "90", fi: "-115" }, "#ffffff"),
             new TagText("2", "Départ", "Bienvenue dans la simulation !", { r: "15", theta: "90", fi: "0" }, "#ffffff")
         ]
     );
@@ -54,7 +54,7 @@ function initializeDefaultData() {
         "GS__3524.JPG",
         { vertical: "0", horizontal: "0" },
         [
-            new TagPorte("3", "Porte Studio (côté intérieur)", "0", { r: "30", theta: "90", fi: "135" }, "#ffffff"),
+            new TagPorte("3", "Porte Studio (cote interieur)", "0", { r: "30", theta: "90", fi: "135" }, "#ffffff"),
             new TagPorte("4", "Porte Salle 2 Studio", "2", { r: "30", theta: "90", fi: "-40" }, "#ffffff"),
             new TagInfo("5", "Bureau", "Un bureau", { r: "35", theta: "100", fi: "-170" }, "#ffffff")
         ]
@@ -87,9 +87,31 @@ function initializeDefaultData() {
     saveToLocalStorage();
 }
 
+function updateCameraRotation(scene) {
+    let cameraEntity = document.getElementById('cam');
+    let camera = document.getElementById('camera');
+
+    // Désactiver temporairement les look-controls
+    camera.removeAttribute('look-controls');
+
+    // Réinitialiser la rotation
+    camera.setAttribute('rotation', { x: 0, y: 0, z: 0 });
+
+    // Appliquer la nouvelle rotation basée sur la scène sélectionnée
+    cameraEntity.setAttribute('rotation', {
+        x: scene.camera.vertical,
+        y: scene.camera.horizontal,
+        z: 0
+    });
+
+    // Réactiver les look-controls pour permettre à l'utilisateur de bouger la caméra ensuite
+    camera.setAttribute('look-controls', 'enabled: true');
+}
+
 // Fonction pour charger une scène
 function loadScene(scene) {
     let canva = document.getElementById('a-scene');
+    // updateCameraRotation(scene)
 
     // Changer l'image de fond
     document.querySelector('#image-360').setAttribute('src', '../uploaded_images/'+scene.image);
@@ -123,29 +145,19 @@ function loadScene(scene) {
             tagText.setAttribute('width', '20');
             tagText.setAttribute('look-at', '[camera]'); 
     
-            // Par défaut, masquer la légende des tags 'info'
+            if (tag.type == 'porte') {
+                tagSphere.addEventListener('click', () => {
+                    const nextScene = scenesInstances[tag.action];
+                    if (nextScene) {
+                        loadScene(nextScene);
+                    }
+                });
+            }
+
             if (tag.type === 'info') {
                 tagText.setAttribute('opacity', '0'); // Opacité à 0 (invisible)
                 tagText.setAttribute('visible', 'false'); // Masqué par défaut
-            }
-    
-            // Attendre que la sphère soit chargée pour calculer la distance à la caméra
-            tagSphere.addEventListener('loaded', function () {
-                let distanceToCamera = getDistanceToCamera(tagSphere);
-    
-                // Ajustement de l'écart vertical en fonction de la distance à la caméra
-                let baseOffset = -7; // Offset de base si proche
-                let thetaAdjustment = baseOffset + (distanceToCamera * 0.1); // Écart proportionnel à la distance
-    
-                // Positionner le texte en fonction de l'ajustement
-                tagText.setAttribute('fromspherical', `fi:${tag.position.fi}; theta:${tag.position.theta - thetaAdjustment}; r:${tag.position.r};`);
-    
-                // Ajouter le texte au canvas
-                canva.appendChild(tagText);
-            });
-    
-            // Gestion de l'événement de clic pour afficher/masquer la légende du tag 'info'
-            if (tag.type === 'info') {
+
                 tagSphere.addEventListener('click', () => {
                     // Si une légende est actuellement visible, la masquer
                     if (currentlyVisibleInfoLegend) {
@@ -165,6 +177,21 @@ function loadScene(scene) {
                     }
                 });
             }
+    
+            // Attendre que la sphère soit chargée pour calculer la distance à la caméra
+            tagSphere.addEventListener('loaded', function () {
+                let distanceToCamera = getDistanceToCamera(tagSphere);
+    
+                // Ajustement de l'écart vertical en fonction de la distance à la caméra
+                let baseOffset = -7; // Offset de base si proche
+                let thetaAdjustment = baseOffset + (distanceToCamera * 0.1); // Écart proportionnel à la distance
+    
+                // Positionner le texte en fonction de l'ajustement
+                tagText.setAttribute('fromspherical', `fi:${tag.position.fi}; theta:${tag.position.theta - thetaAdjustment}; r:${tag.position.r};`);
+    
+                // Ajouter le texte au canvas
+                canva.appendChild(tagText);
+            });
         }
         
         if (tag.type === 'text') {
