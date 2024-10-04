@@ -417,7 +417,7 @@ function initializeDefaultData() {
         { vertical: "0", horizontal: "0" },
         [
             new TagPorte("1", "Porte Studio (côté extérieur)", "1", { r: "25", theta: "90", fi: "-115" }, "#ffffff"),
-            new TagInfo("2", "Une information", "Nouvelle information", { r: "30", theta: "90", fi: "-40" }, "#ffffff")
+            new TagText("2", "Départ", "Bienvenue dans la simulation !", { r: "15", theta: "90", fi: "0" }, "#ffffff")
         ]
     );
 
@@ -427,7 +427,8 @@ function initializeDefaultData() {
         { vertical: "0", horizontal: "0" },
         [
             new TagPorte("3", "Porte Studio (côté intérieur)", "0", { r: "30", theta: "90", fi: "135" }, "#ffffff"),
-            new TagPorte("4", "Porte Salle 2 Studio", "2", { r: "30", theta: "90", fi: "-40" }, "#ffffff")
+            new TagPorte("4", "Porte Salle 2 Studio", "2", { r: "30", theta: "90", fi: "-40" }, "#ffffff"),
+            new TagInfo("5", "Bureau", "Un bureau", { r: "35", theta: "100", fi: "-170" }, "#ffffff")
         ]
     );
 
@@ -436,8 +437,8 @@ function initializeDefaultData() {
         "GS__3525.JPG",
         { vertical: "0", horizontal: "0" },
         [
-            new TagPorte("5", "Porte Salle 1 Studio", "1", { r: "30", theta: "90", fi: "-40" }, "#ffffff"),
-            new TagPorte("6", "Porte Salle 3 Studio", "3", { r: "40", theta: "90", fi: "-140" }, "#ffffff")
+            new TagPorte("6", "Porte Salle 1 Studio", "1", { r: "30", theta: "90", fi: "-40" }, "#ffffff"),
+            new TagPorte("7", "Porte Salle 3 Studio", "3", { r: "40", theta: "90", fi: "-140" }, "#ffffff")
         ]
     );
 
@@ -446,7 +447,8 @@ function initializeDefaultData() {
         "GS__3526.JPG",
         { vertical: "0", horizontal: "0" },
         [
-            new TagPorte("7", "Porte Salle 2 Studio", "2", { r: "40", theta: "90", fi: "-65" }, "#ffffff")
+            new TagPorte("8", "Porte Salle 2 Studio", "2", { r: "40", theta: "90", fi: "-65" }, "#ffffff"),
+            new TagInfo("9", "Salle d'enregistrement", "C'est ici que l'on s'enregistre", { r: "25", theta: "95", fi: "40" }, "#ffffff")
         ]
     );
 
