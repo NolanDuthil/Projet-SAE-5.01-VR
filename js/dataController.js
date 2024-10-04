@@ -252,7 +252,7 @@ function setupTag(tag) {
         tagText.setAttribute('color', 'white');
         tagText.setAttribute('align', 'center');
         tagText.setAttribute('width', '20');
-        tagText.setAttribute('look-at', '[camera]');  // Toujours orienté vers la caméra
+        tagText.setAttribute('look-at', '[camera]'); 
 
         // Par défaut, masquer la légende des tags 'info'
         if (tag.type === 'info') {
@@ -287,12 +287,12 @@ function setupTag(tag) {
                 // Vérifier si c'est la légende actuellement visible
                 if (currentlyVisibleInfoLegend && currentlyVisibleInfoLegend.text === tagText) {
                     tagText.setAttribute('visible', 'false');
-                    tagText.setAttribute('opacity', '0'); // Réinitialiser l'opacité
-                    currentlyVisibleInfoLegend = null; // Réinitialiser l'état visible
+                    tagText.setAttribute('opacity', '0'); 
+                    currentlyVisibleInfoLegend = null;
                 } else {
-                    tagText.setAttribute('visible', 'true'); // Afficher la légende
-                    tagText.setAttribute('opacity', '1'); // Rendre le texte visible
-                    currentlyVisibleInfoLegend = { text: tagText }; // Mettre à jour l'état visible
+                    tagText.setAttribute('visible', 'true');
+                    tagText.setAttribute('opacity', '1');
+                    currentlyVisibleInfoLegend = { text: tagText };
                 }
             });
         }
@@ -303,10 +303,11 @@ function setupTag(tag) {
         let tagText = document.createElement('a-text');
         tagText.setAttribute('value', tag.legend);
         tagText.setAttribute('id', tag.id + '-text');
-        tagText.setAttribute('color', 'white');
+        tagText.setAttribute('color', tag.textColor);
         tagText.setAttribute('align', 'center');
         tagText.setAttribute('width', '20');
         tagText.setAttribute('look-at', '[camera]');
+        tagText.setAttribute('fromspherical', `fi:${tag.position.fi}; theta:${tag.position.theta}; r:${tag.position.r};`);
 
         // Ajouter le texte au canvas
         canva.appendChild(tagText);

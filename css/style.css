@@ -175,6 +175,10 @@ body, html {
   justify-content: space-between;
   align-items: center;
 }
+.main__top__right_panel__tag_settings__select option {
+  color: var(--clr-black);
+  font-family: var(--ff-Raleway);
+}
 .main__top__right_panel__tag_settings__actions__scene_icons {
   width: 1.4rem;
   cursor: pointer;

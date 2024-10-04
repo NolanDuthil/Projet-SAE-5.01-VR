@@ -233,6 +233,11 @@ body, html{
                     display: flex;
                     justify-content: space-between;
                     align-items: center;
+
+                    & option{
+                        color: var(--clr-black);
+                        font-family: var(--ff-Raleway);
+                    }
                 }
 
                 &__actions {
