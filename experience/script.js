@@ -1,91 +1,8 @@
 import "../js/fromSpherical.js";
-
-import Scene from "../js/Scene.js";
-import TagInfo from "../js/TagInfo.js";
-import TagPorte from "../js/TagPorte.js";
-import TagText from "../js/TagText.js";
+import {loadFromLocalStorage} from "../js/dataLoader.js"
 
 let currentlyVisibleInfoLegend = null;
 let scenesInstances = [];
-
-// Fonction pour charger les données JSON depuis localStorage
-function loadFromLocalStorage() {
-    const storedData = localStorage.getItem('jsonData');
-    if (storedData){
-        let jsonData = JSON.parse(storedData)
-        // Créer des instances de la classe Scene à partir des données JSON
-        if (jsonData != null) {
-            scenesInstances = jsonData.map(sceneData => {
-                const tags = sceneData._tags.map(tagData => {
-                    switch (tagData._type) {
-                        case ("porte"):
-                            return new TagPorte(tagData._id, tagData._name, tagData._action, tagData._position, tagData._textColor);
-                        case ("info"):
-                            return new TagInfo(tagData._id, tagData._name, tagData._legend, tagData._position, tagData._textColor);
-                        case ("text"):
-                            return new TagText(tagData._id, tagData._name, tagData._legend, tagData._position, tagData._textColor);
-                    }
-                });
-                return new Scene(sceneData._name, sceneData._image, sceneData._camera, tags);
-            });
-        }
-    } else {
-        initializeDefaultData();
-        localStorage.setItem('jsonData', JSON.stringify(scenesInstances));
-        return null;
-    }
-}
-
-// Fonction pour initialiser les données par défaut dans localStorage
-function initializeDefaultData() {
-    // Créer les scènes avec des instances de classes
-    const scene1 = new Scene(
-        "Entrée Studio",
-        "GS__3523.JPG",
-        { vertical: "0", horizontal: "0" },
-        [
-            new TagPorte("1", "Porte Studio (cote exterieur)", "1", { r: "25", theta: "90", fi: "-115" }, "#ffffff"),
-            new TagText("2", "Départ", "Bienvenue dans la simulation !", { r: "15", theta: "90", fi: "0" }, "#ffffff")
-        ]
-    );
-
-    const scene2 = new Scene(
-        "Salle 1 Studio",
-        "GS__3524.JPG",
-        { vertical: "0", horizontal: "0" },
-        [
-            new TagPorte("3", "Porte Studio (cote interieur)", "0", { r: "30", theta: "90", fi: "135" }, "#ffffff"),
-            new TagPorte("4", "Porte Salle 2 Studio", "2", { r: "30", theta: "90", fi: "-40" }, "#ffffff"),
-            new TagInfo("5", "Bureau", "Un bureau", { r: "35", theta: "100", fi: "-170" }, "#ffffff")
-        ]
-    );
-
-    const scene3 = new Scene(
-        "Salle 2 Studio",
-        "GS__3525.JPG",
-        { vertical: "0", horizontal: "0" },
-        [
-            new TagPorte("6", "Porte Salle 1 Studio", "1", { r: "30", theta: "90", fi: "-40" }, "#ffffff"),
-            new TagPorte("7", "Porte Salle 3 Studio", "3", { r: "40", theta: "90", fi: "-140" }, "#ffffff")
-        ]
-    );
-
-    const scene4 = new Scene(
-        "Salle 3 Studio",
-        "GS__3526.JPG",
-        { vertical: "0", horizontal: "0" },
-        [
-            new TagPorte("8", "Porte Salle 2 Studio", "2", { r: "40", theta: "90", fi: "-65" }, "#ffffff"),
-            new TagInfo("9", "Salle d'enregistrement", "C'est ici que l'on s'enregistre", { r: "25", theta: "95", fi: "40" }, "#ffffff")
-        ]
-    );
-
-    // Ajouter les scènes au jsonData
-    scenesInstances.push(scene1, scene2, scene3, scene4);
-
-    // Enregistrer les données dans le stockage local
-    saveToLocalStorage();
-}
 
 function updateCameraRotation(scene) {
     let cameraEntity = document.getElementById('cam');
@@ -111,7 +28,7 @@ function updateCameraRotation(scene) {
 // Fonction pour charger une scène
 function loadScene(scene) {
     let canva = document.getElementById('a-scene');
-    // updateCameraRotation(scene)
+    updateCameraRotation(scene);
 
     // Changer l'image de fond
     document.querySelector('#image-360').setAttribute('src', '../uploaded_images/'+scene.image);
@@ -140,7 +57,7 @@ function loadScene(scene) {
             let tagText = document.createElement('a-text');
             tagText.setAttribute('value', tag.type === 'porte' ? tag.name : tag.legend);
             tagText.setAttribute('id', tag.id + '-text');
-            tagText.setAttribute('color', 'white');
+            tagText.setAttribute('color', tag.textColor);
             tagText.setAttribute('align', 'center');
             tagText.setAttribute('width', '20');
             tagText.setAttribute('look-at', '[camera]'); 
@@ -210,6 +127,11 @@ function loadScene(scene) {
     });
 }
 
+// Fonction pour sauvegarder les données JSON dans localStorage
+function saveToLocalStorage() {
+    localStorage.setItem('jsonData', JSON.stringify(scenesInstances));
+}
+
 function getDistanceToCamera(el) {
     // Récupérer la position de la caméra
     let camera = document.querySelector('a-camera');
@@ -223,5 +145,6 @@ function getDistanceToCamera(el) {
     return distance;
 }
 
-loadFromLocalStorage();
+scenesInstances = loadFromLocalStorage();
+saveToLocalStorage()
 loadScene(scenesInstances[0]);
