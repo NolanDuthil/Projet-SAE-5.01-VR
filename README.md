@@ -6,7 +6,7 @@ Lien vers l'expérience: https://nolanduthil.github.io/Projet-SAE-5.01-VR/experi
 Lien vers l'éditeur: https://nolanduthil.github.io/Projet-SAE-5.01-VR/
 
 ## Branches Git
-1. [Sprint 1 (NodeJS)](#installation)
+1. [Sprint 1 (NodeJS)]
 2. [Fonctionnalités](#fonctionnalités)
 3. [Utilisation](#utilisation)
 4. [Contribuer](#contribuer)
