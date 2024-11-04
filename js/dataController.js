@@ -2,7 +2,7 @@ import Scene from "./Scene.js";
 import TagInfo from "./TagInfo.js";
 import TagPorte from "./TagPorte.js";
 import TagText from "./TagText.js";
-import {loadFromLocalStorage} from './dataLoader.js'
+import { loadFromLocalStorage } from './dataLoader.js'
 
 // Déclarez jsonData ici pour qu'il soit accessible à toutes les fonctions
 let scenesInstances = [];
@@ -89,13 +89,23 @@ function updateSceneDetails(scene) {
 
     // Listener pour l'angle vertical de la caméra
     cameraVerticalInput.addEventListener('input', (event) => {
-        selectedScene.camera.vertical = event.target.value;
+        let vValue = event.target.value;
+        if (vValue == "") {
+            vValue = 0;
+            cameraVerticalInput.value = 0;
+        }
+        selectedScene.camera.vertical = vValue;
         updateCameraRotation()
     });
 
     // Listener pour l'angle horizontal de la caméra
     cameraHorizontalInput.addEventListener('input', (event) => {
-        selectedScene.camera.horizontal = event.target.value;
+        let hValue = event.target.value;
+        if (hValue == "") {
+            hValue = 0;
+            cameraHorizontalInput.value = 0;
+        }
+        selectedScene.camera.horizontal = hValue;
         updateCameraRotation()
     });
 
@@ -160,7 +170,7 @@ function loadTagDetails(tags, selectedTagI) {
     scenesInstances.forEach((scene, index) => {
         if (scene != selectedScene) {
             const option = document.createElement('option');
-            option.value = index; 
+            option.value = index;
             option.textContent = scene.name;
             sceneSelector.appendChild(option);
         }
@@ -274,7 +284,7 @@ function setupTag(tag) {
         tagText.setAttribute('color', tag.textColor);
         tagText.setAttribute('align', 'center');
         tagText.setAttribute('width', '20');
-        tagText.setAttribute('look-at', '[camera]'); 
+        tagText.setAttribute('look-at', '[camera]');
 
         // Par défaut, masquer la légende des tags 'info'
         if (tag.type === 'info') {
@@ -309,7 +319,7 @@ function setupTag(tag) {
                 // Vérifier si c'est la légende actuellement visible
                 if (currentlyVisibleInfoLegend && currentlyVisibleInfoLegend.text === tagText) {
                     tagText.setAttribute('visible', 'false');
-                    tagText.setAttribute('opacity', '0'); 
+                    tagText.setAttribute('opacity', '0');
                     currentlyVisibleInfoLegend = null;
                 } else {
                     tagText.setAttribute('visible', 'true');
@@ -414,7 +424,7 @@ async function addNewTag(type) {
     updateSceneDetails(selectedScene);
 }
 
-async function deleteTag(){
+async function deleteTag() {
     selectedScene.removeTag(selectedTagIndex);
     updateSceneDetails(selectedScene);
 }
