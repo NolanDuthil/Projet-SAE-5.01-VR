@@ -66,7 +66,7 @@ function initializeDefaultData() {
 }
 
 // Fonction permettant de transformer les données du localStorage en instances de classe
-function transformJSON(data){
+function transformJSON(data) {
     // Créer des instances de la classe Scene à partir des données JSON
     if (data != null) {
         scenesInstances = data.map(sceneData => {

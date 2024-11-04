@@ -23,6 +23,10 @@ export default class Experience {
         this._rooms = this._rooms.filter(room => room.name !== roomName);
     }
 
+    getRoom(roomName) {
+        return this._rooms.find(room => room.name === roomName);
+    }
+
     // Experience Methods
     exportExperience() {
         return JSON.stringify(this);
