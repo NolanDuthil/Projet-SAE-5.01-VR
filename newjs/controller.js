@@ -1,5 +1,5 @@
 import { loadFromLocalStorage } from "./model.js";
-import { populateRoomList, updateRoomDetailsView } from "./vue.js";
+import { populateRoomList, updateRoomDetails, setupTag } from "./vue.js";
 
 let vrExperience = {};
 
@@ -20,20 +20,24 @@ function initializeListeners() {
 }
 
 async function loadPageData(experience) {
-    populateRoomList(experience.rooms, updateRoomDetails);
+    populateRoomList(experience.rooms);
     if (experience.rooms.length > 0) {
         updateRoomDetails(experience.rooms[0]);
     }
 }
 
-function updateRoomDetails(room) {
-    updateRoomDetailsView(room, updateCameraRotation, loadTagDetails, hideTags);
+export function updateTagData(currentRoom, tagName, property, value) {
+    const tag = currentRoom.tags.find(tag => tag.name === tagName);
+    if (tag) {
+        tag[property] = value;
+        setupTag(tag);
+    }
 }
 
 async function init() {
     vrExperience = loadFromLocalStorage();
     await loadPageData(vrExperience);
-    initializeListeners();
+    // initializeListeners();
 }
 
 init();

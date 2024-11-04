@@ -36,6 +36,10 @@ export default class Room {
         this._camera = camera;
     }
 
+    get tags() {
+        return this._tags;
+    }
+
     // Tags Methods
     addInfoTag(name) {
         let tag = new TagInfo();

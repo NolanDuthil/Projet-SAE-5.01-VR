@@ -1,7 +1,7 @@
 export default class Tag {
     constructor() {
         this._name = 'New tag';
-        this._position = { radius: 0, theta: 0, phi: 0 };
+        this._position = { r: 0, theta: 0, phi: 0 };
         this._textColor = '#ffffff';
         this._type = 'tag';
     }
