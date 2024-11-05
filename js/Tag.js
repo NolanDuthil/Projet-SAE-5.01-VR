@@ -1,19 +1,17 @@
+import { uniqueId } from './utils.js';
+
 export default class Tag {
-    constructor(id, name, position = { r: 0, theta: 0, fi: 0 }, textColor) {
-        this._id = id;
-        this._name = name;
-        this._position = position;
-        this._textColor = textColor;
+    constructor() {
+        this._id = uniqueId();
+        this._name = 'New tag';
+        this._position = { r: 20, theta: 90, phi: 0 };
+        this._textColor = '#ffffff';
         this._type = 'tag';
     }
 
     // Getters and setters
     get id() {
         return this._id;
-    }
-
-    set id(value) {
-        this._id = value;
     }
 
     get name() {

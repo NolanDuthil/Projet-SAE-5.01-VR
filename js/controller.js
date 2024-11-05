@@ -55,7 +55,7 @@ function importFromJson(event) {
 }
 
 // Fonction pour sauvegarder les données JSON dans localStorage
-function saveToLocalStorage() {
+export function saveToLocalStorage() {
     console.log('saveToLocalStorage');
     localStorage.setItem('jsonData', JSON.stringify(vrExperience));
 }

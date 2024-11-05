@@ -1,3 +1,3 @@
 import "./fromSpherical.js";
-import "./dataController.js";
+import "./controller.js";
 import "./modales.js";

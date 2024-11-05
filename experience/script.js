@@ -1,10 +1,11 @@
 import "../js/fromSpherical.js";
-import {loadFromLocalStorage} from "../js/dataLoader.js"
+import { loadFromLocalStorage } from "../js/model.js";
 
 let currentlyVisibleInfoLegend = null;
-let scenesInstances = [];
+let vrExperience = [];
 
-function updateCameraRotation(scene) {
+// Fonction pour mettre à jour la rotation de la caméra en fonction de la scène sélectionnée
+export function updateCameraRotation(room) {
     let cameraEntity = document.getElementById('cam');
     let camera = document.getElementById('camera');
 
@@ -16,13 +17,33 @@ function updateCameraRotation(scene) {
 
     // Appliquer la nouvelle rotation basée sur la scène sélectionnée
     cameraEntity.setAttribute('rotation', {
-        x: scene.camera.vertical,
-        y: scene.camera.horizontal,
+        x: room.camera.vertical,
+        y: room.camera.horizontal,
         z: 0
     });
 
     // Réactiver les look-controls pour permettre à l'utilisateur de bouger la caméra ensuite
     camera.setAttribute('look-controls', 'enabled: true');
+}
+
+// Fonction pour calculer la distance entre la caméra et un élément
+export function getDistanceToCamera(el) {
+    // Récupérer la position de la caméra
+    let camera = document.querySelector('a-camera');
+    let cameraPos = camera.object3D.position;
+
+    // Récupérer la position de l'élément (la sphère)
+    let elPos = el.object3D.position;
+    // Calculer la distance entre la caméra et l'élément
+    let distance = elPos.distanceTo(cameraPos);
+
+    return distance;
+}
+
+// Fonction pour sauvegarder les données JSON dans localStorage
+export function saveToLocalStorage() {
+    console.log('saveToLocalStorage');
+    localStorage.setItem('jsonData', JSON.stringify(vrExperience));
 }
 
 // Fonction pour charger une scène
@@ -31,7 +52,7 @@ function loadScene(scene) {
     updateCameraRotation(scene);
 
     // Changer l'image de fond
-    document.querySelector('#image-360').setAttribute('src', '../uploaded_images/'+scene.image);
+    document.querySelector('#image-360').setAttribute('src', '../uploaded_images/'+scene.src360);
 
     // Supprimer tous les anciens tags
     let pastTags = document.querySelectorAll('a-sphere, a-text');
@@ -48,7 +69,7 @@ function loadScene(scene) {
             tagSphere.setAttribute('radius', 1);
     
             // Ajouter le composant de conversion des coordonnées sphériques
-            tagSphere.setAttribute('fromspherical', `fi:${tag.position.fi}; theta:${tag.position.theta}; r:${tag.position.r};`);
+            tagSphere.setAttribute('fromspherical', `phi:${tag.position.phi}; theta:${tag.position.theta}; r:${tag.position.r};`);
     
             // Ajouter la sphère au canvas
             canva.appendChild(tagSphere);
@@ -64,7 +85,7 @@ function loadScene(scene) {
     
             if (tag.type == 'porte') {
                 tagSphere.addEventListener('click', () => {
-                    const nextScene = scenesInstances[tag.action];
+                    const nextScene = vrExperience.rooms[tag.action];
                     if (nextScene) {
                         loadScene(nextScene);
                     }
@@ -104,7 +125,7 @@ function loadScene(scene) {
                 let thetaAdjustment = baseOffset + (distanceToCamera * 0.1); // Écart proportionnel à la distance
     
                 // Positionner le texte en fonction de l'ajustement
-                tagText.setAttribute('fromspherical', `fi:${tag.position.fi}; theta:${tag.position.theta - thetaAdjustment}; r:${tag.position.r};`);
+                tagText.setAttribute('fromspherical', `phi:${tag.position.phi}; theta:${tag.position.theta - thetaAdjustment}; r:${tag.position.r};`);
     
                 // Ajouter le texte au canvas
                 canva.appendChild(tagText);
@@ -119,7 +140,7 @@ function loadScene(scene) {
             tagText.setAttribute('align', 'center');
             tagText.setAttribute('width', '20');
             tagText.setAttribute('look-at', '[camera]');
-            tagText.setAttribute('fromspherical', `fi:${tag.position.fi}; theta:${tag.position.theta}; r:${tag.position.r};`);
+            tagText.setAttribute('fromspherical', `phi:${tag.position.phi}; theta:${tag.position.theta}; r:${tag.position.r};`);
     
             // Ajouter le texte au canvas
             canva.appendChild(tagText);
@@ -127,24 +148,10 @@ function loadScene(scene) {
     });
 }
 
-// Fonction pour sauvegarder les données JSON dans localStorage
-function saveToLocalStorage() {
-    localStorage.setItem('jsonData', JSON.stringify(scenesInstances));
+function init(){
+    vrExperience = loadFromLocalStorage();
+    saveToLocalStorage();
+    loadScene(vrExperience.rooms[0]);
 }
 
-function getDistanceToCamera(el) {
-    // Récupérer la position de la caméra
-    let camera = document.querySelector('a-camera');
-    let cameraPos = camera.object3D.position;
-
-    // Récupérer la position de l'élément (la sphère)
-    let elPos = el.object3D.position;
-    // Calculer la distance entre la caméra et l'élément
-    let distance = elPos.distanceTo(cameraPos);
-
-    return distance;
-}
-
-scenesInstances = loadFromLocalStorage();
-saveToLocalStorage()
-loadScene(scenesInstances[0]);
+init();

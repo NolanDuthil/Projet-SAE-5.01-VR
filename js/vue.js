@@ -64,7 +64,7 @@ export function updateRoomDetails(actualRoom) {
     });
 
     updateCanvaTags();
-    updateCameraRotation();
+    updateCameraRotation(selectedRoom);
     if (tags.length > 0) {
         loadTagDetails(tags, 0);
     } else {
@@ -82,7 +82,7 @@ export function updateRoomDetails(actualRoom) {
                 vValue = 0;
             }
             updateRoomData(selectedRoom.id, 'camera.vertical', vValue);
-            updateCameraRotation();
+            updateCameraRotation(selectedRoom);
         });
 
         cameraHorizontalInput.addEventListener('input', (event) => {
@@ -91,7 +91,7 @@ export function updateRoomDetails(actualRoom) {
                 hValue = 0;
             }
             updateRoomData(selectedRoom.id, 'camera.horizontal', hValue);
-            updateCameraRotation();
+            updateCameraRotation(selectedRoom);
         });
         areRoomListenersInitialized = true;
     }
@@ -111,7 +111,7 @@ function updateCanvaTags(){
 
 
 // Fonction pour mettre à jour la rotation de la caméra en fonction de la scène sélectionnée
-export function updateCameraRotation() {
+export function updateCameraRotation(room) {
     let cameraEntity = document.getElementById('cam');
     let camera = document.getElementById('camera');
 
@@ -123,8 +123,8 @@ export function updateCameraRotation() {
 
     // Appliquer la nouvelle rotation basée sur la scène sélectionnée
     cameraEntity.setAttribute('rotation', {
-        x: selectedRoom.camera.vertical,
-        y: selectedRoom.camera.horizontal,
+        x: room.camera.vertical,
+        y: room.camera.horizontal,
         z: 0
     });
 
@@ -238,7 +238,7 @@ export function setupTag(tag) {
     }
 }
 
-function getDistanceToCamera(el) {
+export function getDistanceToCamera(el) {
     // Récupérer la position de la caméra
     let camera = document.querySelector('a-camera');
     let cameraPos = camera.object3D.position;
