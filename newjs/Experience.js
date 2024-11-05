@@ -24,12 +24,12 @@ export default class Experience {
         return room;
     }
 
-    deleteRoom(roomName) {
-        this._rooms = this._rooms.filter(room => room.name !== roomName);
+    deleteRoom(roomId) {
+        this._rooms = this._rooms.filter(room => room.id !== roomId);
     }
 
-    getRoom(roomName) {
-        return this._rooms.find(room => room.name === roomName);
+    getRoom(roomId) {
+        return this._rooms.find(room => room.id === roomId);
     }
 
     // Experience Methods

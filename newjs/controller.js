@@ -1,22 +1,57 @@
-import { loadFromLocalStorage } from "./model.js";
-import { populateRoomList, updateRoomDetails, setupTag } from "./vue.js";
+import { loadFromLocalStorage, transformJSON } from "./model.js";
+import { populateRoomList, updateRoomDetails, setupTag, getActualRoom, getActualTag } from "./vue.js";
+import { closeImportPopup } from "./modales.js";
 
 let vrExperience = {};
 
+// Fonction pour initialiser les listeners
 function initializeListeners() {
     document.getElementById('save-button').addEventListener('click', saveToLocalStorage);
-    // document.getElementById('delete-tag').addEventListener('click', deleteTag);
-    // document.getElementById('porte').addEventListener('click', function () {
-    //     addNewTag('porte');
-    // });
-    // document.getElementById('info').addEventListener('click', function () {
-    //     addNewTag('info');
-    // });
-    // document.getElementById('text').addEventListener('click', function () {
-    //     addNewTag('text');
-    // });
-    // document.getElementById('export-json').addEventListener('click', exportToJson);
-    // document.getElementById('import-form').addEventListener('submit', importFromJson);
+    document.getElementById('delete-tag').addEventListener('click', deleteTag);
+    document.getElementById('porte').addEventListener('click', function () {
+        addNewTag('porte');
+    });
+    document.getElementById('info').addEventListener('click', function () {
+        addNewTag('info');
+    });
+    document.getElementById('text').addEventListener('click', function () {
+        addNewTag('text');
+    });
+    document.getElementById('export-json').addEventListener('click', exportToJson);
+    document.getElementById('import-form').addEventListener('submit', importFromJson);
+}
+
+function exportToJson() {
+    let jsonString = vrExperience.exportExperience();
+    const blob = new Blob([jsonString], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'scenes_data.json'; // Nom du fichier téléchargé
+    a.click();
+
+    // Libérer l'URL après utilisation
+    URL.revokeObjectURL(url);
+}
+
+function importFromJson(event) {
+    event.preventDefault();
+    const fileInput = document.getElementById('import-json-input');
+    const file = fileInput.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            try {
+                const loadData = JSON.parse(e.target.result);
+                vrExperience = transformJSON(loadData);
+                loadPageData(vrExperience);
+                closeImportPopup();
+            } catch (error) {
+            }
+        };
+        reader.readAsText(file);
+    }
 }
 
 // Fonction pour sauvegarder les données JSON dans localStorage
@@ -25,6 +60,7 @@ function saveToLocalStorage() {
     localStorage.setItem('jsonData', JSON.stringify(vrExperience));
 }
 
+// Fonction pour charger la vue avec les données JSON
 async function loadPageData(experience) {
     populateRoomList(experience.rooms);
     if (experience.rooms.length > 0) {
@@ -32,21 +68,62 @@ async function loadPageData(experience) {
     }
 }
 
+// Fonction pour update un tag
 export function updateTagData(currentRoom, tagName, property, value) {
     const tag = currentRoom.getTag(tagName);
     if (tag) {
-        tag[property] = value;
+        const properties = property.split('.');
+        let current = tag;
+        for (let i = 0; i < properties.length - 1; i++) {
+            current = current[properties[i]];
+        }
+        current[properties[properties.length - 1]] = value;
         setupTag(tag);
     }
 }
 
-export function updateRoomData(roomName, property, value) {
-    const room = vrExperience.getRoom(roomName);
+async function deleteTag() {
+    let room = getActualRoom();
+    let tag = getActualTag();
+    room.deleteTag(tag.id);
+    updateRoomDetails(room);
+}
+
+// Fonction pour ajouter un nouveau tag
+function addNewTag(tagType) {
+    let room = getActualRoom();
+    let tag;
+    switch (tagType) {
+        case 'porte':
+            tag = room.addPorteTag('Nouvelle porte');
+            break;
+        case 'info':
+            tag = room.addInfoTag('Nouvelle info');
+            break;
+        case 'text':
+            tag = room.addTextTag('Nouveau texte');
+            break;
+        default:
+            break;
+    }
+    updateRoomDetails(room);
+    setupTag(tag);
+}
+
+// Fonction pour update une room
+export function updateRoomData(roomId, property, value) {
+    const room = vrExperience.getRoom(roomId);
     if (room) {
-        room[property] = value;
+        const properties = property.split('.');
+        let current = room;
+        for (let i = 0; i < properties.length - 1; i++) {
+            current = current[properties[i]];
+        }
+        current[properties[properties.length - 1]] = value;
     }
 }
 
+// Fonction init qui charge les données et initialise les listeners
 async function init() {
     vrExperience = loadFromLocalStorage();
     await loadPageData(vrExperience);

@@ -5,7 +5,7 @@ import TagInfo from "./TagInfo.js";
 import TagText from "./TagText.js";
 
 // Fonction pour charger les données JSON depuis localStorage
-function loadFromLocalStorage() {
+export function loadFromLocalStorage() {
     const storedData = localStorage.getItem('jsonData');
     if (storedData) {
         let experience = transformJSON(JSON.parse(storedData));
@@ -85,7 +85,7 @@ function initializeDefaultData() {
 }
 
 // Fonction permettant de transformer les données du localStorage en un objet Experience
-function transformJSON(data) {
+export function transformJSON(data) {
     let experience = Object.assign(new Experience(), data);
     experience.rooms = experience.rooms.map(roomData => {
         let room = Object.assign(new Room(), roomData);
@@ -105,5 +105,3 @@ function transformJSON(data) {
     });
     return experience;
 }
-
-export { loadFromLocalStorage };

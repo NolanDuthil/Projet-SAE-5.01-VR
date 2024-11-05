@@ -4,6 +4,8 @@ let selectedRoom = {};
 let selectedTagIndex = 0;
 let selectedTag = {};
 let roomsInstances = [];
+let areRoomListenersInitialized = false;
+let areTagListenersInitialized = false;
 
 export function populateRoomList(roomsInstancesTemp) {
     const roomsContainer = document.getElementById('rooms');
@@ -52,7 +54,6 @@ export function updateRoomDetails(actualRoom) {
     tagSelect.innerHTML = '';
     const tags = selectedRoom.tags || [];
     tags.forEach((tag, index) => {
-        setupTag(tag);
         const option = document.createElement('option');
         option.value = index;
         option.textContent = tag.name;
@@ -62,6 +63,7 @@ export function updateRoomDetails(actualRoom) {
         loadTagDetails(tags, event.target.value);
     });
 
+    updateCanvaTags();
     updateCameraRotation();
     if (tags.length > 0) {
         loadTagDetails(tags, 0);
@@ -69,20 +71,44 @@ export function updateRoomDetails(actualRoom) {
         hideTags();
     }
 
-    roomNameInput.addEventListener('input', (event) => {
-        updateRoomData(selectedRoom.name, 'name', event.target.value);
-    });
+    if (!areRoomListenersInitialized) {
+        roomNameInput.addEventListener('input', (event) => {
+            updateRoomData(selectedRoom.id, 'name', event.target.value);
+        });
 
-    cameraVerticalInput.addEventListener('input', (event) => {
-        updateRoomData(selectedRoom.name, 'camera.vertical', event.target.value);
-        updateCameraRotation();
-    });
+        cameraVerticalInput.addEventListener('input', (event) => {
+            let vValue = event.target.value;
+            if (vValue == "") {
+                vValue = 0;
+            }
+            updateRoomData(selectedRoom.id, 'camera.vertical', vValue);
+            updateCameraRotation();
+        });
 
-    cameraHorizontalInput.addEventListener('input', (event) => {
-        updateRoomData(selectedRoom.name, 'camera.horizontal', event.target.value);
-        updateCameraRotation();
+        cameraHorizontalInput.addEventListener('input', (event) => {
+            let hValue = event.target.value;
+            if (hValue == "") {
+                hValue = 0;
+            }
+            updateRoomData(selectedRoom.id, 'camera.horizontal', hValue);
+            updateCameraRotation();
+        });
+        areRoomListenersInitialized = true;
+    }
+}
+
+function updateCanvaTags(){
+    let tags = selectedRoom.tags || [];
+    let pastTags = document.querySelectorAll('a-sphere, a-text');
+    pastTags.forEach((tag) => {
+        console.log(tag);
+        tag.remove();
+    });
+    tags.forEach((tag) => {
+        setupTag(tag);
     });
 }
+
 
 // Fonction pour mettre à jour la rotation de la caméra en fonction de la scène sélectionnée
 export function updateCameraRotation() {
@@ -116,22 +142,25 @@ function hideTags() {
 
 export function setupTag(tag) {
     let canva = document.getElementById('a-scene');
+    console.log(tag.name, tag.position);
 
     // Supprimer les anciennes instances du tag (sphère ou texte)
     let pastTag = document.getElementById(tag.id);
-    let pastText = document.getElementById(tag.id + "-text");
+    let pastText = document.getElementById(tag.id + '-text');
+
     if (pastTag) {
         pastTag.remove();
     }
     if (pastText) {
         pastText.remove();
     }
+    // if(tag != null) console.log(tag.textColor)
 
     // Créer une sphère pour les tags de type 'porte' ou 'info'
     if (tag.type === 'porte' || tag.type === 'info') {
         let tagSphere = document.createElement('a-sphere');
         tagSphere.setAttribute('color', tag.type === 'porte' ? 'red' : 'blue');
-        tagSphere.setAttribute('id', tag.name.toLowerCase());
+        tagSphere.setAttribute('id', tag.id);
         tagSphere.setAttribute('radius', 1);
 
         // Ajouter le composant de conversion des coordonnées sphériques
@@ -143,7 +172,7 @@ export function setupTag(tag) {
         // Créer un texte sous le tag 'porte' ou pour la légende 'info'
         let tagText = document.createElement('a-text');
         tagText.setAttribute('value', tag.type === 'porte' ? tag.name : tag.legend);
-        tagText.setAttribute('id', tag.name.toLowerCase() + '-text');
+        tagText.setAttribute('id', tag.id + '-text');
         tagText.setAttribute('color', tag.textColor);
         tagText.setAttribute('align', 'center');
         tagText.setAttribute('width', '20');
@@ -197,7 +226,7 @@ export function setupTag(tag) {
     if (tag.type === 'text') {
         let tagText = document.createElement('a-text');
         tagText.setAttribute('value', tag.legend);
-        tagText.setAttribute('id', tag.name.toLowerCase() + '-text');
+        tagText.setAttribute('id', tag.id + '-text');
         tagText.setAttribute('color', tag.textColor);
         tagText.setAttribute('align', 'center');
         tagText.setAttribute('width', '20');
@@ -269,41 +298,46 @@ export function loadTagDetails(tags, selectedTagI) {
         roomSelectorContainer.style.display = '';
         roomSelector.value = selectedTag.action;
         roomSelector.addEventListener('change', (event) => {
-            updateTagData(selectedRoom, selectedTag.name, 'action', event.target.value);
+            updateTagData(selectedRoom, selectedTag.id, 'action', event.target.value);
         });
     } else {
         roomSelectorContainer.style.display = 'none';
         tagLegendContainer.style.display = '';
     }
 
-    tagNameInput.addEventListener('input', (event) => {
-        updateTagData(selectedRoom, selectedTag.name, 'name', event.target.value);
-        tagSelect.options[selectedTagIndex].textContent = event.target.value;
-        setupTag(selectedTag);
-    });
+    if(!areTagListenersInitialized){
+        tagNameInput.addEventListener('input', (event) => {
+            updateTagData(selectedRoom, selectedTag.id, 'name', event.target.value);
+            tagSelect.options[selectedTagIndex].textContent = event.target.value;
+        });
 
-    tagLegendInput.addEventListener('input', (event) => {
-        updateTagData(selectedRoom, selectedTag.name, 'legend', event.target.value);
-        setupTag(selectedTag);
-    });
+        tagLegendInput.addEventListener('input', (event) => {
+            updateTagData(selectedRoom, selectedTag.id, 'legend', event.target.value);
+        });
 
-    rInput.addEventListener('input', (event) => {
-        updateTagData(selectedRoom, selectedTag.name, 'position.r', event.target.value === '' ? 0 : event.target.value);
-        setupTag(selectedTag);
-    });
+        rInput.addEventListener('input', (event) => {
+            updateTagData(selectedRoom, selectedTag.id, 'position.r', event.target.value === '' ? 0 : event.target.value);
+        });
 
-    thetaInput.addEventListener('input', (event) => {
-        updateTagData(selectedRoom, selectedTag.name, 'position.theta', event.target.value === '' ? 0 : event.target.value);
-        setupTag(selectedTag);
-    });
+        thetaInput.addEventListener('input', (event) => {
+            updateTagData(selectedRoom, selectedTag.id, 'position.theta', event.target.value === '' ? 0 : event.target.value);
+        });
 
-    phiInput.addEventListener('input', (event) => {
-        updateTagData(selectedRoom, selectedTag.name, 'position.fi', event.target.value === '' ? 0 : event.target.value);
-        setupTag(selectedTag);
-    });
+        phiInput.addEventListener('input', (event) => {
+            updateTagData(selectedRoom, selectedTag.id, 'position.fi', event.target.value === '' ? 0 : event.target.value);
+        });
 
-    colorSelector.addEventListener('input', (event) => {
-        updateTagData(selectedRoom, selectedTag.name, 'textColor', event.target.value);
-        setupTag(selectedTag);
-    })
+        colorSelector.addEventListener('input', (event) => {
+            updateTagData(selectedRoom, selectedTag.id, 'textColor', event.target.value);
+        })
+        areTagListenersInitialized = true;
+        }
+}
+
+export function getActualRoom(){
+    return selectedRoom;
+}
+
+export function getActualTag(){
+    return selectedTag;
 }

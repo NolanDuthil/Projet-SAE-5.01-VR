@@ -1,3 +1,4 @@
+import { getActual } from "../newjs/vue.js";
 import Scene from "./Scene.js";
 import TagInfo from "./TagInfo.js";
 import TagPorte from "./TagPorte.js";

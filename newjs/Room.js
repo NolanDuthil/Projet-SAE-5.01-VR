@@ -2,9 +2,11 @@ import Tag from "./Tag.js";
 import TagText from "./TagText.js";
 import TagPorte from "./TagPorte.js";
 import TagInfo from "./TagInfo.js";
+import { uniqueId } from "./utils.js";
 
 export default class Room {
     constructor() {
+        this._id = uniqueId();
         this._name = "";
         this._src360 = "";
         this._camera = { vertical: 0, horizontal: 0 };
@@ -12,6 +14,10 @@ export default class Room {
     }
 
     // Getters and setters
+    get id() {
+        return this._id;
+    }
+
     get name() {
         return this._name;
     }
@@ -66,11 +72,11 @@ export default class Room {
         return tag;
     }
 
-    deleteTag(tagName) {
-        this._tags = this._tags.filter(tag => tag.name !== tagName);
+    deleteTag(tagId) {
+        this._tags = this._tags.filter(tag => tag.id !== tagId);
     }
 
-    getTag(tagName) {
-        return this._tags.find(tag => tag.name === tagName);
+    getTag(tagId) {
+        return this._tags.find(tag => tag.id === tagId);
     }
 }

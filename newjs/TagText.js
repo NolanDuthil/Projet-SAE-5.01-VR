@@ -3,7 +3,7 @@ import Tag from './Tag.js';
 export default class TagText extends Tag {
     constructor() {
         super();
-        this._legend = '';
+        this._legend = 'Nouveau Texte';
         this._type = "text";
     }
 
