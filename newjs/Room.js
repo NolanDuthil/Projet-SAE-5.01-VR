@@ -40,6 +40,10 @@ export default class Room {
         return this._tags;
     }
 
+    set tags(tags) {
+        this._tags = tags;
+    }
+
     // Tags Methods
     addInfoTag(name) {
         let tag = new TagInfo();

@@ -1,4 +1,4 @@
-import { updateTagData } from './controller.js';
+import { updateTagData, updateRoomData } from './controller.js';
 
 let selectedRoom = {};
 let selectedTagIndex = 0;
@@ -68,10 +68,24 @@ export function updateRoomDetails(actualRoom) {
     } else {
         hideTags();
     }
+
+    roomNameInput.addEventListener('input', (event) => {
+        updateRoomData(selectedRoom.name, 'name', event.target.value);
+    });
+
+    cameraVerticalInput.addEventListener('input', (event) => {
+        updateRoomData(selectedRoom.name, 'camera.vertical', event.target.value);
+        updateCameraRotation();
+    });
+
+    cameraHorizontalInput.addEventListener('input', (event) => {
+        updateRoomData(selectedRoom.name, 'camera.horizontal', event.target.value);
+        updateCameraRotation();
+    });
 }
 
 // Fonction pour mettre à jour la rotation de la caméra en fonction de la scène sélectionnée
-function updateCameraRotation() {
+export function updateCameraRotation() {
     let cameraEntity = document.getElementById('cam');
     let camera = document.getElementById('camera');
 

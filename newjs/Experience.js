@@ -10,6 +10,10 @@ export default class Experience {
         return this._rooms;
     }
 
+    set rooms(rooms) {
+        this._rooms = rooms;
+    }
+
     // Rooms Methods
     addRoom(name, src360, position = { vertical: 0, horizontal: 0 }) {
         let room = new Room();
