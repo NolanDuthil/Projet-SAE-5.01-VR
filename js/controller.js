@@ -126,6 +126,7 @@ export function updateRoomData(roomId, property, value) {
 // Fonction init qui charge les données et initialise les listeners
 async function init() {
     vrExperience = loadFromLocalStorage();
+    saveToLocalStorage();
     await loadPageData(vrExperience);
     initializeListeners();
 }
