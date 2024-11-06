@@ -14,22 +14,11 @@ app.use(express.static('loader'));
 app.post('/sae501/loader', upload.single('file'), (req, res) => {
     console.log('Requête reçue pour le téléchargement du fichier');
 
-    if (!req.file) {
-        console.error('Aucun fichier téléchargé');
-        return res.status(400).send('Aucun fichier téléchargé');
-    }
-
     const filePath = req.file.path; // Chemin du fichier temporaire
     const extractPath = path.join(__dirname, 'viewer'); // Chemin de destination pour la décompression
 
     console.log(`Fichier téléchargé : ${filePath}`);
     console.log(`Chemin de décompression : ${extractPath}`);
-
-    // Vérifiez si le dossier de destination existe, sinon créez-le
-    if (!fs.existsSync(extractPath)) {
-        fs.mkdirSync(extractPath, { recursive: true });
-        console.log(`Dossier créé : ${extractPath}`);
-    }
 
     // Lire et décompresser le fichier
     fs.createReadStream(filePath)
