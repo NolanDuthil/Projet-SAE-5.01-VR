@@ -1,64 +1,57 @@
 // Pop-up import de données
-const importJsonButton = document.getElementById('import-json');
-const importPopup = document.getElementById('import-popup');
-const overlay = document.getElementById('overlay');
-const closeImportPopupButton = document.getElementById('close-import-popup');
-
-if (importJsonButton && importPopup && overlay) {
-  importJsonButton.addEventListener('click', function() {
-    importPopup.style.display = 'block';
-    overlay.style.display = 'block';
-  });
-}
-
-if (closeImportPopupButton) {
-  closeImportPopupButton.addEventListener('click', function() {
-    closeImportPopup();
-  });
-}
-
-if (overlay) {
-  overlay.addEventListener('click', function() {
-    closeImportPopup();
-  });
-}
-
-export function closeImportPopup() {
-  if (importPopup && overlay) {
-    importPopup.style.display = 'none';
-    overlay.style.display = 'none';
-  }
-}
+document.getElementById('import-json').addEventListener('click', function () {
+  showPopup('import-popup');
+});
+document.getElementById('close-import-popup').addEventListener('click', function () {
+  closePopup('import-popup');
+});
 
 // Dropdown création de tag
-const addTagButton = document.getElementById('add-tag');
-const addPopup = document.getElementById('add-popup');
-const addPopupButtons = document.querySelectorAll('.main__add_popup__button');
+document.getElementById('add-tag').addEventListener('click', function () {
+  showPopup('add-popup');
+});
+document.getElementById('close-add-popup').addEventListener('click', function () {
+  closePopup('add-popup');
+});
 
-if (addTagButton && addPopup && overlay) {
-  addTagButton.addEventListener('click', function() {
-    addPopup.style.display = 'block';
-    overlay.style.display = 'block';
-  });
+// Delete confirmation modal for room
+document.getElementById('delete-room').addEventListener('click', function () {
+  showPopup('delete-room-confirmation-modal');
+});
+document.getElementById('confirm-delete-room-button').addEventListener('click', function () {
+  // Add your delete room logic here
+  closePopup('delete-room-confirmation-modal');
+});
+document.getElementById('cancel-delete-room-button').addEventListener('click', function () {
+  closePopup('delete-room-confirmation-modal');
+});
+
+// Delete confirmation modal for tag
+document.getElementById('delete-tag').addEventListener('click', function () {
+  showPopup('delete-tag-confirmation-modal');
+});
+document.getElementById('confirm-delete-tag-button').addEventListener('click', function () {
+  // Add your delete tag logic here
+  closePopup('delete-tag-confirmation-modal');
+});
+document.getElementById('cancel-delete-tag-button').addEventListener('click', function () {
+  closePopup('delete-tag-confirmation-modal');
+});
+
+// Overlay click to close all modals
+document.getElementById('overlay').addEventListener('click', function () {
+  closePopup('import-popup');
+  closePopup('add-popup');
+  closePopup('delete-room-confirmation-modal');
+  closePopup('delete-tag-confirmation-modal');
+});
+
+export function showPopup(popupId) {
+  document.getElementById(popupId).style.display = 'block';
+  document.getElementById('overlay').style.display = 'block';
 }
 
-if (addPopupButtons) {
-  addPopupButtons.forEach(button => {
-    button.addEventListener('click', function() {
-      closeAddPopup();
-    });
-  });
-}
-
-if (overlay) {
-  overlay.addEventListener('click', function() {
-    closeAddPopup();
-  });
-}
-
-export function closeAddPopup() {
-  if (addPopup && overlay) {
-    addPopup.style.display = 'none';
-    overlay.style.display = 'none';
-  }
+export function closePopup(popupId) {
+  document.getElementById(popupId).style.display = 'none';
+  document.getElementById('overlay').style.display = 'none';
 }

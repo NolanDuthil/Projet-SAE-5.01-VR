@@ -1,24 +1,29 @@
 import { loadFromLocalStorage, transformJSON } from "./model.js";
-import { populateRoomList, updateRoomDetails, setupTag, getActualRoom, getActualTag } from "./vue.js";
-import { closeImportPopup } from "./modales.js";
+import { populateRoomList, updateRoomDetails, setupTag, getActualRoom, getActualTag, changeActiveTag } from "./vue.js";
+import { closePopup } from "./modales.js";
 
 let vrExperience = {};
 
 // Fonction pour initialiser les listeners
 function initializeListeners() {
     document.getElementById('save-button').addEventListener('click', saveToLocalStorage);
-    document.getElementById('delete-tag').addEventListener('click', deleteTag);
+    document.getElementById('confirm-delete-tag-button').addEventListener('click', deleteTag);
     document.getElementById('porte').addEventListener('click', function () {
         addNewTag('porte');
+        closePopup('add-popup');
     });
     document.getElementById('info').addEventListener('click', function () {
         addNewTag('info');
+        closePopup('add-popup');
     });
     document.getElementById('text').addEventListener('click', function () {
         addNewTag('text');
+        closePopup('add-popup');
     });
     document.getElementById('export-json').addEventListener('click', exportToJson);
     document.getElementById('import-form').addEventListener('submit', importFromJson);
+    document.getElementById('add-room').addEventListener('click', addNewRoom);
+    document.getElementById('confirm-delete-room-button').addEventListener('click', deleteRoom);
 }
 
 function exportToJson() {
@@ -46,7 +51,7 @@ function importFromJson(event) {
                 const loadData = JSON.parse(e.target.result);
                 vrExperience = transformJSON(loadData);
                 loadPageData(vrExperience);
-                closeImportPopup();
+                closePopup('import-popup');
             } catch (error) {
             }
         };
@@ -56,7 +61,6 @@ function importFromJson(event) {
 
 // Fonction pour sauvegarder les données JSON dans localStorage
 export function saveToLocalStorage() {
-    console.log('saveToLocalStorage');
     localStorage.setItem('jsonData', JSON.stringify(vrExperience));
 }
 
@@ -82,7 +86,7 @@ export function updateTagData(currentRoom, tagName, property, value) {
     }
 }
 
-async function deleteTag() {
+function deleteTag() {
     let room = getActualRoom();
     let tag = getActualTag();
     room.deleteTag(tag.id);
@@ -107,7 +111,20 @@ function addNewTag(tagType) {
             break;
     }
     updateRoomDetails(room);
-    setupTag(tag);
+    changeActiveTag(tag);
+}
+
+function addNewRoom() {
+    let room = vrExperience.addRoom('Nouvelle salle');
+    updateRoomDetails(room);
+    populateRoomList(vrExperience.rooms);
+}
+
+function deleteRoom() {
+    let room = getActualRoom();
+    vrExperience.deleteRoom(room.id);
+    updateRoomDetails(vrExperience.rooms[0]);
+    populateRoomList(vrExperience.rooms);
 }
 
 // Fonction pour update une room
@@ -126,7 +143,9 @@ export function updateRoomData(roomId, property, value) {
 // Fonction init qui charge les données et initialise les listeners
 async function init() {
     vrExperience = loadFromLocalStorage();
+
     saveToLocalStorage();
+
     await loadPageData(vrExperience);
     initializeListeners();
 }

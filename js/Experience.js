@@ -15,11 +15,9 @@ export default class Experience {
     }
 
     // Rooms Methods
-    addRoom(name, src360, position = { vertical: 0, horizontal: 0 }) {
+    addRoom(name) {
         let room = new Room();
         room.name = name;
-        room.src360 = src360;
-        room.position = position;
         this._rooms.push(room);
         return room;
     }

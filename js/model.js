@@ -22,8 +22,7 @@ function initializeDefaultData() {
     let experience = new Experience();
 
     // Room 1
-    experience.addRoom("Entrée Studio");
-    let room1 = experience.getRoom("Entrée Studio");
+    let room1 = experience.addRoom("Entrée Studio");
     room1.src360 = "GS__3523.JPG";
     room1.camera = { vertical: "0", horizontal: "0" };
     let porteTag1 = room1.addPorteTag("Porte Studio (cote exterieur)");
@@ -36,8 +35,7 @@ function initializeDefaultData() {
     textTag1.textColor = "#ffffff";
 
     // Room 2
-    experience.addRoom("Salle 1 Studio");
-    let room2 = experience.getRoom("Salle 1 Studio");
+    let room2 = experience.addRoom("Salle 1 Studio");
     room2.src360 = "GS__3524.JPG";
     room2.camera = { vertical: "0", horizontal: "0" };
     let porteTag2_1 = room2.addPorteTag("Porte Studio (cote interieur)");
@@ -54,8 +52,7 @@ function initializeDefaultData() {
     infoTag2.textColor = "#0000ff";
 
     // Room 3
-    experience.addRoom("Salle 2 Studio");
-    let room3 = experience.getRoom("Salle 2 Studio");
+    let room3 = experience.addRoom("Salle 2 Studio");
     room3.src360 = "GS__3525.JPG";
     room3.camera = { vertical: "0", horizontal: "0" };
     let porteTag3_1 = room3.addPorteTag("Porte Salle 1 Studio");
@@ -68,8 +65,7 @@ function initializeDefaultData() {
     porteTag3_2.textColor = "#ffffff";
 
     // Room 4
-    experience.addRoom("Salle 3 Studio");
-    let room4 = experience.getRoom("Salle 3 Studio");
+    let room4 = experience.addRoom("Salle 3 Studio");
     room4.src360 = "GS__3526.JPG";
     room4.camera = { vertical: "0", horizontal: "0" };
     let porteTag4 = room4.addPorteTag("Porte Salle 2 Studio");

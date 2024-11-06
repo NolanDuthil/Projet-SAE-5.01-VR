@@ -7,7 +7,6 @@
 
     <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
     <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
-    <script type="module" src="./js/script.js"></script>
     <link rel="stylesheet" href="./css/style.css" />
   </head>
   <body>
@@ -21,10 +20,15 @@
               id="room-name"
               type="text"
             />
-            <!-- <div class="main__top__left_panel__room_settings__actions">
-                    <img id="duplicate-room" class="main__top__left_panel__room_settings__actions__room_icons" src="./assets/duplicate-icon.svg" alt="Duplicate">
-                    <img id="delete-room" class="main__top__left-panel__room-settings__actions__room_icons" src="./assets/delete-icon.svg" alt="Delete">
-                </div> -->
+            <div class="main__top__left_panel__room_settings__actions">
+              <!-- <img id="duplicate-room" class="main__top__left_panel__room_settings__actions__room_icons" src="./assets/duplicate-icon.svg" alt="Duplicate"> -->
+              <img
+                id="delete-room"
+                class="main__top__left_panel__room_settings__actions__room_icons"
+                src="./assets/delete-icon.svg"
+                alt="Delete"
+              />
+            </div>
           </div>
           <div class="main__top__left_panel__camera">
             <h3 class="main__top__left_panel__camera__subtitle">
@@ -193,9 +197,9 @@
       <div class="main__bottom_panel">
         <div class="main__bottom_panel__left_side">
           <div class="main__bottom_panel__left_side__rooms" id="rooms"></div>
-          <!-- <div id="add-room" class="main__bottom_panel__left_side__add_room">
-          <img src="./assets/add-icon.svg" alt="Add">
-        </div>  -->
+          <div id="add-room" class="main__bottom_panel__left_side__add_room">
+            <img src="./assets/add-icon.svg" alt="Add" />
+          </div>
         </div>
         <div class="main__bottom_panel__right_side">
           <button
@@ -228,6 +232,7 @@
       </div>
 
       <div id="overlay" class="main__overlay" style="display: none"></div>
+
       <div id="import-popup" class="main__import_popup" style="display: none">
         <form id="import-form" class="main__import_popup__form">
           <input
@@ -252,6 +257,7 @@
           </button>
         </form>
       </div>
+
       <div id="add-popup" class="main__add_popup" style="display: none">
         <button id="porte" class="main__add_popup__button">Porte</button>
         <button id="info" class="main__add_popup__button">Info</button>
@@ -260,6 +266,61 @@
           Fermer
         </button>
       </div>
+
+      <div
+        id="delete-room-confirmation-modal"
+        class="main__delete_confirmation_modal"
+        style="display: none"
+      >
+        <div class="main__delete_confirmation_modal__content">
+          <h2 class="main__delete_confirmation_modal__title">
+            Confirmation de suppression de la salle
+          </h2>
+          <p class="main__delete_confirmation_modal__text">
+            Êtes-vous sûr de vouloir supprimer cette salle ?
+          </p>
+          <button
+            id="confirm-delete-room-button"
+            class="main__delete_confirmation_modal__button"
+          >
+            Confirmer
+          </button>
+          <button
+            id="cancel-delete-room-button"
+            class="main__delete_confirmation_modal__button"
+          >
+            Annuler
+          </button>
+        </div>
+      </div>
+
+      <div
+        id="delete-tag-confirmation-modal"
+        class="main__delete_confirmation_modal"
+        style="display: none"
+      >
+        <div class="main__delete_confirmation_modal__content">
+          <h2 class="main__delete_confirmation_modal__title">
+            Confirmation de suppression du tag
+          </h2>
+          <p class="main__delete_confirmation_modal__text">
+            Êtes-vous sûr de vouloir supprimer ce tag ?
+          </p>
+          <button
+            id="confirm-delete-tag-button"
+            class="main__delete_confirmation_modal__button"
+          >
+            Confirmer
+          </button>
+          <button
+            id="cancel-delete-tag-button"
+            class="main__delete_confirmation_modal__button"
+          >
+            Annuler
+          </button>
+        </div>
+      </div>
     </main>
   </body>
+  <script type="module" src="./js/script.js"></script>
 </html>

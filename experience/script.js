@@ -42,7 +42,6 @@ export function getDistanceToCamera(el) {
 
 // Fonction pour sauvegarder les données JSON dans localStorage
 export function saveToLocalStorage() {
-    console.log('saveToLocalStorage');
     localStorage.setItem('jsonData', JSON.stringify(vrExperience));
 }
 
@@ -52,7 +51,8 @@ function loadScene(scene) {
     updateCameraRotation(scene);
 
     // Changer l'image de fond
-    document.querySelector('#image-360').setAttribute('src', '../uploaded_images/'+scene.src360);
+    let roomImage = scene.src360 ? '../uploaded_images/' + scene.src360 : './uploaded_images/default.avif';
+    document.querySelector('#image-360').setAttribute('src', roomImage);
 
     // Supprimer tous les anciens tags
     let pastTags = document.querySelectorAll('a-sphere, a-text');
@@ -67,13 +67,13 @@ function loadScene(scene) {
             tagSphere.setAttribute('color', tag.type === 'porte' ? 'red' : 'blue');
             tagSphere.setAttribute('id', tag.id);
             tagSphere.setAttribute('radius', 1);
-    
+
             // Ajouter le composant de conversion des coordonnées sphériques
             tagSphere.setAttribute('fromspherical', `phi:${tag.position.phi}; theta:${tag.position.theta}; r:${tag.position.r};`);
-    
+
             // Ajouter la sphère au canvas
             canva.appendChild(tagSphere);
-    
+
             // Créer un texte sous le tag 'porte' ou pour la légende 'info'
             let tagText = document.createElement('a-text');
             tagText.setAttribute('value', tag.type === 'porte' ? tag.name : tag.legend);
@@ -81,8 +81,8 @@ function loadScene(scene) {
             tagText.setAttribute('color', tag.textColor);
             tagText.setAttribute('align', 'center');
             tagText.setAttribute('width', '20');
-            tagText.setAttribute('look-at', '[camera]'); 
-    
+            tagText.setAttribute('look-at', '[camera]');
+
             if (tag.type == 'porte') {
                 tagSphere.addEventListener('click', () => {
                     const nextScene = vrExperience.rooms[tag.action];
@@ -102,11 +102,11 @@ function loadScene(scene) {
                         currentlyVisibleInfoLegend.text.setAttribute('visible', 'false');
                         currentlyVisibleInfoLegend.text.setAttribute('opacity', '0');
                     }
-    
+
                     // Vérifier si c'est la légende actuellement visible
                     if (currentlyVisibleInfoLegend && currentlyVisibleInfoLegend.text === tagText) {
                         tagText.setAttribute('visible', 'false');
-                        tagText.setAttribute('opacity', '0'); 
+                        tagText.setAttribute('opacity', '0');
                         currentlyVisibleInfoLegend = null;
                     } else {
                         tagText.setAttribute('visible', 'true');
@@ -115,23 +115,23 @@ function loadScene(scene) {
                     }
                 });
             }
-    
+
             // Attendre que la sphère soit chargée pour calculer la distance à la caméra
             tagSphere.addEventListener('loaded', function () {
                 let distanceToCamera = getDistanceToCamera(tagSphere);
-    
+
                 // Ajustement de l'écart vertical en fonction de la distance à la caméra
                 let baseOffset = -7; // Offset de base si proche
                 let thetaAdjustment = baseOffset + (distanceToCamera * 0.1); // Écart proportionnel à la distance
-    
+
                 // Positionner le texte en fonction de l'ajustement
                 tagText.setAttribute('fromspherical', `phi:${tag.position.phi}; theta:${tag.position.theta - thetaAdjustment}; r:${tag.position.r};`);
-    
+
                 // Ajouter le texte au canvas
                 canva.appendChild(tagText);
             });
         }
-        
+
         if (tag.type === 'text') {
             let tagText = document.createElement('a-text');
             tagText.setAttribute('value', tag.legend);
@@ -141,14 +141,14 @@ function loadScene(scene) {
             tagText.setAttribute('width', '20');
             tagText.setAttribute('look-at', '[camera]');
             tagText.setAttribute('fromspherical', `phi:${tag.position.phi}; theta:${tag.position.theta}; r:${tag.position.r};`);
-    
+
             // Ajouter le texte au canvas
             canva.appendChild(tagText);
         }
     });
 }
 
-function init(){
+function init() {
     vrExperience = loadFromLocalStorage();
     saveToLocalStorage();
     loadScene(vrExperience.rooms[0]);

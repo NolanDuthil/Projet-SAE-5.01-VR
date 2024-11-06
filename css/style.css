@@ -1,5 +1,4 @@
 @import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap");
-
 :root {
   /* colors */
   --clr-white: #FFFFFF;
@@ -33,7 +32,6 @@ html {
   color: var(--clr-white);
   z-index: 1;
 }
-
 .main__top {
   display: flex;
   flex-direction: row;
@@ -41,7 +39,6 @@ html {
   width: 100%;
   height: 75%;
 }
-
 .main__top__left_panel {
   width: 20%;
   background-color: var(--clr-darkBlue);
@@ -57,19 +54,16 @@ html {
   margin: 1rem;
   z-index: 2;
 }
-
 .main__top__left_panel__title {
   font-size: xx-large;
   font-weight: 500;
 }
-
 .main__top__left_panel__room_settings {
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
 }
-
 .main__top__left_panel__room_settings__name {
   border: none;
   border: var(--classic-border);
@@ -83,16 +77,18 @@ html {
   width: 60%;
   text-align: left;
 }
-
+.main__top__left_panel__room_settings__actions {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+}
 .main__top__left_panel__room_settings__actions__room_icons {
   width: 1.4rem;
   cursor: pointer;
 }
-
 .main__top__left_panel__room_settings__actions__room_icons:hover {
   transform: scale(1.15);
 }
-
 .main__top__left_panel__camera {
   display: flex;
   flex-direction: column;
@@ -101,26 +97,22 @@ html {
   gap: 0.5rem;
   width: 100%;
 }
-
 .main__top__left_panel__camera__subtitle {
   font-size: larger;
   font-weight: 500;
 }
-
 .main__top__left_panel__camera__axe {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
 }
-
 .main__top__left_panel__camera__axe__text {
   font-size: medium;
   font-weight: 400;
   font-size: medium;
   font-weight: 400;
 }
-
 .main__top__left_panel__camera__axe__input_camera {
   -moz-appearance: textfield;
   -webkit-appearance: none;
@@ -139,7 +131,6 @@ html {
   box-sizing: border-box;
   outline: none;
 }
-
 .main__top__room {
   position: absolute;
   top: 0;
@@ -149,7 +140,6 @@ html {
   z-index: 0;
   background-color: var(--clr-black);
 }
-
 .main__top__right_panel {
   width: 20%;
   background-color: var(--clr-darkBlue);
@@ -165,19 +155,16 @@ html {
   margin: 1rem;
   z-index: 2;
 }
-
 .main__top__right_panel__title {
   font-size: xx-large;
   font-weight: 500;
 }
-
 .main__top__right_panel__tag_settings {
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
 }
-
 .main__top__right_panel__tag_settings__select {
   border: var(--classic-border);
   border-radius: var(--classic-radius);
@@ -194,21 +181,17 @@ html {
   justify-content: space-between;
   align-items: center;
 }
-
 .main__top__right_panel__tag_settings__select option {
   color: var(--clr-black);
   font-family: var(--ff-Raleway);
 }
-
 .main__top__right_panel__tag_settings__actions__room_icons {
   width: 1.4rem;
   cursor: pointer;
 }
-
 .main__top__right_panel__tag_settings__actions__room_icons:hover {
   transform: scale(1.15);
 }
-
 .main__top__right_panel__tag_name {
   display: flex;
   flex-direction: column;
@@ -217,12 +200,10 @@ html {
   gap: 0.5rem;
   width: 100%;
 }
-
 .main__top__right_panel__tag_name__subtitle {
   font-size: larger;
   font-weight: 500;
 }
-
 .main__top__right_panel__tag_name__input {
   border: none;
   border: var(--classic-border);
@@ -235,7 +216,6 @@ html {
   font-weight: 400;
   text-align: left;
 }
-
 .main__top__right_panel__tag_legend {
   display: flex;
   flex-direction: column;
@@ -244,12 +224,10 @@ html {
   gap: 0.5rem;
   width: 100%;
 }
-
 .main__top__right_panel__tag_legend__subtitle {
   font-size: larger;
   font-weight: 500;
 }
-
 .main__top__right_panel__tag_legend__area {
   border: none;
   border: var(--classic-border);
@@ -263,7 +241,6 @@ html {
   text-align: left;
   resize: none;
 }
-
 .main__top__right_panel__tag_position {
   display: flex;
   flex-direction: column;
@@ -272,25 +249,21 @@ html {
   gap: 0.5rem;
   width: 100%;
 }
-
 .main__top__right_panel__tag_position__subtitle {
   font-size: larger;
   font-weight: 500;
 }
-
 .main__top__right_panel__tag_position__coordonnees {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
-
 .main__top__right_panel__tag_position__coordonnees__container {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
   align-items: center;
 }
-
 .main__top__right_panel__tag_position__coordonnees__container__input {
   -moz-appearance: textfield;
   -webkit-appearance: none;
@@ -309,12 +282,10 @@ html {
   box-sizing: border-box;
   outline: none;
 }
-
 .main__top__right_panel__tag_position__coordonnees__container__text {
   font-size: medium;
   font-weight: 400;
 }
-
 .main__top__right_panel__text_color {
   display: flex;
   flex-direction: column;
@@ -323,12 +294,10 @@ html {
   gap: 0.5rem;
   width: 100%;
 }
-
 .main__top__right_panel__text_color__subtitle {
   font-size: larger;
   font-weight: 500;
 }
-
 .main__top__right_panel__text_color__selector {
   border: var(--classic-border);
   border-radius: var(--classic-radius);
@@ -343,7 +312,6 @@ html {
   text-align: left;
   cursor: pointer;
 }
-
 .main__top__right_panel__room {
   display: flex;
   flex-direction: column;
@@ -352,12 +320,10 @@ html {
   gap: 0.5rem;
   width: 100%;
 }
-
 .main__top__right_panel__room__subtitle {
   font-size: larger;
   font-weight: 500;
 }
-
 .main__top__right_panel__room__selector {
   border: var(--classic-border);
   border-radius: var(--classic-radius);
@@ -372,12 +338,10 @@ html {
   width: 100%;
   box-sizing: border-box;
 }
-
 .main__top__right_panel__room__selector option {
   color: var(--clr-black);
   font-family: var(--ff-Raleway);
 }
-
 .main__bottom_panel {
   max-width: 100%;
   height: 25%;
@@ -393,39 +357,44 @@ html {
   z-index: 2;
   overflow-x: scroll;
 }
-
 .main__bottom_panel__left_side {
   display: flex;
   gap: 2rem;
+  height: 70%;
+  align-items: center;
+  justify-content: start;
 }
-
 .main__bottom_panel__left_side__rooms {
   display: flex;
+  align-items: center;
   gap: 1.5rem;
+  width: 50%;
+  flex-shrink: 0;
+  height: 100%;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  border: var(--classic-border);
 }
-
 .main__bottom_panel__left_side__rooms__item {
   position: relative;
   width: 200px;
   height: 120px;
+  min-width: 200px;
   border: var(--classic-border);
   border-radius: var(--classic-radius);
   overflow: hidden;
   cursor: pointer;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-
 .main__bottom_panel__left_side__rooms__item__image {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
-
 .main__bottom_panel__left_side__rooms__item:hover {
   transform: scale(1.05);
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
 }
-
 .main__bottom_panel__left_side__rooms__item__label {
   position: absolute;
   top: 5px;
@@ -436,7 +405,6 @@ html {
   padding: 2px 8px;
   border-radius: var(--classic-border);
 }
-
 .main__bottom_panel__left_side__add_room {
   display: flex;
   justify-content: center;
@@ -452,13 +420,15 @@ html {
   color: var(--clr-white);
   transition: background-color 0.3s ease, transform 0.3s ease;
 }
-
+.main__bottom_panel__left_side__add_room:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+}
 .main__bottom_panel__right_side {
   display: flex;
   flex-direction: row;
   gap: 0.5rem;
 }
-
 .main__bottom_panel__right_side__button {
   border: var(--classic-border);
   background-color: transparent;
@@ -467,13 +437,11 @@ html {
   padding: 0.5rem 1rem;
   font-family: var(--ff-Raleway);
 }
-
 .main__bottom_panel__right_side__button:hover {
   background-color: var(--clr-black);
   color: var(--clr-white);
   cursor: pointer;
 }
-
 .main__overlay {
   position: fixed;
   top: 0;
@@ -483,7 +451,6 @@ html {
   background-color: rgba(0, 0, 0, 0.7);
   z-index: 10000;
 }
-
 .main__import_popup {
   background-color: var(--clr-darkBlue);
   backdrop-filter: var(--classic-blur);
@@ -502,7 +469,6 @@ html {
   flex-direction: column;
   gap: 1rem;
 }
-
 .main__import_popup__form__input {
   border: var(--classic-border);
   border-radius: var(--classic-radius);
@@ -516,11 +482,9 @@ html {
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.3s ease;
 }
-
 .main__import_popup__form__input:hover {
   background-color: var(--clr-black);
 }
-
 .main__import_popup__form__button {
   background-color: transparent;
   border: var(--classic-border);
@@ -532,12 +496,10 @@ html {
   font-size: medium;
   transition: background-color 0.3s ease, transform 0.3s ease;
 }
-
 .main__import_popup__form__button:hover {
   background-color: var(--clr-black);
   transform: scale(1.05);
 }
-
 .main__add_popup {
   background-color: var(--clr-darkBlue);
   backdrop-filter: var(--classic-blur);
@@ -556,7 +518,6 @@ html {
   flex-direction: column;
   gap: 1rem;
 }
-
 .main__add_popup__button {
   background-color: transparent;
   border: var(--classic-border);
@@ -568,13 +529,57 @@ html {
   font-size: medium;
   transition: background-color 0.3s ease, transform 0.3s ease;
 }
-
 .main__add_popup__button:hover {
   background-color: var(--clr-black);
   transform: scale(1.05);
 }
-
-.a-enter-vr-button {
+.main__delete_confirmation_modal {
+  background-color: var(--clr-darkBlue);
+  backdrop-filter: var(--classic-blur);
+  color: var(--clr-white);
+  border: var(--classic-border);
+  border-radius: var(--classic-radius);
+  padding: 2rem;
+  width: 400px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10001;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.main__delete_confirmation_modal__content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.main__delete_confirmation_modal__title {
+  font-size: xx-large;
+  font-weight: 500;
+}
+.main__delete_confirmation_modal__text {
+  font-size: large;
+  font-weight: 400;
+}
+.main__delete_confirmation_modal__button {
+  background-color: transparent;
+  border: var(--classic-border);
+  border-radius: var(--classic-radius);
+  color: var(--clr-white);
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  font-family: var(--ff-Raleway);
+  font-size: medium;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+.main__delete_confirmation_modal__button:hover {
+  background-color: var(--clr-black);
+  transform: scale(1.05);
+}
+.main .a-enter-vr-button {
   display: none;
 }
 

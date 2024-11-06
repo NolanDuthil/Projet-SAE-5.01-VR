@@ -1,7 +1,6 @@
 import { updateTagData, updateRoomData } from './controller.js';
 
 let selectedRoom = {};
-let selectedTagIndex = 0;
 let selectedTag = {};
 let roomsInstances = [];
 let areRoomListenersInitialized = false;
@@ -17,7 +16,7 @@ export function populateRoomList(roomsInstancesTemp) {
         roomItem.classList.add('main__bottom_panel__left_side__rooms__item');
 
         const roomImage = document.createElement('img');
-        roomImage.src = room.src360 ? "./uploaded_images/" + room.src360 : "./assets/grey-background.avif";
+        roomImage.src = room.src360 ? "./uploaded_images/" + room.src360 : "./uploaded_images/default.avif";
         roomImage.alt = room.name;
         roomImage.classList.add('main__bottom_panel__left_side__rooms__item__image');
 
@@ -45,7 +44,7 @@ export function updateRoomDetails(actualRoom) {
     const tagSelect = document.getElementById('tags-select');
 
     roomNameInput.value = selectedRoom.name;
-    const roomImage = selectedRoom.src360 ? "./uploaded_images/" + selectedRoom.src360 : "./assets/grey-background.avif";
+    const roomImage = selectedRoom.src360 ? "./uploaded_images/" + selectedRoom.src360 : "./uploaded_images/default.avif";
     document.getElementById('image-360').setAttribute('src', roomImage);
 
     cameraVerticalInput.value = selectedRoom.camera.vertical;
@@ -53,20 +52,20 @@ export function updateRoomDetails(actualRoom) {
 
     tagSelect.innerHTML = '';
     const tags = selectedRoom.tags || [];
-    tags.forEach((tag, index) => {
+    tags.forEach((tag) => {
         const option = document.createElement('option');
-        option.value = index;
+        option.value = tag.id;
         option.textContent = tag.name;
         tagSelect.appendChild(option);
     });
     tagSelect.addEventListener('change', (event) => {
-        loadTagDetails(tags, event.target.value);
+        loadTagDetails(selectedRoom.getTag(event.target.value));
     });
 
     updateCanvaTags();
     updateCameraRotation(selectedRoom);
     if (tags.length > 0) {
-        loadTagDetails(tags, 0);
+        loadTagDetails(selectedRoom.tags[0]);
     } else {
         hideTags();
     }
@@ -97,11 +96,10 @@ export function updateRoomDetails(actualRoom) {
     }
 }
 
-function updateCanvaTags(){
+function updateCanvaTags() {
     let tags = selectedRoom.tags || [];
     let pastTags = document.querySelectorAll('a-sphere, a-text');
     pastTags.forEach((tag) => {
-        console.log(tag);
         tag.remove();
     });
     tags.forEach((tag) => {
@@ -134,15 +132,15 @@ export function updateCameraRotation(room) {
 
 // Fonction pour cacher l'interface de tag quand il n'y en a pas sur la scène
 function hideTags() {
-    document.getElementById('tag-settings').style = "display:none";
     document.getElementById('tag-name').style = "display:none";
     document.getElementById('tag-legend').style = "display:none";
     document.getElementById('tag-position').style = "display:none";
+    document.getElementById('room-selector-container').style = "display:none";
+    document.getElementById('color-selector-container').style = "display:none";
 }
 
 export function setupTag(tag) {
     let canva = document.getElementById('a-scene');
-    console.log(tag.name, tag.position);
 
     // Supprimer les anciennes instances du tag (sphère ou texte)
     let pastTag = document.getElementById(tag.id);
@@ -251,16 +249,22 @@ export function getDistanceToCamera(el) {
     return distance;
 }
 
+export function changeActiveTag(tag) {
+    loadTagDetails(tag);
+    let selectTag = document.getElementById('tags-select');
+    selectTag.value = tag.id;
+}
+
 // Fonction pour remplir les détails du tag sélectionné
-export function loadTagDetails(tags, selectedTagI) {
-    selectedTagIndex = selectedTagI;
-    selectedTag = tags[selectedTagIndex];
+export function loadTagDetails(tag) {
+    selectedTag = tag;
 
     // Affiche les paramètres des tags
-    document.getElementById('tag-settings').style = "";
     document.getElementById('tag-name').style = "";
     document.getElementById('tag-legend').style = "";
     document.getElementById('tag-position').style = "";
+    document.getElementById('color-selector-container').style = "";
+    document.getElementById('room-selector-container').style = "";
 
     const tagNameInput = document.getElementById('tag-name-input');
     const tagLegendContainer = document.getElementById('tag-legend')
@@ -305,10 +309,13 @@ export function loadTagDetails(tags, selectedTagI) {
         tagLegendContainer.style.display = '';
     }
 
-    if(!areTagListenersInitialized){
+    if (!areTagListenersInitialized) {
         tagNameInput.addEventListener('input', (event) => {
             updateTagData(selectedRoom, selectedTag.id, 'name', event.target.value);
-            tagSelect.options[selectedTagIndex].textContent = event.target.value;
+            const optionToUpdate = Array.from(tagSelect.options).find(option => option.value == selectedTag.id);
+            if (optionToUpdate) {
+                optionToUpdate.textContent = event.target.value;
+            }
         });
 
         tagLegendInput.addEventListener('input', (event) => {
@@ -331,13 +338,13 @@ export function loadTagDetails(tags, selectedTagI) {
             updateTagData(selectedRoom, selectedTag.id, 'textColor', event.target.value);
         })
         areTagListenersInitialized = true;
-        }
+    }
 }
 
-export function getActualRoom(){
+export function getActualRoom() {
     return selectedRoom;
 }
 
-export function getActualTag(){
+export function getActualTag() {
     return selectedTag;
 }
