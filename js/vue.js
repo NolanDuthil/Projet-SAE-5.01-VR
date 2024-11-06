@@ -13,15 +13,15 @@ export function populateRoomList(roomsInstancesTemp) {
 
     roomsInstances.forEach(room => {
         const roomItem = document.createElement('div');
-        roomItem.classList.add('main__bottom_panel__left_side__rooms__item');
+        roomItem.classList.add('left_side__rooms__item');
 
         const roomImage = document.createElement('img');
         roomImage.src = room.src360 ? "./uploaded_images/" + room.src360 : "./uploaded_images/default.avif";
         roomImage.alt = room.name;
-        roomImage.classList.add('main__bottom_panel__left_side__rooms__item__image');
+        roomImage.classList.add('left_side__rooms__item__image');
 
         const roomLabel = document.createElement('div');
-        roomLabel.classList.add('main__bottom_panel__left_side__rooms__item__label');
+        roomLabel.classList.add('left_side__rooms__item__label');
         roomLabel.textContent = room.name;
 
         roomItem.appendChild(roomImage);

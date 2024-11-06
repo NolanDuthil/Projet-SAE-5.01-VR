@@ -11,53 +11,43 @@
   </head>
   <body>
     <main class="main">
-      <div class="main__top">
-        <div class="main__top__left_panel">
-          <h2 class="main__top__left_panel__title">Scène</h2>
-          <div class="main__top__left_panel__room_settings">
-            <input
-              class="main__top__left_panel__room_settings__name"
-              id="room-name"
-              type="text"
-            />
-            <div class="main__top__left_panel__room_settings__actions">
-              <!-- <img id="duplicate-room" class="main__top__left_panel__room_settings__actions__room_icons" src="./assets/duplicate-icon.svg" alt="Duplicate"> -->
+      <div class="top">
+        <div class="left_panel">
+          <h2 class="title">Scène</h2>
+          <div class="room_settings">
+            <input class="room_settings__name" id="room-name" type="text" />
+            <div class="room_settings__actions">
+              <!-- <img id="duplicate-room" class="room_settings__actions__room_icons" src="./assets/duplicate-icon.svg" alt="Duplicate"> -->
               <img
                 id="delete-room"
-                class="main__top__left_panel__room_settings__actions__room_icons"
+                class="room_settings__actions__room_icons"
                 src="./assets/delete-icon.svg"
                 alt="Delete"
               />
             </div>
           </div>
-          <div class="main__top__left_panel__camera">
-            <h3 class="main__top__left_panel__camera__subtitle">
-              Angle de la caméra
-            </h3>
-            <div class="main__top__left_panel__camera__axe">
-              <p class="main__top__left_panel__camera__axe__text">
-                Axe vertical
-              </p>
+          <div class="camera">
+            <h3 class="camera__subtitle">Angle de la caméra</h3>
+            <div class="camera__axe">
+              <p class="camera__axe__text">Axe vertical</p>
               <input
                 id="camera-vertical"
-                class="main__top__left_panel__camera__axe__input_camera"
+                class="camera__axe__input_camera"
                 type="number"
               />
             </div>
-            <div class="main__top__left_panel__camera__axe">
-              <p class="main__top__left_panel__camera__axe__text">
-                Axe horizontal
-              </p>
+            <div class="camera__axe">
+              <p class="camera__axe__text">Axe horizontal</p>
               <input
                 id="camera-horizontal"
-                class="main__top__left_panel__camera__axe__input_camera"
+                class="camera__axe__input_camera"
                 type="number"
               />
             </div>
           </div>
         </div>
 
-        <a-scene id="a-scene" class="main__top__room" embedded>
+        <a-scene id="a-scene" class="scene" embedded>
           <!-- Image 3D -->
           <a-sky id="image-360" radius="200"></a-sky>
 
@@ -80,214 +70,160 @@
           </a-entity>
         </a-scene>
 
-        <div class="main__top__right_panel">
-          <h2 class="main__top__right_panel__title">Tags</h2>
-          <div id="tag-settings" class="main__top__right_panel__tag_settings">
-            <select
-              id="tags-select"
-              class="main__top__right_panel__tag_settings__select"
-            ></select>
-            <div class="main__top__right_panel__tag_settings__actions">
+        <div class="right_panel">
+          <h2 class="title">Tags</h2>
+          <div id="tag-settings" class="tag_settings">
+            <select id="tags-select" class="tag_settings__select"></select>
+            <div class="tag_settings__actions">
               <img
                 id="add-tag"
-                class="main__top__right_panel__tag_settings__actions__room_icons"
+                class="tag_settings__actions__room_icons"
                 src="assets/add-icon.svg"
                 alt="Add"
               />
-              <!-- <img id="duplicate-tag" class="smain__top__right_panel__tag_settings__actions__cene_icons" src="./assets/duplicate-icon.svg" alt="Duplicate"> -->
+              <!-- <img id="duplicate-tag" class="stag_settings__actions__cene_icons" src="./assets/duplicate-icon.svg" alt="Duplicate"> -->
               <img
                 id="delete-tag"
-                class="main__top__right_panel__tag_settings__actions__room_icons"
+                class="tag_settings__actions__room_icons"
                 src="./assets/delete-icon.svg"
                 alt="Delete"
               />
             </div>
           </div>
-          <div id="tag-name" class="main__top__right_panel__tag_name">
-            <h3 class="main__top__right_panel__tag_name_subtitle">Nom</h3>
-            <input
-              class="main__top__right_panel__tag_name__input"
-              id="tag-name-input"
-              type="text"
-            />
+          <div id="tag-name" class="tag_name">
+            <h3 class="tag_name_subtitle">Nom</h3>
+            <input class="tag_name__input" id="tag-name-input" type="text" />
           </div>
-          <div id="tag-legend" class="main__top__right_panel__tag_legend">
-            <h3 class="main__top__right_panel__tag_legend_subtitle">Légende</h3>
-            <textarea
-              id="tag-legend-area"
-              class="main__top__right_panel__tag_legend__area"
-            ></textarea>
+          <div id="tag-legend" class="tag_legend">
+            <h3 class="tag_legend_subtitle">Légende</h3>
+            <textarea id="tag-legend-area" class="tag_legend__area"></textarea>
           </div>
-          <div id="tag-position" class="main__top__right_panel__tag_position">
-            <h3 class="main__top__right_panel__tag_position__subtitle">
-              Position
-            </h3>
-            <div class="main__top__right_panel__tag_position__coordonnees">
-              <div
-                class="main__top__right_panel__tag_position__coordonnees__container"
-              >
+          <div id="tag-position" class="tag_position">
+            <h3 class="tag_position__subtitle">Position</h3>
+            <div class="tag_position__coordonnees">
+              <div class="tag_position__coordonnees__container">
                 <input
                   id="r"
-                  class="main__top__right_panel__tag_position__coordonnees__container__input"
+                  class="tag_position__coordonnees__container__input"
                   type="number"
                 />
-                <p
-                  class="main__top__right_panel__tag_position__coordonnees__container__text"
-                >
+                <p class="tag_position__coordonnees__container__text">
                   Distance
                 </p>
               </div>
-              <div
-                class="main__top__right_panel__tag_position__coordonnees__container"
-              >
+              <div class="tag_position__coordonnees__container">
                 <input
                   id="theta"
-                  class="main__top__right_panel__tag_position__coordonnees__container__input"
+                  class="tag_position__coordonnees__container__input"
                   type="number"
                 />
-                <p
-                  class="main__top__right_panel__tag_position__coordonnees__container__text"
-                >
+                <p class="tag_position__coordonnees__container__text">
                   Latitude
                 </p>
               </div>
-              <div
-                class="main__top__right_panel__tag_position__coordonnees__container"
-              >
+              <div class="tag_position__coordonnees__container">
                 <input
                   id="phi"
-                  class="main__top__right_panel__tag_position__coordonnees__container__input"
+                  class="tag_position__coordonnees__container__input"
                   type="number"
                 />
-                <p
-                  class="main__top__right_panel__tag_position__coordonnees__container__text"
-                >
+                <p class="tag_position__coordonnees__container__text">
                   Longitude
                 </p>
               </div>
             </div>
           </div>
-          <div
-            id="color-selector-container"
-            class="main__top__right_panel__text_color"
-          >
-            <h3 class="main__top__right_panel__text_color__subtitle">
-              Couleur du texte
-            </h3>
+          <div id="color-selector-container" class="text_color">
+            <h3 class="text_color__subtitle">Couleur du texte</h3>
             <input
               type="color"
               id="color-selector"
-              class="main__top__right_panel__text_color__selector"
+              class="text_color__selector"
             />
           </div>
-          <div
-            id="room-selector-container"
-            class="main__top__right_panel__room"
-            style="display: none"
-          >
-            <h3 class="main__top__right_panel__room__subtitle">Action</h3>
-            <select
-              id="room-selector"
-              class="main__top__right_panel__room__selector"
-            ></select>
+          <div id="room-selector-container" class="room" style="display: none">
+            <h3 class="room__subtitle">Action</h3>
+            <select id="room-selector" class="room__selector"></select>
           </div>
         </div>
       </div>
 
-      <div class="main__bottom_panel">
-        <div class="main__bottom_panel__left_side">
-          <div class="main__bottom_panel__left_side__rooms" id="rooms"></div>
-          <div id="add-room" class="main__bottom_panel__left_side__add_room">
+      <div class="bottom_panel">
+        <div class="left_side">
+          <div class="left_side__rooms" id="rooms"></div>
+          <div id="add-room" class="left_side__add_room">
             <img src="./assets/add-icon.svg" alt="Add" />
           </div>
         </div>
-        <div class="main__bottom_panel__right_side">
-          <button
-            id="export-json"
-            class="main__bottom_panel__right_side__button"
-          >
-            Exporter
-          </button>
-          <button
-            id="import-json"
-            class="main__bottom_panel__right_side__button"
-          >
-            Importer
-          </button>
-          <button
-            id="save-button"
-            class="main__bottom_panel__right_side__button"
-          >
+        <div class="right_side">
+          <button id="export-json" class="right_side__button">Exporter</button>
+          <button id="import-json" class="right_side__button">Importer</button>
+          <button id="save-button" class="right_side__button">
             Sauvegarder
           </button>
           <a href="./experience" target="_blank"
-            ><button
-              id="run-button"
-              class="main__bottom_panel__right_side__button"
-            >
+            ><button id="run-button" class="right_side__button">
               Visite
             </button></a
           >
         </div>
       </div>
 
-      <div id="overlay" class="main__overlay" style="display: none"></div>
+      <div id="overlay" class="overlay" style="display: none"></div>
 
-      <div id="import-popup" class="main__import_popup" style="display: none">
-        <form id="import-form" class="main__import_popup__form">
+      <div id="import-popup" class="import_popup" style="display: none">
+        <form id="import-form" class="import_popup__form">
           <input
             type="file"
             id="import-json-input"
             accept="application/json"
-            class="main__import_popup__form__input"
+            class="import_popup__form__input"
           />
           <button
             type="submit"
             id="import-popup-button"
-            class="main__import_popup__form__button"
+            class="import_popup__form__button"
           >
             Importer
           </button>
           <button
             type="button"
             id="close-import-popup"
-            class="main__import_popup__form__button"
+            class="import_popup__form__button"
           >
             Fermer
           </button>
         </form>
       </div>
 
-      <div id="add-popup" class="main__add_popup" style="display: none">
-        <button id="porte" class="main__add_popup__button">Porte</button>
-        <button id="info" class="main__add_popup__button">Info</button>
-        <button id="text" class="main__add_popup__button">Text</button>
-        <button id="close-add-popup" class="main__add_popup__button">
-          Fermer
-        </button>
+      <div id="add-popup" class="add_popup" style="display: none">
+        <button id="porte" class="add_popup__button">Porte</button>
+        <button id="info" class="add_popup__button">Info</button>
+        <button id="text" class="add_popup__button">Text</button>
+        <button id="close-add-popup" class="add_popup__button">Fermer</button>
       </div>
 
       <div
         id="delete-room-confirmation-modal"
-        class="main__delete_confirmation_modal"
+        class="delete_confirmation_modal"
         style="display: none"
       >
-        <div class="main__delete_confirmation_modal__content">
-          <h2 class="main__delete_confirmation_modal__title">
+        <div class="delete_confirmation_modal__content">
+          <h2 class="delete_confirmation_modal__title">
             Confirmation de suppression de la salle
           </h2>
-          <p class="main__delete_confirmation_modal__text">
+          <p class="delete_confirmation_modal__text">
             Êtes-vous sûr de vouloir supprimer cette salle ?
           </p>
           <button
             id="confirm-delete-room-button"
-            class="main__delete_confirmation_modal__button"
+            class="delete_confirmation_modal__button"
           >
             Confirmer
           </button>
           <button
             id="cancel-delete-room-button"
-            class="main__delete_confirmation_modal__button"
+            class="delete_confirmation_modal__button"
           >
             Annuler
           </button>
@@ -296,25 +232,25 @@
 
       <div
         id="delete-tag-confirmation-modal"
-        class="main__delete_confirmation_modal"
+        class="delete_confirmation_modal"
         style="display: none"
       >
-        <div class="main__delete_confirmation_modal__content">
-          <h2 class="main__delete_confirmation_modal__title">
+        <div class="delete_confirmation_modal__content">
+          <h2 class="delete_confirmation_modal__title">
             Confirmation de suppression du tag
           </h2>
-          <p class="main__delete_confirmation_modal__text">
+          <p class="delete_confirmation_modal__text">
             Êtes-vous sûr de vouloir supprimer ce tag ?
           </p>
           <button
             id="confirm-delete-tag-button"
-            class="main__delete_confirmation_modal__button"
+            class="delete_confirmation_modal__button"
           >
             Confirmer
           </button>
           <button
             id="cancel-delete-tag-button"
-            class="main__delete_confirmation_modal__button"
+            class="delete_confirmation_modal__button"
           >
             Annuler
           </button>

@@ -1,0 +1,19 @@
+// VARIABLES
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+
+:root {
+    /* colors */
+    --clr-white: #FFFFFF;
+    --clr-off-white: #F8F9FA;
+    --clr-black: #1B1B1B;
+    --clr-darkBlue: rgba(74, 78, 105, 0.35);
+
+    /* fonts */
+    --ff-Raleway: Raleway;
+
+    /* others */
+    --classic-border: 1.5px solid var(--clr-white);
+    --classic-padding: 5px 10px;
+    --classic-radius: 10px;
+    --classic-blur: blur(30px);
+}
