@@ -1,5 +1,5 @@
 import { loadFromLocalStorage, transformJSON } from "./model.js";
-import { populateRoomList, updateRoomDetails, setupTag, getActualRoom, getActualTag, changeActiveTag } from "./vue.js";
+import { populateRoomList, updateRoomDetails, setupTag, getActualRoom, getActualTag, changeActiveTag, resetCameraRotation } from "./vue.js";
 import { closePopup } from "./modales.js";
 
 let vrExperience = {};
@@ -112,6 +112,7 @@ function addNewTag(tagType) {
     }
     updateRoomDetails(room);
     changeActiveTag(tag);
+    resetCameraRotation();
 }
 
 function addNewRoom() {

@@ -351,7 +351,7 @@ html {
   display: flex;
   gap: 2rem;
   height: 70%;
-  width: 80%;
+  width: 70vw;
   align-items: center;
   justify-content: start;
 }
@@ -364,13 +364,12 @@ html {
   height: 100%;
   overflow-x: scroll;
   overflow-y: hidden;
-  border: var(--classic-border);
 }
 .left_side__rooms__item {
   position: relative;
-  width: 200px;
-  height: 120px;
-  min-width: 200px;
+  width: 12.5rem;
+  height: 7.5rem;
+  min-width: 12.5rem;
   border: var(--classic-border);
   border-radius: var(--classic-radius);
   overflow: hidden;

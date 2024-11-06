@@ -130,6 +130,20 @@ export function updateCameraRotation(room) {
     camera.setAttribute('look-controls', 'enabled: true');
 }
 
+export function resetCameraRotation() {
+    let cameraEntity = document.getElementById('cam');
+    let camera = document.getElementById('camera');
+
+    // Désactiver temporairement les look-controls
+    camera.removeAttribute('look-controls');
+
+    // Réinitialiser la rotation
+    camera.setAttribute('rotation', { x: 0, y: 0, z: 0 });
+
+    // Réactiver les look-controls pour permettre à l'utilisateur de bouger la caméra ensuite
+    camera.setAttribute('look-controls', 'enabled: true');
+}
+
 // Fonction pour cacher l'interface de tag quand il n'y en a pas sur la scène
 function hideTags() {
     document.getElementById('tag-name').style = "display:none";
