@@ -20,7 +20,24 @@ function initializeListeners() {
         addNewTag('text');
         closePopup('add-popup');
     });
-    document.getElementById('export-json').addEventListener('click', exportToJson);
+    // document.getElementById('export-json').addEventListener('click', exportToJson);
+
+    const confirmButton = document.getElementById('confirm-checkbox-popup');
+    // Gestion du clic sur le bouton "Valider"
+    confirmButton.addEventListener('click', () => {
+        // Vérifie quelle case est cochée et appelle la fonction appropriée
+        const json = document.getElementById('json');
+        const zip = document.getElementById('zip');
+
+        if (json.checked) {
+            exportToJson(); // Appel de la fonction exportToJson si la première option est cochée
+        } else if (zip.checked) {
+            exportToZip(); // Appel de la fonction exportToZip si la deuxième option est cochée
+        } else {
+            alert('Veuillez sélectionner une option avant de valider.');
+        }
+    });
+
     document.getElementById('import-form').addEventListener('submit', importFromJson);
     document.getElementById('add-room').addEventListener('click', addNewRoom);
     document.getElementById('confirm-delete-room-button').addEventListener('click', deleteRoom);
@@ -35,9 +52,44 @@ function exportToJson() {
     a.href = url;
     a.download = 'scenes_data.json'; // Nom du fichier téléchargé
     a.click();
+}
 
-    // Libérer l'URL après utilisation
-    URL.revokeObjectURL(url);
+async function exportToZip() {
+    const zip = new JSZip();
+    const imagesFolder = zip.folder("uploaded_images");
+
+    await fetchAndAddImagesToZip(zip);
+
+    // Ajouter le fichier JSON
+    const jsonString = vrExperience.exportExperience();
+    zip.file("scenes_data.json", jsonString);
+
+    // Générer le fichier zip
+    zip.generateAsync({ type: "blob" }).then(function (content) {
+        const url = URL.createObjectURL(content);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'scenes_data.zip'; // Nom du fichier téléchargé
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+
+        // Libérer l'URL après utilisation
+        URL.revokeObjectURL(url);
+    });
+}
+
+async function fetchAndAddImagesToZip(zip) {
+    const imgFolder = zip.folder("uploaded_images");
+    const imageUrls = vrExperience.rooms.flatMap(room => room.src360);
+
+    for (let url of imageUrls) {
+        let response = await fetch("./uploaded_images/" + url);
+        let blob = await response.blob();
+        let fileName = url.split("/").pop();
+        imgFolder.file(fileName, blob);
+    }
+    console.log(imgFolder);
 }
 
 function importFromJson(event) {

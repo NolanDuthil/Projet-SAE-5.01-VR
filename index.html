@@ -172,6 +172,7 @@
       <div id="overlay" class="overlay" style="display: none"></div>
 
       <div id="import-popup" class="import_popup" style="display: none">
+        <div class="import_popup__title">Importer un fichier JSON</div>
         <form id="import-form" class="import_popup__form">
           <input
             type="file"
@@ -179,28 +180,35 @@
             accept="application/json"
             class="import_popup__form__input"
           />
-          <button
-            type="submit"
-            id="import-popup-button"
-            class="import_popup__form__button"
-          >
-            Importer
-          </button>
-          <button
-            type="button"
-            id="close-import-popup"
-            class="import_popup__form__button"
-          >
-            Fermer
-          </button>
+          <div class="import_popup__actions">
+            <button
+              type="submit"
+              id="import-popup-button"
+              class="import_popup__form__button"
+            >
+              Importer
+            </button>
+            <button
+              type="button"
+              id="close-import-popup"
+              class="import_popup__form__button"
+            >
+              Fermer
+            </button>
+          </div>
         </form>
       </div>
 
       <div id="add-popup" class="add_popup" style="display: none">
-        <button id="porte" class="add_popup__button">Porte</button>
-        <button id="info" class="add_popup__button">Info</button>
-        <button id="text" class="add_popup__button">Text</button>
-        <button id="close-add-popup" class="add_popup__button">Fermer</button>
+        <div class="add_popup__title">Ajouter un élément</div>
+        <div class="add_popup__actions">
+          <button id="porte" class="add_popup__actions__button">Porte</button>
+          <button id="info" class="add_popup__actions__button">Info</button>
+          <button id="text" class="add_popup__actions__button">Text</button>
+          <button id="close-add-popup" class="add_popup__actions__button">
+            Fermer
+          </button>
+        </div>
       </div>
 
       <div
@@ -209,24 +217,26 @@
         style="display: none"
       >
         <div class="delete_confirmation_modal__content">
-          <h2 class="delete_confirmation_modal__title">
+          <div class="delete_confirmation_modal__title">
             Confirmation de suppression de la salle
-          </h2>
+          </div>
           <p class="delete_confirmation_modal__text">
             Êtes-vous sûr de vouloir supprimer cette salle ?
           </p>
-          <button
-            id="confirm-delete-room-button"
-            class="delete_confirmation_modal__button"
-          >
-            Confirmer
-          </button>
-          <button
-            id="cancel-delete-room-button"
-            class="delete_confirmation_modal__button"
-          >
-            Annuler
-          </button>
+          <div class="delete_confirmation_modal__actions">
+            <button
+              id="confirm-delete-room-button"
+              class="delete_confirmation_modal__actions__button"
+            >
+              Confirmer
+            </button>
+            <button
+              id="cancel-delete-room-button"
+              class="delete_confirmation_modal__actions__button"
+            >
+              Annuler
+            </button>
+          </div>
         </div>
       </div>
 
@@ -236,27 +246,83 @@
         style="display: none"
       >
         <div class="delete_confirmation_modal__content">
-          <h2 class="delete_confirmation_modal__title">
+          <div class="delete_confirmation_modal__title">
             Confirmation de suppression du tag
-          </h2>
+          </div>
           <p class="delete_confirmation_modal__text">
             Êtes-vous sûr de vouloir supprimer ce tag ?
           </p>
+          <div class="delete_confirmation_modal__actions">
+            <button
+              id="confirm-delete-tag-button"
+              class="delete_confirmation_modal__actions__button"
+            >
+              Confirmer
+            </button>
+            <button
+              id="cancel-delete-tag-button"
+              class="delete_confirmation_modal__actions__button"
+            >
+              Annuler
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div id="export-popup" class="export_popup" style="display: none">
+        <div class="export_popup__title">Exporter des données</div>
+        <div class="export_popup__content">
+          <div class="export_popup__content__card" data-option-id="json">
+            <input
+              type="checkbox"
+              name="option"
+              id="json"
+              class="export_popup__content__input"
+            />
+            <div class="export_popup__content__card__text">
+              <div class="export_popup__content__card__text__title">
+                Export fichier JSON
+              </div>
+              <div class="export_popup__content__card__text__description">
+                Fichier à importer pour charger des scènes dans l'éditeur
+              </div>
+            </div>
+          </div>
+          <div class="export_popup__content__card" data-option-id="zip">
+            <input
+              type="checkbox"
+              name="option"
+              id="zip"
+              class="export_popup__content__input"
+            />
+            <div class="export_popup__content__card__text">
+              <div class="export_popup__content__card__text__title">
+                Export Zip
+              </div>
+              <div class="export_popup__content__card__text__description">
+                Dossier zip à importer pour charger une expérience dans le
+                loader
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="export_popup__actions">
           <button
-            id="confirm-delete-tag-button"
-            class="delete_confirmation_modal__button"
+            id="confirm-checkbox-popup"
+            class="export_popup__actions__button"
           >
-            Confirmer
+            Valider
           </button>
           <button
-            id="cancel-delete-tag-button"
-            class="delete_confirmation_modal__button"
+            id="close-checkbox-popup"
+            class="export_popup__actions__button"
           >
-            Annuler
+            Fermer
           </button>
         </div>
       </div>
     </main>
   </body>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
   <script type="module" src="./js/script.js"></script>
 </html>

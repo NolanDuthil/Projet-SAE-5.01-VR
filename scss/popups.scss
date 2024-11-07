@@ -10,24 +10,16 @@
 }
 
 .import_popup {
-    background-color: var(--clr-darkBlue);
-    backdrop-filter: var(--classic-blur);
-    color: var(--clr-white);
-    border: var(--classic-border);
-    border-radius: var(--classic-radius);
-    padding: 2rem;
-    width: 400px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 10001;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+    @include popup-styles;
+
+    &__title {
+        @include popup-title;
+    }
 
     &__form {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
 
         &__input {
             border: var(--classic-border);
@@ -51,48 +43,30 @@
             @include classic-popup-button;
         }
     }
+
+    &__actions {
+        @include popup-actions;
+    }
 }
 
 .add_popup {
-    background-color: var(--clr-darkBlue);
-    backdrop-filter: var(--classic-blur);
-    color: var(--clr-white);
-    border: var(--classic-border);
-    border-radius: var(--classic-radius);
-    padding: 2rem;
-    width: 400px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 10001;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+    @include popup-styles;
 
-    &__button {
-        @include classic-popup-button;
+    &__title {
+        @include popup-title;
+    }
+
+    &__actions {
+        @include popup-actions;
+
+        &__button {
+            @include classic-popup-button;
+        }
     }
 }
 
 .delete_confirmation_modal {
-    background-color: var(--clr-darkBlue);
-    backdrop-filter: var(--classic-blur);
-    color: var(--clr-white);
-    border: var(--classic-border);
-    border-radius: var (--classic-radius);
-    padding: 2rem;
-    width: 400px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 10001;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+    @include popup-styles;
 
     &__content {
         display: flex;
@@ -101,16 +75,74 @@
     }
 
     &__title {
-        font-size: xx-large;
-        font-weight: 500;
+        @include popup-title;
     }
 
     &__text {
         font-size: large;
         font-weight: 400;
+        text-align: center;
     }
 
-    &__button {
-        @include classic-popup-button;
+    &__actions {
+        @include popup-actions;
+
+        &__button {
+            @include classic-popup-button;
+        }
+    }
+}
+
+.export_popup {
+    @include popup-styles;
+
+    &__title {
+        @include popup-title;
+    }
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+
+        &__card {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border: var(--classic-border);
+            border-radius: var(--classic-radius);
+            cursor: pointer; // Rendre la card entière cliquable
+            transition: background-color 0.3s ease;
+
+            &:hover {
+                background-color: var(--clr-lightBlue);
+            }
+
+            &__text {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+
+                &__title {
+                    font-size: 1.2rem;
+                    font-weight: bold;
+                }
+
+                &__description {
+                    font-size: 0.9rem;
+                    color: var(--clr-lightGray);
+                }
+            }
+        }
+    }
+
+    &__actions {
+        @include popup-actions;
+
+        &__button {
+            @include classic-popup-button;
+        }
     }
 }

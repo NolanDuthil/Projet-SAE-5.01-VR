@@ -38,12 +38,43 @@ document.getElementById('cancel-delete-tag-button').addEventListener('click', fu
   closePopup('delete-tag-confirmation-modal');
 });
 
+// Export popup
+document.getElementById('export-json').addEventListener('click', function () {
+  showPopup('export-popup');
+});
+document.getElementById('close-checkbox-popup').addEventListener('click', function () {
+  closePopup('export-popup');
+});
+
+document.getElementById('confirm-checkbox-popup').addEventListener('click', function () {
+  closePopup('export-popup');
+});
+
+const cards = document.querySelectorAll('.export_popup__content__card');
+const checkboxes = document.querySelectorAll('.export_popup__content__input');
+
+cards.forEach(card => {
+  card.addEventListener('click', () => {
+    // Désélectionne toutes les cases et retire la classe de sélection
+    cards.forEach(cbCard => {
+      cbCard.classList.remove('export_popup__content__card--selected');
+      document.getElementById(cbCard.getAttribute('data-option-id')).checked = false;
+    });
+
+    // Sélectionne la case associée et ajoute la classe de sélection
+    const checkbox = document.getElementById(card.getAttribute('data-option-id'));
+    checkbox.checked = true;
+    card.classList.add('export_popup__content__card--selected');
+  });
+});
+
 // Overlay click to close all modals
 document.getElementById('overlay').addEventListener('click', function () {
   closePopup('import-popup');
   closePopup('add-popup');
   closePopup('delete-room-confirmation-modal');
   closePopup('delete-tag-confirmation-modal');
+  closePopup('export-popup');
 });
 
 export function showPopup(popupId) {
