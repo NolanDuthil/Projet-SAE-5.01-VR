@@ -45,6 +45,9 @@
               />
             </div>
           </div>
+          <div class="image_change">
+            <button id="image-change" class="image_change__button">Changer l'image</button>
+          </div>
         </div>
 
         <a-scene id="a-scene" class="scene" embedded>
@@ -321,6 +324,19 @@
           </button>
         </div>
       </div>
+
+      <div id="image-popup" class="image_popup" style="display: none">
+        <div class="image_popup__content">
+            <div class="image_popup__content__title">Aperçu des images</div>
+            <div id="image-gallery" class="image_popup__content__gallery">
+                <!-- Les images seront ajoutées dynamiquement ici -->
+            </div>
+            <div class="image_popup__content__actions">
+                <button id="close-image-popup" class="image_popup__content__actions__button">Fermer</button>
+            </div>
+        </div>
+    </div>
+
     </main>
   </body>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>

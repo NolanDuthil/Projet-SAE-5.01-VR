@@ -56,7 +56,6 @@ function exportToJson() {
 
 async function exportToZip() {
     const zip = new JSZip();
-    const imagesFolder = zip.folder("uploaded_images");
 
     await fetchAndAddImagesToZip(zip);
 
@@ -89,7 +88,6 @@ async function fetchAndAddImagesToZip(zip) {
         let fileName = url.split("/").pop();
         imgFolder.file(fileName, blob);
     }
-    console.log(imgFolder);
 }
 
 function importFromJson(event) {

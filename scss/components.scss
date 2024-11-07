@@ -125,6 +125,16 @@ html {
     }
 }
 
+.image_change {
+    display: flex;
+    justify-content: start;
+    width: 100%;
+
+    &__button {
+        @include classic-button;
+    }
+}
+
 // Right Panel
 .tag_settings {
     display: flex;
