@@ -71,11 +71,11 @@ cards.forEach(card => {
 document.getElementById('image-change').addEventListener('click', function () {
   // Tableau des images disponibles dans le dossier 'images'
   const imageSources = [
-    'uploaded_images/default.avif',
-    'uploaded_images/GS__3523.JPG',
-    'uploaded_images/GS__3524.JPG',
-    'uploaded_images/GS__3525.JPG',
-    'uploaded_images/GS__3526.JPG'
+    'default.avif',
+    'GS__3523.JPG',
+    'GS__3524.JPG',
+    'GS__3525.JPG',
+    'GS__3526.JPG'
   ];
   openImageGalleryPopup(imageSources);
 });
@@ -88,8 +88,8 @@ function openImageGalleryPopup(imageSources) {
   // Ajouter chaque image dans la galerie
   imageSources.forEach(src => {
       const imgElement = document.createElement('img');
-      imgElement.src = src;
-      imgElement.alt = 'Aperçu de l\'image';
+      imgElement.src = 'uploaded_images/' + src;
+      imgElement.alt = src;
       imgElement.classList.add('image_popup__content__image');
       imageGallery.appendChild(imgElement);
   });
