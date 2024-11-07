@@ -5,7 +5,7 @@ const fs = require('fs');
 const unzipper = require('unzipper');
 
 const app = express();
-const port = 3000; // Utilisez le port 8080 ou un port spécifié par une variable d'environnement
+const port = 3000;
 
 // Configuration de multer pour le téléchargement de fichiers
 const upload = multer({ dest: 'uploads/' });
@@ -39,5 +39,5 @@ app.post('/sae501/loader', upload.single('file'), (req, res) => {
 
 // Démarrer le serveur
 app.listen(port, () => {
-    console.log(`Serveur démarré sur https://mmi22-20.mmi-limoges.fr/sae501`);
+    console.log(`Serveur démarré sur http://127.0.0.1:${port}`);
 });
