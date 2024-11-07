@@ -33,12 +33,18 @@ app.use(express.static('loader'));
 // Route pour gérer le téléchargement et la décompression du fichier
 app.post('/sae501/loader', upload.single('file'), (req, res) => {
 
+    if (!req.file) {
+        console.error('Aucun fichier téléchargé');
+        return res.status(400).send('Aucun fichier téléchargé');
+    }
+
     const sessionId = req.sessionId; // Récupérer l'ID de session
     const filePath = req.file.path; // Chemin du fichier temporaire
     const userExtractPath = path.join('viewer', `session_${sessionId}`); // Chemin spécifique à l'utilisateur pour la décompression
 
     // Assurez-vous que le répertoire de l'utilisateur existe
     if (!fs.existsSync(userExtractPath)) {
+        console.log(`Création du répertoire : ${userExtractPath}`);
         fs.mkdirSync(userExtractPath, { recursive: true });
     }
 
