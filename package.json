@@ -1,15 +1,20 @@
 {
-  "name": "projet-sae-5.01-vr",
+  "name": "loader-sae501vr",
   "version": "1.0.0",
-  "main": "index.js",
+  "description": "",
+  "main": "script.js",
   "scripts": {
-    "sass:w": "sass --watch scss/style.scss:css/style.css"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
-  "devDependencies": {
-    "sass": "^1.79.4"
+  "dependencies": {
+    "cookie-parser": "^1.4.7",
+    "express": "^4.21.1",
+    "multer": "^1.4.5-lts.1",
+    "unzipper": "^0.12.3",
+    "uuid": "^11.0.2"
   }
 }
