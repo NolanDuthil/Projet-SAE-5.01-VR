@@ -32,14 +32,10 @@ app.use(express.static('loader'));
 
 // Route pour gérer le téléchargement et la décompression du fichier
 app.post('/sae501/loader', upload.single('file'), (req, res) => {
-    console.log('Requête reçue pour le téléchargement du fichier');
 
     const sessionId = req.sessionId; // Récupérer l'ID de session
     const filePath = req.file.path; // Chemin du fichier temporaire
-    const userExtractPath = path.join(__dirname, 'viewer', `session_${sessionId}`); // Chemin spécifique à l'utilisateur pour la décompression
-
-    console.log(`Fichier téléchargé : ${filePath}`);
-    console.log(`Chemin de décompression : ${userExtractPath}`);
+    const userExtractPath = path.join('viewer', `session_${sessionId}`); // Chemin spécifique à l'utilisateur pour la décompression
 
     // Assurez-vous que le répertoire de l'utilisateur existe
     if (!fs.existsSync(userExtractPath)) {
@@ -51,11 +47,9 @@ app.post('/sae501/loader', upload.single('file'), (req, res) => {
         .pipe(unzipper.Extract({ path: userExtractPath }))
         .on('close', () => {
             fs.unlinkSync(filePath); // Supprime le fichier zip après extraction
-            console.log('Décompression terminée');
-            res.send('Fichier décompressé avec succès');
+            res.sendFile(path.join(__dirname, 'loaded', 'index.html'));
         })
         .on('error', (err) => {
-            console.error('Erreur lors de la décompression', err);
             res.status(500).send('Erreur lors de la décompression');
         });
 });
