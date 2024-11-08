@@ -11,6 +11,29 @@
   </head>
   <body>
     <main class="main">
+      <a-scene id="a-scene" class="scene" embedded>
+        <!-- Image 3D -->
+        <a-sky id="image-360" radius="200"></a-sky>
+
+        <!-- camera -->
+        <a-entity id="cam">
+          <a-camera
+            id="camera"
+            camera
+            look-controls="enabled: true"
+            wasd-controls="enabled: false"
+          >
+            <a-cursor
+              id="cursor"
+              color="white"
+              geometry="primitive: sphere; radius: 0.008"
+              material="color: white; shader: flat"
+            >
+            </a-cursor>
+          </a-camera>
+        </a-entity>
+      </a-scene>
+      
       <div class="top">
         <div class="left_panel">
           <h2 class="title">Scène</h2>
@@ -51,29 +74,6 @@
             </button>
           </div>
         </div>
-
-        <a-scene id="a-scene" class="scene" embedded>
-          <!-- Image 3D -->
-          <a-sky id="image-360" radius="200"></a-sky>
-
-          <!-- camera -->
-          <a-entity id="cam">
-            <a-camera
-              id="camera"
-              camera
-              look-controls="enabled: true"
-              wasd-controls="enabled: false"
-            >
-              <a-cursor
-                id="cursor"
-                color="white"
-                geometry="primitive: sphere; radius: 0.008"
-                material="color: white; shader: flat"
-              >
-              </a-cursor>
-            </a-camera>
-          </a-entity>
-        </a-scene>
 
         <div class="right_panel">
           <h2 class="title">Tags</h2>
