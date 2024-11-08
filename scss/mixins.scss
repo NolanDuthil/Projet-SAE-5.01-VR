@@ -6,6 +6,7 @@
     border-radius: var(--classic-radius);
     padding: .5rem 1rem;
     font-family: var(--ff-Raleway);
+    width: max-content;
 
     &:hover {
         background-color: var(--clr-black);

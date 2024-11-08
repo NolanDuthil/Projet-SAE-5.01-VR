@@ -350,8 +350,6 @@ html {
 .left_side {
     display: flex;
     gap: 2rem;
-    // height: 70%;
-    width: 70vw;
     align-items: center;
     justify-content: start;
 
@@ -428,6 +426,7 @@ html {
     display: flex;
     flex-direction: row;
     gap: .5rem;
+    align-items: center;
 
     &__button {
         @include classic-button;

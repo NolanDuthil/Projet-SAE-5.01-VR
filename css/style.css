@@ -162,6 +162,7 @@ html {
   border-radius: var(--classic-radius);
   padding: 0.5rem 1rem;
   font-family: var(--ff-Raleway);
+  width: max-content;
 }
 .image_change__button:hover {
   background-color: var(--clr-black);
@@ -374,7 +375,6 @@ html {
 .left_side {
   display: flex;
   gap: 2rem;
-  width: 70vw;
   align-items: center;
   justify-content: start;
 }
@@ -443,6 +443,7 @@ html {
   display: flex;
   flex-direction: row;
   gap: 0.5rem;
+  align-items: center;
 }
 .right_side__button {
   border: var(--classic-border);
@@ -451,6 +452,7 @@ html {
   border-radius: var(--classic-radius);
   padding: 0.5rem 1rem;
   font-family: var(--ff-Raleway);
+  width: max-content;
 }
 .right_side__button:hover {
   background-color: var(--clr-black);
