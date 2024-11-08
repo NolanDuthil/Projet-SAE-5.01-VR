@@ -82,7 +82,7 @@ html, body {
 }
 
 .drop-zone input[type="file"] {
-    display: none;
+
 }
 
 /* Bouton de soumission */
