@@ -38,6 +38,18 @@ document.getElementById('cancel-delete-tag-button').addEventListener('click', fu
   closePopup('delete-tag-confirmation-modal');
 });
 
+// Delete confirmation modal for tag
+document.getElementById('delete-local-storage').addEventListener('click', function () {
+  showPopup('delete-local-storage-confirmation-modal');
+});
+document.getElementById('confirm-delete-local-storage-button').addEventListener('click', function () {
+  // Add your delete local-storage logic here
+  closePopup('delete-local-storage-confirmation-modal');
+});
+document.getElementById('cancel-delete-local-storage-button').addEventListener('click', function () {
+  closePopup('delete-local-storage-confirmation-modal');
+});
+
 // Export popup
 document.getElementById('export-json').addEventListener('click', function () {
   showPopup('export-popup');
@@ -87,11 +99,12 @@ function openImageGalleryPopup(imageSources) {
 
   // Ajouter chaque image dans la galerie
   imageSources.forEach(src => {
-      const imgElement = document.createElement('img');
-      imgElement.src = 'uploaded_images/' + src;
-      imgElement.alt = src;
-      imgElement.classList.add('image_popup__content__image');
-      imageGallery.appendChild(imgElement);
+    const imgElement = document.createElement('img');
+    imgElement.src = 'uploaded_images/' + src;
+    imgElement.alt = src;
+    imgElement.classList.add('image_popup__content__image');
+    imgElement.id = "image-popup"
+    imageGallery.appendChild(imgElement);
   });
 
   // Afficher la popup
@@ -111,6 +124,7 @@ document.getElementById('overlay').addEventListener('click', function () {
   closePopup('delete-tag-confirmation-modal');
   closePopup('export-popup');
   closePopup('image-popup');
+  closePopup('delete-local-storage-confirmation-modal');
 });
 
 export function showPopup(popupId) {

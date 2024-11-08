@@ -46,7 +46,9 @@
             </div>
           </div>
           <div class="image_change">
-            <button id="image-change" class="image_change__button">Changer l'image</button>
+            <button id="image-change" class="image_change__button">
+              Changer l'image
+            </button>
           </div>
         </div>
 
@@ -159,6 +161,9 @@
           </div>
         </div>
         <div class="right_side">
+          <button id="delete-local-storage" class="right_side__button">
+            Supprimer les données
+          </button>
           <button id="export-json" class="right_side__button">Exporter</button>
           <button id="import-json" class="right_side__button">Importer</button>
           <button id="save-button" class="right_side__button">
@@ -235,6 +240,36 @@
             </button>
             <button
               id="cancel-delete-room-button"
+              class="delete_confirmation_modal__actions__button"
+            >
+              Annuler
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div
+        id="delete-local-storage-confirmation-modal"
+        class="delete_confirmation_modal"
+        style="display: none"
+      >
+        <div class="delete_confirmation_modal__content">
+          <div class="delete_confirmation_modal__title">
+            Confirmation de suppression des données
+          </div>
+          <p class="delete_confirmation_modal__text">
+            Êtes-vous sûr de vouloir supprimer les données ? Votre projet sera
+            réinitialisé.
+          </p>
+          <div class="delete_confirmation_modal__actions">
+            <button
+              id="confirm-delete-local-storage-button"
+              class="delete_confirmation_modal__actions__button"
+            >
+              Confirmer
+            </button>
+            <button
+              id="cancel-delete-local-storage-button"
               class="delete_confirmation_modal__actions__button"
             >
               Annuler
@@ -327,16 +362,20 @@
 
       <div id="image-popup" class="image_popup" style="display: none">
         <div class="image_popup__content">
-            <div class="image_popup__content__title">Aperçu des images</div>
-            <div id="image-gallery" class="image_popup__content__gallery">
-                <!-- Les images seront ajoutées dynamiquement ici -->
-            </div>
-            <div class="image_popup__content__actions">
-                <button id="close-image-popup" class="image_popup__content__actions__button">Fermer</button>
-            </div>
+          <div class="image_popup__content__title">Aperçu des images</div>
+          <div id="image-gallery" class="image_popup__content__gallery">
+            <!-- Les images seront ajoutées dynamiquement ici -->
+          </div>
+          <div class="image_popup__content__actions">
+            <button
+              id="close-image-popup"
+              class="image_popup__content__actions__button"
+            >
+              Fermer
+            </button>
+          </div>
         </div>
-    </div>
-
+      </div>
     </main>
   </body>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>

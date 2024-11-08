@@ -8,6 +8,10 @@ let vrExperience = {};
 function initializeListeners() {
     document.getElementById('save-button').addEventListener('click', saveToLocalStorage);
     document.getElementById('confirm-delete-tag-button').addEventListener('click', deleteTag);
+    document.getElementById('confirm-delete-local-storage-button').addEventListener('click', function () {
+        localStorage.removeItem('jsonData');
+        location.reload();
+    });
     document.getElementById('porte').addEventListener('click', function () {
         addNewTag('porte');
         closePopup('add-popup');
@@ -20,7 +24,11 @@ function initializeListeners() {
         addNewTag('text');
         closePopup('add-popup');
     });
-    // document.getElementById('export-json').addEventListener('click', exportToJson);
+
+    document.getElementById("image-popup").addEventListener('click', function (event) {
+        changeRoomImage(event.target.alt);
+        closePopup('image-popup'); // Fermer la popup après avoir changé l'image
+    });
 
     const confirmButton = document.getElementById('confirm-checkbox-popup');
     // Gestion du clic sur le bouton "Valider"
@@ -176,6 +184,16 @@ function deleteRoom() {
     vrExperience.deleteRoom(room.id);
     updateRoomDetails(vrExperience.rooms[0]);
     populateRoomList(vrExperience.rooms);
+}
+
+function changeRoomImage(imageSrc) {
+    const selectedRoom = getActualRoom();
+    if (selectedRoom) {
+        updateRoomData(selectedRoom.id, 'src360', imageSrc); // Met à jour l'image de la pièce
+        updateRoomDetails(selectedRoom); // Met à jour les détails de la pièce
+        populateRoomList(vrExperience.rooms); // Met à jour la liste des pièces
+        document.getElementById('image-360').setAttribute('src', "./uploaded_images/" + imageSrc); // Change l'image dans la scène A-Frame
+    }
 }
 
 // Fonction pour update une room
