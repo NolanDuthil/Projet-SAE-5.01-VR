@@ -31,7 +31,7 @@ const upload = multer({ dest: 'uploads/' });
 app.use(express.static('loader'));
 
 // Route pour gérer le téléchargement et la décompression du fichier
-app.post('/sae501/loader', upload.single('file'), (req, res) => {
+app.post('', upload.single('file'), (req, res) => {
 
     if (!req.file) {
         console.error('Aucun fichier téléchargé');
@@ -53,7 +53,7 @@ app.post('/sae501/loader', upload.single('file'), (req, res) => {
         .pipe(unzipper.Extract({ path: userExtractPath }))
         .on('close', () => {
             fs.unlinkSync(filePath); // Supprime le fichier zip après extraction
-            res.sendFile(path.join(__dirname, 'loaded', 'index.html'));
+            res.redirect('https://mmi22-20.mmi-limoges.fr/sae501/loaded');
         })
         .on('error', (err) => {
             res.status(500).send('Erreur lors de la décompression');
@@ -65,5 +65,5 @@ app.use('/sae501/viewer', express.static('viewer'));
 
 // Démarrer le serveur
 app.listen(port, () => {
-    console.log(`Serveur démarré sur http://127.0.0.1:${port}`);
+    console.log(`Serveur démarré sur http://mmi22-20.mmi-limoges.fr:${port}`);
 });

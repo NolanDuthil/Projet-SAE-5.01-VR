@@ -1,83 +1,105 @@
-:root {
-    /* colors */
-    --clr-white: #FFFFFF;
-    --clr-off-white: #F8F9FA;
-    --clr-black: #1B1B1B;
-    --clr-darkBlue: rgba(74, 78, 105, 0.35);
-
-    /* fonts */
-    --ff-Raleway: Raleway;
-
-    /* others */
-    --classic-border: 1.5px solid var(--clr-white);
-    --classic-padding: 5px 10px;
-    --classic-radius: 10px;
-    --classic-blur: blur(30px);
-}
-
-body, html {
+/* Style de base */
+* {
     margin: 0;
     padding: 0;
-    height: 100%;
-    font-family: Arial, sans-serif;
+    box-sizing: border-box;
 }
 
-.container {
+html, body {
+    height: 100%;
+    font-family: Arial, sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    background-image: url('image.jpg');
-    background-size: cover;
-    background-position: center;
+    background-color: #f4f4f9;
 }
 
+/* Conteneur principal en deux parties */
+.split-container {
+    display: flex;
+    width: 90%;
+    height: 80vh;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Partie gauche avec le texte */
+.left-side {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.left-side img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Partie droite avec la zone de dépôt */
+.right-side {
+    flex: 1;
+    background-color: #fff;
+    padding: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Conteneur du formulaire */
 .form-container {
-    text-align: center;
-    background-color: var(--clr-darkBlue);
-    backdrop-filter: var(--classic-blur);
-    padding: 20px;
-    border-radius: var(--classic-radius);
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    color: var(--clr-white);
-}
-
-.form-container form {
+    width: 100%;
+    max-width: 400px;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
+/* Zone de dépôt de fichiers */
 .drop-zone {
-    border: 2px dashed var(--clr-white);
-    padding: 4rem;
+    width: 100%;
+    padding: 40px;
+    border: 2px dashed #3498db;
+    border-radius: 10px;
+    background-color: #f9f9f9;
     text-align: center;
     cursor: pointer;
-    border-radius: var(--classic-radius);
-    margin-bottom: 10px;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s, border-color 0.3s;
 }
 
-.drop-zone.dragover {
-    background-color: rgba(255, 255, 255, 0.1);
+.drop-zone:hover {
+    background-color: #eaf6ff;
+    border-color: #2980b9;
 }
 
 .drop-zone p {
-    margin-top: 1rem;
-    font-size: 16px;
-    color: var(--clr-white);
+    color: #555;
+    font-size: 1em;
+    margin-top: 15px;
 }
 
-button {
-    padding: 10px 20px;
-    background-color: var(--clr-white);
-    color: var(--clr-black);
-    border: none;
-    border-radius: var(--classic-radius);
-    cursor: pointer;
+.drop-zone input[type="file"] {
+    display: none;
+}
+
+/* Bouton de soumission */
+button[type="submit"] {
     width: 100%;
+    padding: 15px;
+    margin-top: 20px;
+    background-color: #3498db;
+    color: #fff;
+    font-size: 1.1em;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
 
-button:hover {
-    background-color: var(--clr-off-white);
+button[type="submit"]:hover {
+    background-color: #2980b9;
 }

@@ -2,20 +2,25 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial- scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dépot de ZIP</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <div class="form-container">
-            <form id="uploadForm" action="/sae501/loader" method="post" enctype="multipart/form-data">
-                <div class="drop-zone" id="dropZone">
-                    <input type="file" id="fileInput" name="file" accept=".zip">
-                    <p>Déposez vos fichiers ici ou cliquez pour sélectionner</p>
-                </div>
-                <button type="submit">Uploader</button>
-            </form>
+    <div class="split-container">
+        <div class="left-side">
+            <img src="vrimage.jpg" alt="Image">
+        </div>
+        <div class="right-side">
+            <div class="form-container">
+                <form id="uploadForm" method="post" enctype="multipart/form-data">
+                    <div class="drop-zone" id="dropZone">
+                        <input type="file" id="fileInput" name="file" accept=".zip">
+                        <p>Déposez vos fichiers ici ou cliquez pour sélectionner</p>
+                    </div>
+                    <button type="submit">Uploader</button>
+                </form>
+            </div>
         </div>
     </div>
     <script src="script.js"></script>

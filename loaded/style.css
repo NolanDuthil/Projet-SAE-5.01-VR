@@ -1,4 +1,4 @@
-/* Style de base pour la mise en page */
+/* Style de base */
 * {
     margin: 0;
     padding: 0;
@@ -11,17 +11,17 @@ html, body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #f0f0f0;
+    background-color: #f4f4f9;
 }
 
-/* Style pour le conteneur principal */
+/* Conteneur principal en deux colonnes */
 .split-container {
     display: flex;
     width: 90%;
     height: 80vh;
     border-radius: 10px;
     overflow: hidden;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 /* Partie gauche avec l'image */
@@ -39,48 +39,56 @@ html, body {
     object-fit: cover;
 }
 
-/* Partie droite avec le texte */
+/* Partie droite avec le contenu principal */
 .right-side {
     flex: 1;
     background-color: #fff;
     padding: 40px;
     display: flex;
-    flex-direction: column;
     justify-content: center;
-    align-items: flex-start; /* Aligne tout le contenu à gauche */
+    align-items: center;
 }
 
-.message {
-    text-align: left; /* Aligne le texte à gauche */
+.main-content {
+    text-align: left;
+    max-width: 400px;
+    width: 100%;
 }
 
-.message h1 {
+.title {
     font-size: 2em;
     color: #333;
     margin-bottom: 20px;
 }
 
-.message p {
+.description {
     font-size: 1.1em;
     color: #555;
-    margin-bottom: 30px;
+    margin-bottom: 30px; /* Ajoute de l'espacement sous le texte */
+    line-height: 1.5;
 }
 
-/* Style pour le bouton */
-.button {
-    display: inline-block;
-    padding: 15px 30px;
+/* Bouton de visionnage */
+.viewer-link {
+    text-decoration: none;
+    display: block; /* Pour que le lien prenne toute la largeur de son parent */
+    width: 100%; /* Prend toute la largeur de .main-content */
+}
+
+.view-button {
+    width: 100%; /* Prend toute la largeur de .viewer-link */
+    padding: 15px;
     background-color: #3498db;
     color: #fff;
-    font-size: 1em;
+    font-size: 1.1em;
     font-weight: bold;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-    width: 100%;
     text-align: center;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
 
-.button:hover {
+.view-button:hover {
     background-color: #2980b9;
 }

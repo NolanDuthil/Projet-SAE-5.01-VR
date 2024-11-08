@@ -1,86 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dossier décompressé</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <main class="main-content">
-        <h1 class="title">Dossier décompressé</h1>
-        <p class="description">Votre dossier a été décompressé, allez sur la page suivante pour visionner votre expérience</p>
-        <a href="/sae501/viewer" class="viewer-link"><button class="view-button">Visionner l'expérience</button></a>
-    </main>
-    <style>
-        :root {
-    /* colors */
-    --clr-white: #FFFFFF;
-    --clr-off-white: #F8F9FA;
-    --clr-black: #1B1B1B;
-    --clr-darkBlue: rgba(74, 78, 105, 0.35);
-
-    /* fonts */
-    --ff-Raleway: Raleway;
-
-    /* others */
-    --classic-border: 1.5px solid var(--clr-white);
-    --classic-padding: 5px 10px;
-    --classic-radius: 10px;
-    --classic-blur: blur(30px);
-}
-
-body {
-    margin: 0;
-    padding: 0;
-}
-
-.main-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    color: var(--clr-white);
-    text-align: center;
-    background-color: var(--clr-darkBlue);
-    border-radius: var(--classic-radius);
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    backdrop-filter: var(--classic-blur);
-}
-
-.title {
-    font-size: 2rem;
-    margin-bottom: 1rem;
-    font-family: var(--ff-Raleway), sans-serif;
-}
-
-.description {
-    font-size: 1.2rem;
-    margin-bottom: 2rem;
-}
-
-.viewer-link {
-    text-decoration: none;
-    width: 100%;
-}
-
-.view-button {
-    padding: 10px 20px;
-    background-color: var(--clr-white);
-    color: var(--clr-black);
-    border: none;
-    border-radius: var(--classic-radius);
-    cursor: pointer;
-    width: 100%;
-    max-width: 200px;
-    transition: background-color 0.3s ease;
-}
-
-.view-button:hover {
-    transform: scale(1.05);
-    transition: transform 0.3s ease;
-}
-
-    </style>
+    <div class="split-container">
+        <div class="left-side">
+            <img src="vrimage.jpg" alt="Image illustrative">
+        </div>
+        <div class="right-side">
+            <main class="main-content">
+                <h1 class="title">Dossier décompressé</h1>
+                <p class="description">Votre dossier a été décompressé. Allez sur la page suivante pour visionner votre expérience.</p>
+                <a href="https://mmi22-20.mmi-limoges.fr/sae501/viewer" class="viewer-link">
+                    <button class="view-button">Visionner l'expérience</button>
+                </a>
+            </main>
+        </div>
+    </div>
 </body>
 </html>
